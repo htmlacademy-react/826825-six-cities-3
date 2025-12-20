@@ -8,14 +8,18 @@ import AuthScreen from '../../pages/auth-screen/auth-screen';
 import OfferScreen from '../../pages/offer-screen/offer-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import PrivateRoute from '../private-route/private-route';
+import {Offers} from '../../types/offer';
+import {Comments} from '../../types/comment';
 
 type AppScreenProps = {
   placeCount: number;
+  offers: Offers;
+  comments: Comments;
 }
 
 const statusAuthorisation: AuthorizationStatus = AuthorizationStatus.Auth;
 
-function App({placeCount} : AppScreenProps): JSX.Element {
+function App({placeCount, offers, comments} : AppScreenProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -29,11 +33,24 @@ function App({placeCount} : AppScreenProps): JSX.Element {
           >
             <Route
               path={AppRoute.Main}
-              element={<MainScreen placeCount={placeCount}/>}
+              element={
+                <MainScreen
+                  placeCount={placeCount}
+                  offers={offers}
+                />
+              }
             />
             <Route
               path={AppRoute.Offer}
-              element={<OfferScreen />}
+              element={
+                <OfferScreen
+                  offers={offers}
+                  comments={comments}
+                  onComment={() => {
+                    throw new Error('Function \'onComment\' isn\'t implemented.');
+                  }}
+                />
+              }
             />
             <Route
               path={AppRoute.Favorites}
@@ -41,14 +58,20 @@ function App({placeCount} : AppScreenProps): JSX.Element {
                 <PrivateRoute
                   authorizationStatus={statusAuthorisation}
                 >
-                  <FavoritesScreen />
+                  <FavoritesScreen
+                    offers={offers}
+                  />
                 </PrivateRoute>
               }
             />
           </Route>
           <Route
             path={AppRoute.Login}
-            element = {<AuthScreen />}
+            element = {
+              <AuthScreen
+                authorizationStatus={statusAuthorisation}
+              />
+            }
           />
           <Route
             path="*"

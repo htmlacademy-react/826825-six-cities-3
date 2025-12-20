@@ -1,11 +1,15 @@
 import {Helmet} from 'react-helmet-async';
-import Card from '../../components/card/card';
+import CardsList from '../../components/cards-list/cards-list';
+import {Offers} from '../../types/offer';
 
 type MainScreenProps = {
   placeCount: number;
+  offers: Offers;
 }
 
-function MainScreen({placeCount} : MainScreenProps): JSX.Element {
+const offersListClassName: string = 'cities__places-list places__list tabs__content';
+
+function MainScreen({placeCount, offers} : MainScreenProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -69,13 +73,10 @@ function MainScreen({placeCount} : MainScreenProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-              </div>
+              <CardsList
+                listClassName={offersListClassName}
+                offers={offers}
+              />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>

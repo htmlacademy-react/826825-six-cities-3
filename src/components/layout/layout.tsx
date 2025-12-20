@@ -1,6 +1,6 @@
 import {Outlet} from 'react-router-dom';
 import Logo from '../../components/logo/logo';
-import Navigate from '../navigate/navigate';
+import HeaderNavigate from '../navigate/heder-navigate';
 import {AuthorizationStatus} from '../../const';
 
 type LayoutProps = {
@@ -17,7 +17,7 @@ function Layout(props: LayoutProps): JSX.Element {
             <div className="header__left">
               <Logo />
             </div>
-            <Navigate authorizationStatus = {authorizationStatus}/>
+            <HeaderNavigate authorizationStatus = {authorizationStatus}/>
           </div>
         </div>
       </header>
