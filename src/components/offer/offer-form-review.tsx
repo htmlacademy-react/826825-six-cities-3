@@ -1,7 +1,7 @@
 import {useState, Fragment, FormEvent, ChangeEvent} from 'react';
 import { Review } from '../../types/comment';
+import { Setting } from '../../const';
 
-const MAX_RATING:number = 5;
 const ratingTitles:string[] = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
 
 type OfferFormReviewProps = {
@@ -36,11 +36,11 @@ function OfferFormReview({onComment}: OfferFormReviewProps) : JSX.Element {
               onChange={handleFieldChange}
               className="form__rating-input visually-hidden"
               name="rating"
-              value={MAX_RATING - index}
-              id={`${MAX_RATING - index}-stars`}
+              value={Setting.maxRating - index}
+              id={`${Setting.maxRating - index}-stars`}
               type="radio"
             />
-            <label htmlFor={`${MAX_RATING - index}-stars`}
+            <label htmlFor={`${Setting.maxRating - index}-stars`}
               className="reviews__rating-label form__rating-label"
               title={title}
             >

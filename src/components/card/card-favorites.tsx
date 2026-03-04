@@ -2,16 +2,17 @@ import Card from './card';
 import {Offer} from '../../types/offer';
 
 
-type CardListProps = {
+type CardFavoritesProps = {
   offer: Offer;
-  setCurrentOffer: (value: string) => void;
 }
 
 
-function CardFavorites (props:CardListProps) : JSX.Element {
+function CardFavorites (props:CardFavoritesProps) : JSX.Element {
 
   return (
     <Card
+      imgHeight='110'
+      imgWidth='150'
       articleClassName='favorites__card'
       imageWrapperClassName='favorites__image-wrapper'
       {...props}

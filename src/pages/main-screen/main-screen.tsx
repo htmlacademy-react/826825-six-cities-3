@@ -1,15 +1,22 @@
+import {useState} from 'react';
 import {Helmet} from 'react-helmet-async';
 import CardsList from '../../components/cards-list/cards-list';
-import {Offers} from '../../types/offer';
+import {Offers, Offer} from '../../types/offer';
+import Map from '../../components/map/map';
 
 type MainScreenProps = {
   placeCount: number;
   offers: Offers;
 }
 
+const currentCityName:string = 'Amsterdam';
+
 const offersListClassName: string = 'cities__places-list places__list tabs__content';
 
 function MainScreen({placeCount, offers} : MainScreenProps): JSX.Element {
+  const [currentOffer, setCurrentOffer] = useState('');
+  const offersByCity:Offers = offers.filter(({city}) => city.name === currentCityName);
+  const currentCity = offers.find(({city}) => city.name === currentCityName) as Offer;
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -75,11 +82,17 @@ function MainScreen({placeCount, offers} : MainScreenProps): JSX.Element {
               </form>
               <CardsList
                 listClassName={offersListClassName}
-                offers={offers}
+                offers={offersByCity}
+                setCurrentOffer={setCurrentOffer}
               />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map
+                offers={offersByCity}
+                currentCity={currentCity.city}
+                currentOffer={currentOffer}
+                mapClassName='cities__map map'
+              />
             </div>
           </div>
         </div>

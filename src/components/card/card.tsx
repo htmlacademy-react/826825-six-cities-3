@@ -1,22 +1,25 @@
 import {Offer} from '../../types/offer';
 import classnames from 'classnames';
 import {Link} from 'react-router-dom';
+import Rating from '../rating/rating';
 
 type CardListProps = {
   offer: Offer;
   articleClassName: string;
   imageWrapperClassName: string;
-  setCurrentOffer: (value: string) => void;
+  imgHeight: string;
+  imgWidth: string;
+  setCurrentOffer?: (value: string) => void;
 }
 
-function Card({offer, articleClassName, imageWrapperClassName, setCurrentOffer}: CardListProps) : JSX.Element {
-  const {previewImage, price, isFavorite, isPremium, type, title, id} = offer;
+function Card({offer, articleClassName, imageWrapperClassName, setCurrentOffer, imgWidth, imgHeight}: CardListProps) : JSX.Element {
+  const {previewImage, price, isFavorite, isPremium, type, title, id, rating} = offer;
   const bookMarks = isFavorite ? 'In bookmarks' : 'To bookmarks';
 
   return (
     <article
-      onMouseOver = {() => setCurrentOffer('id')}
-      onMouseLeave = {() => setCurrentOffer('')}
+      onMouseOver = {() => setCurrentOffer?.(id)}
+      onMouseLeave = {() => setCurrentOffer?.('')}
       className={classnames(articleClassName,'place-card')}
     >
       {isPremium &&
@@ -25,7 +28,13 @@ function Card({offer, articleClassName, imageWrapperClassName, setCurrentOffer}:
       </div>}
       <div className={classnames(imageWrapperClassName,'place-card__image-wrapper')}>
         <Link to={{pathname: `/offer/${id}`}} state={offer}>
-          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place image"/>
+          <img
+            className="place-card__image"
+            src={previewImage}
+            width={imgWidth}
+            height={imgHeight}
+            alt="Place image"
+          />
         </Link>
       </div>
       <div className={classnames({'favorites__card-info':location.pathname === '/favorites'}, 'place-card__info')}>
@@ -45,10 +54,10 @@ function Card({offer, articleClassName, imageWrapperClassName, setCurrentOffer}:
           </button>
         </div>
         <div className="place-card__rating rating">
-          <div className="place-card__stars rating__stars">
-            <span style={{width: '80%'}}></span>
-            <span className="visually-hidden">Rating</span>
-          </div>
+          <Rating
+            className='place-card__stars'
+            rating={rating}
+          />
         </div>
         <h2 className="place-card__name">
           <Link to={{pathname: `/offer/${id}`}} state={offer}>{title}</Link>

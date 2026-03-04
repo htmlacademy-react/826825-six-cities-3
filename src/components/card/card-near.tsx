@@ -2,23 +2,23 @@ import Card from './card';
 import {Offer} from '../../types/offer';
 
 
-type CardMainProps = {
+type CardNearProps = {
   offer: Offer;
   setCurrentOffer?: (value: string) => void;
 }
 
 
-function CardMain (props:CardMainProps) : JSX.Element {
+function CardNear (props:CardNearProps) : JSX.Element {
 
   return (
     <Card
       imgHeight='200'
       imgWidth='260'
-      articleClassName='cities__card'
-      imageWrapperClassName='cities__image-wrapper'
+      articleClassName='near-places__card'
+      imageWrapperClassName='near-places__image-wrapper'
       {...props}
     />
   );
 }
 
-export default CardMain;
+export default CardNear;

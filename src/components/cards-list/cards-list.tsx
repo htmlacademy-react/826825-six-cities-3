@@ -1,13 +1,14 @@
-import {useState, Fragment} from 'react';
+import {Fragment} from 'react';
 import {AppRoute} from '../../const';
 import CardMain from '../card/card-main';
 import CardFavorites from '../card/card-favorites';
+import CardNear from '../card/card-near';
 import {Offers, Offer} from '../../types/offer';
 
 type CardComponentProps = {
   location: string;
   offer: Offer;
-  setCurrentOffer: (value: string) => void;
+  setCurrentOffer?: (value: string) => void;
 
 }
 
@@ -23,9 +24,13 @@ const getComponentByLocation = ({location, offer, setCurrentOffer}: CardComponen
       return (
         <CardFavorites
           offer={offer}
-          setCurrentOffer={setCurrentOffer}
         />);
   }
+  return (
+    <CardNear
+      offer={offer}
+      setCurrentOffer={setCurrentOffer}
+    />);
 };
 
 import {useLocation} from 'react-router-dom';
@@ -33,11 +38,11 @@ import {useLocation} from 'react-router-dom';
 type OffersListProps = {
   listClassName: string;
   offers: Offers;
+  setCurrentOffer?: (value: string) => void;
 }
 
-function CardsList({listClassName, offers} : OffersListProps): JSX.Element {
+function CardsList({listClassName, offers, setCurrentOffer} : OffersListProps): JSX.Element {
   const location = useLocation().pathname;
-  const [, setCurrentOffer] = useState('');
 
   return (
     <div className={listClassName}>
