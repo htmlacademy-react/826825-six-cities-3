@@ -5,6 +5,7 @@ import {Comments} from '../../types/comment';
 import {Offers} from '../../types/offer';
 import {Offer} from '../../types/offer';
 import {Review} from '../../types/comment';
+import {Page, Setting} from '../../const';
 import CardsList from '../../components/cards-list/cards-list';
 import Rating from '../../components/rating/rating';
 import Map from '../../components/map/map';
@@ -22,7 +23,7 @@ const offersListClassName: string = 'near-places__list places__list';
 function OfferScreen({comments, offers, onComment} : OfferScreenProps): JSX.Element {
   const [currentOffer, setCurrentOffer] = useState('');
   const params = useParams();
-  const nearOffers = offers.slice(0, 3);
+  const nearOffers = offers.slice(0, Setting.maxNearOfferCount);
   const selectedOffer = offers.find((offer)=>offer.id === params.id) as Offer;
   const {images, isPremium, title, maxAdults, bedrooms, type, rating, price, goods, host, description, city} = selectedOffer;
 
@@ -146,6 +147,7 @@ function OfferScreen({comments, offers, onComment} : OfferScreenProps): JSX.Elem
               offers={nearOffers}
               setCurrentOffer={setCurrentOffer}
               cardsPlace={'nearList'}
+              page={Page.Offer}
             />
           </section>
         </div>

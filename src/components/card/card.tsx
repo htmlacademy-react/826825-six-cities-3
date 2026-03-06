@@ -2,6 +2,7 @@ import {Offer} from '../../types/offer';
 import classnames from 'classnames';
 import {Link} from 'react-router-dom';
 import Rating from '../rating/rating';
+import {IMAGE_SETTINGS, Page} from '../../const'; 
 
 type CardListProps = {
   offer: Offer;
@@ -24,12 +25,12 @@ function Card({offer, page, setCurrentOffer}: CardListProps) : JSX.Element {
         <span>Premium</span>
       </div>}
       <div className={`${page}__image-wrapper place-card__image-wrapper`}>
-        <Link to={{pathname: `/offer/${id}`}} state={offer}>
+        <Link to={{pathname: `/offer/${id}`}}>
           <img
             className="place-card__image"
             src={previewImage}
-            width={page === 'favorites' ? 150 : 260}
-            height={page === 'favorites' ? 110 : 200}
+            width={page === Page.Favorites ? IMAGE_SETTINGS.favoriteWidth : IMAGE_SETTINGS.width}
+            height={page === Page.Favorites ? IMAGE_SETTINGS.favoriteHeight : IMAGE_SETTINGS.height}
             alt="Place image"
           />
         </Link>

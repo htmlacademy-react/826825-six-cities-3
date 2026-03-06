@@ -1,6 +1,7 @@
 import {Helmet} from 'react-helmet-async';
 import CardsList from '../../components/cards-list/cards-list';
 import {Offers} from '../../types/offer';
+import {Page} from '../../const';
 
 type FavoritesScreenProps = {
   offers: Offers;
@@ -39,6 +40,7 @@ function FavoritesScreen({offers} : FavoritesScreenProps) : JSX.Element {
                     <CardsList
                       listClassName={offersListClassName}
                       offers={favoritesOffersByCity}
+                      page={Page.Favorites}
                     />
                   </li>
                 );
