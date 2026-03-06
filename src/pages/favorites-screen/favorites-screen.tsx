@@ -1,6 +1,7 @@
 import {Helmet} from 'react-helmet-async';
 import CardsList from '../../components/cards-list/cards-list';
 import {Offers} from '../../types/offer';
+import {PAGES} from '../../const';
 
 type FavoritesScreenProps = {
   offers: Offers;
@@ -22,7 +23,7 @@ function FavoritesScreen({offers} : FavoritesScreenProps) : JSX.Element {
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
               {favoritesCitys.map((cityName, index) => {
-                const favoritesOffersByCity:Offers = offers.
+                const favoritesOffersByCity:Offers = favoritesOffers.
                   filter(({city}) => city.name === cityName);
                 return (
                   <li
@@ -39,6 +40,7 @@ function FavoritesScreen({offers} : FavoritesScreenProps) : JSX.Element {
                     <CardsList
                       listClassName={offersListClassName}
                       offers={favoritesOffersByCity}
+                      page={PAGES.favorites}
                     />
                   </li>
                 );
