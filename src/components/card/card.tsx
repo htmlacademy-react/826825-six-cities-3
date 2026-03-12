@@ -2,21 +2,26 @@ import {Offer} from '../../types/offer';
 import classnames from 'classnames';
 import {Link} from 'react-router-dom';
 import Rating from '../rating/rating';
+import { useAppDispatch } from '../../hooks/index';
+import { setCurrentOffer } from '../../store/action';
 import {IMAGE_SETTINGS, PAGES} from '../../const';
 
 type CardListProps = {
   offer: Offer;
   page: string;
-  setCurrentOffer?: (value: string) => void;
+  // setCurrentOffer?: (value: string) => void;
 }
 
-function Card({offer, page, setCurrentOffer}: CardListProps) : JSX.Element {
+function Card({offer, page}: CardListProps) : JSX.Element {
   const {previewImage, price, isFavorite, isPremium, type, title, id, rating} = offer;
   const bookMarks = isFavorite ? 'In bookmarks' : 'To bookmarks';
+  const dispatch = useAppDispatch();
   return (
     <article
-      onMouseOver = {() => setCurrentOffer?.(id)}
-      onMouseLeave = {() => setCurrentOffer?.('')}
+      // onMouseOver = {() => setCurrentOffer?.(id)}
+      onMouseOver = {() => dispatch(setCurrentOffer(id))}
+      // onMouseLeave = {() => setCurrentOffer?.('')}
+      onMouseLeave = {() => dispatch(setCurrentOffer(''))}
       className = {`${page}__card place-card`}
     >
       {isPremium &&

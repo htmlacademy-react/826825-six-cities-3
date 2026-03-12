@@ -5,15 +5,17 @@ import useMap from '../../hooks/use-map';
 import { Offers, OfferCity, OffferLocation } from '../../types/offer';
 import MarkerActive from'/img/pin-active.svg';
 import MarkerDefault from '/img/pin.svg';
+import {useAppSelector} from '../../hooks/index';
 
 type MapProps = {
   offers: Offers;
   currentCity: OfferCity;
-  currentOffer: string;
+  // currentOffer: string;
   mapClassName: string;
 }
 
-function Map({offers, currentCity, currentOffer, mapClassName}:MapProps) : JSX.Element {
+function Map({offers, currentCity, mapClassName}:MapProps) : JSX.Element {
+  const currentOffer = useAppSelector((state) => state.mapCurrentOffer);
   const currentCityLocation:OffferLocation = currentCity.location;
   const mapRef = useRef(null);
   const map = useMap({mapRef, location: currentCityLocation});
@@ -44,8 +46,9 @@ function Map({offers, currentCity, currentOffer, mapClassName}:MapProps) : JSX.E
           })
           .addTo(map);
       });
+      map.setView(new leaflet.LatLng(currentCityLocation.latitude, currentCityLocation.longitude));
     }
-  }, [currentCustomIcon, defaultCustomIcon, map, offers, currentOffer]);
+  }, [currentCustomIcon, defaultCustomIcon, map, offers, currentOffer, currentCityLocation]);
 
   return (
     <section

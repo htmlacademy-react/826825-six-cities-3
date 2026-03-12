@@ -125,7 +125,7 @@ export const offers: Offers = [
     type: 'hotel',
     price: 123,
     city: {
-      name: 'Amsterdam',
+      name: 'Paris',
       location: {
         latitude: 52.35514938496378,
         longitude: 4.673877537499948,
@@ -134,8 +134,8 @@ export const offers: Offers = [
     },
 
     location: {
-      latitude: 52.3809553943508,
-      longitude: 4.939309666406198,
+      latitude: 48.873799,
+      longitude: 2.295117,
       zoom: 8
     },
 
@@ -157,5 +157,44 @@ export const offers: Offers = [
       '/img/room.jpg'
     ],
     maxAdults: 12
+  },
+  {
+    id: '5',
+    title: 'Маленькая комната',
+    type: 'room',
+    price: 12000,
+    city: {
+      name: 'Paris',
+      location: {
+        latitude: 52.35514938496378,
+        longitude: 4.673877537499948,
+        zoom: 8
+      }
+    },
+
+    location: {
+      latitude: 48.869388,
+      longitude: 2.308625,
+      zoom: 8
+    },
+
+    isFavorite: false,
+    isPremium: true,
+    rating: 2,
+    previewImage: '/img/room.jpg',
+    description: 'И так сойдет',
+    bedrooms: 3,
+    goods: [
+      'Heating', 'Cable TV', 'Washing machine', 'шумные соседи', 'поболтать по душам'
+    ],
+    host: {
+      name: 'Angelina',
+      avatarUrl: '/img/avatar-angelina.jpg',
+      isPro: false
+    },
+    images: [
+      '/img/room.jpg', '/img/room.jpg', '/img/room.jpg'
+    ],
+    maxAdults: 10
   }
 ];

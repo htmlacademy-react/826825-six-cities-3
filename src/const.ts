@@ -49,14 +49,6 @@ export const CITIES: OfferCity[] = [
     },
   },
   {
-    name: 'Amsterdam',
-    location: {
-      latitude: 52.374,
-      longitude: 4.88969,
-      zoom: 12,
-    },
-  },
-  {
     name: 'Cologne',
     location: {
       latitude: 50.9375,
@@ -71,6 +63,14 @@ export const CITIES: OfferCity[] = [
       longitude: 4.3517,
       zoom: 12,
     }
+  },
+  {
+    name: 'Amsterdam',
+    location: {
+      latitude: 52.374,
+      longitude: 4.88969,
+      zoom: 12,
+    },
   },
   {
     name: 'Hamburg',

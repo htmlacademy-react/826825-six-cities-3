@@ -1,23 +1,22 @@
-import {useState} from 'react';
+// import {useState} from 'react';
 import {Helmet} from 'react-helmet-async';
 import CardsList from '../../components/cards-list/cards-list';
-import {Offers, Offer} from '../../types/offer';
+import CitiesTabs from '../../components/cities-tabs/cities-tabs';
 import {PAGES} from '../../const';
 import Map from '../../components/map/map';
+import {useAppSelector} from '../../hooks';
 
 type MainScreenProps = {
   placeCount: number;
-  offers: Offers;
 }
-
-const currentCityName:string = 'Amsterdam';
 
 const offersListClassName: string = 'cities__places-list places__list tabs__content';
 
-function MainScreen({placeCount, offers} : MainScreenProps): JSX.Element {
-  const [currentOffer, setCurrentOffer] = useState('');
-  const offersByCity:Offers = offers.filter(({city}) => city.name === currentCityName);
-  const currentCity = offers.find(({city}) => city.name === currentCityName) as Offer;
+function MainScreen({placeCount,} : MainScreenProps): JSX.Element {
+  // const [currentOffer, setCurrentOffer] = useState('');
+  const offersByCity = useAppSelector((state) => state.offersList);
+  const currentCity = useAppSelector((state) => state.currentCity);
+
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -25,42 +24,7 @@ function MainScreen({placeCount, offers} : MainScreenProps): JSX.Element {
       </Helmet>
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
-        <div className="tabs">
-          <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
-          </section>
-        </div>
+        <CitiesTabs/>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
@@ -84,15 +48,15 @@ function MainScreen({placeCount, offers} : MainScreenProps): JSX.Element {
               <CardsList
                 listClassName={offersListClassName}
                 offers={offersByCity}
-                setCurrentOffer={setCurrentOffer}
+                // setCurrentOffer={setCurrentOffer}
                 page={PAGES.main}
               />
             </section>
             <div className="cities__right-section">
               <Map
                 offers={offersByCity}
-                currentCity={currentCity.city}
-                currentOffer={currentOffer}
+                currentCity={currentCity}
+                // currentOffer={currentOffer}
                 mapClassName='cities__map map'
               />
             </div>

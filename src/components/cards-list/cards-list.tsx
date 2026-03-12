@@ -5,17 +5,17 @@ type OffersListProps = {
   listClassName: string;
   offers: Offers;
   page: string;
-  setCurrentOffer?: (value: string) => void;
+  // setCurrentOffer?: (value: string) => void;
 }
 
-function CardsList({listClassName, offers, page, setCurrentOffer} : OffersListProps): JSX.Element {
+function CardsList({listClassName, offers, page} : OffersListProps): JSX.Element {
 
   return (
     <div className={listClassName}>
       {offers.map((offer) => (
         <Card key={offer.id}
           offer={offer}
-          setCurrentOffer={setCurrentOffer}
+          // setCurrentOffer={setCurrentOffer}
           page = {page}
         />
       ))}

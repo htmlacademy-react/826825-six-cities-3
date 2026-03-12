@@ -36,7 +36,6 @@ function App({placeCount, offers, comments} : AppScreenProps): JSX.Element {
               element={
                 <MainScreen
                   placeCount={placeCount}
-                  offers={offers}
                 />
               }
             />
