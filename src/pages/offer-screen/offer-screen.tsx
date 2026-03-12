@@ -1,4 +1,3 @@
-// import {useState} from 'react';
 import {Helmet} from 'react-helmet-async';
 import {useParams} from 'react-router-dom';
 import {Comments} from '../../types/comment';
@@ -21,7 +20,6 @@ type OfferScreenProps = {
 const offersListClassName: string = 'near-places__list places__list';
 
 function OfferScreen({comments, offers, onComment} : OfferScreenProps): JSX.Element {
-  // const [currentOffer, setCurrentOffer] = useState('');
   const params = useParams();
   const nearOffers = offers.slice(0, Setting.maxNearOfferCount);
   const selectedOffer = offers.find((offer)=>offer.id === params.id) as Offer;
@@ -135,7 +133,6 @@ function OfferScreen({comments, offers, onComment} : OfferScreenProps): JSX.Elem
           <Map
             offers={nearOffers}
             currentCity={city}
-            // currentOffer={currentOffer}
             mapClassName='offer__map map'
           />
         </section>
@@ -145,7 +142,6 @@ function OfferScreen({comments, offers, onComment} : OfferScreenProps): JSX.Elem
             <CardsList
               listClassName={offersListClassName}
               offers={nearOffers}
-              // setCurrentOffer={setCurrentOffer}
               page={PAGES.offer}
             />
           </section>

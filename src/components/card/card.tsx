@@ -9,7 +9,6 @@ import {IMAGE_SETTINGS, PAGES} from '../../const';
 type CardListProps = {
   offer: Offer;
   page: string;
-  // setCurrentOffer?: (value: string) => void;
 }
 
 function Card({offer, page}: CardListProps) : JSX.Element {
@@ -18,9 +17,7 @@ function Card({offer, page}: CardListProps) : JSX.Element {
   const dispatch = useAppDispatch();
   return (
     <article
-      // onMouseOver = {() => setCurrentOffer?.(id)}
       onMouseOver = {() => dispatch(setCurrentOffer(id))}
-      // onMouseLeave = {() => setCurrentOffer?.('')}
       onMouseLeave = {() => dispatch(setCurrentOffer(''))}
       className = {`${page}__card place-card`}
     >

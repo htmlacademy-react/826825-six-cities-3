@@ -1,7 +1,6 @@
 import { OfferCity } from './types/offer';
 
 export const Setting = {
-  placeCount: 312,
   maxRating: 5,
   ratingWidthModifier: 20,
   maxNearOfferCount: 3,
@@ -38,6 +37,13 @@ export const PAGES = {
   favorites: 'favorites',
   offer: 'near-places'
 };
+
+export const SORT_TYPES = [
+  'Popular',
+  'Price: low to high',
+  'Price: high to low',
+  'Top rated first'
+];
 
 export const CITIES: OfferCity[] = [
   {

@@ -12,14 +12,13 @@ import {Offers} from '../../types/offer';
 import {Comments} from '../../types/comment';
 
 type AppScreenProps = {
-  placeCount: number;
   offers: Offers;
   comments: Comments;
 }
 
 const statusAuthorisation: AuthorizationStatus = AuthorizationStatus.Auth;
 
-function App({placeCount, offers, comments} : AppScreenProps): JSX.Element {
+function App({offers, comments} : AppScreenProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -35,7 +34,6 @@ function App({placeCount, offers, comments} : AppScreenProps): JSX.Element {
               path={AppRoute.Main}
               element={
                 <MainScreen
-                  placeCount={placeCount}
                 />
               }
             />
