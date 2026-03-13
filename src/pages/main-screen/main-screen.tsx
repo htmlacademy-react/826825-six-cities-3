@@ -3,7 +3,7 @@ import CardsList from '../../components/cards-list/cards-list';
 import CitiesTabs from '../../components/cities-tabs/cities-tabs';
 import Sort from '../../components/sort/sort';
 import {PAGES} from '../../const';
-import { sortOffers } from '../../utils';
+// import { sortOffers } from '../../utils';
 import Map from '../../components/map/map';
 import {useAppSelector} from '../../hooks';
 
@@ -12,7 +12,7 @@ const offersListClassName: string = 'cities__places-list places__list tabs__cont
 function MainScreen(): JSX.Element {
   const offersByCity = useAppSelector((state) => state.offersList);
   const currentCity = useAppSelector((state) => state.currentCity);
-  const currentSortType = useAppSelector((state) => state.sortType);
+  // const currentSortType = useAppSelector((state) => state.sortType);
   const placeCount:number = offersByCity.length;
 
   return (
@@ -31,7 +31,7 @@ function MainScreen(): JSX.Element {
               <Sort/>
               <CardsList
                 listClassName={offersListClassName}
-                offers={sortOffers(offersByCity, currentSortType)}
+                offers={offersByCity}
                 page={PAGES.main}
               />
             </section>

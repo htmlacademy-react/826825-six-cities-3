@@ -38,12 +38,12 @@ export const PAGES = {
   offer: 'near-places'
 };
 
-export const SORT_TYPES:string[] = [
-  'Popular',
-  'Price: low to high',
-  'Price: high to low',
-  'Top rated first'
-];
+export enum SortTypes {
+  POPULAR = 'Popular',
+  PRICE_LOW_TO_HIGH = 'Price: low to high',
+  PRICE_HIGH_TO_LOW = 'Price: high to low',
+  TOP_RATED_FIRST = 'Top rated first',
+}
 
 export const CITIES: OfferCity[] = [
   {

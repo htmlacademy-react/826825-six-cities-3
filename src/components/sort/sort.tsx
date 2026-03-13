@@ -1,4 +1,4 @@
-import {SORT_TYPES} from '../../const';
+import {SortTypes} from '../../const';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import classnames from 'classnames';
@@ -22,8 +22,8 @@ function Sort(): JSX.Element {
         </svg>
       </span>
       <ul className={classnames('places__options places__options--custom', {'places__options--opened': isSortOpened})}>
-        {SORT_TYPES.map((sortType:string) => (
-          <li key={sortType}
+        {Object.entries(SortTypes).map(([key, sortType]) => (
+          <li key={key}
             className={classnames('places__option', {'places__option--active' : currentSortType === sortType})}
             tabIndex={0}
             onClick={() => {
