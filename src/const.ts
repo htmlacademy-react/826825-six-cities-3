@@ -6,6 +6,8 @@ export const Setting = {
   maxNearOfferCount: 3,
 };
 
+export const TIMEOUT_SHOW_ERROR = 2000;
+
 export const IMAGE_SETTINGS = {
   width: 260,
   height: 200,
@@ -18,6 +20,12 @@ export enum AppRoute {
   Favorites = '/favorites',
   Offer = '/offer/:id',
   Main = '/'
+}
+
+export enum APIRoute {
+  Offers = '/offers',
+  Login = '/login',
+  Logout = '/logout',
 }
 
 export enum AuthorizationStatus {
