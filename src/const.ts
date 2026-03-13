@@ -38,7 +38,7 @@ export const PAGES = {
   offer: 'near-places'
 };
 
-export const SORT_TYPES = [
+export const SORT_TYPES:string[] = [
   'Popular',
   'Price: low to high',
   'Price: high to low',

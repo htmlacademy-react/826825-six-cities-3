@@ -33,8 +33,7 @@ function App({offers, comments} : AppScreenProps): JSX.Element {
             <Route
               path={AppRoute.Main}
               element={
-                <MainScreen
-                />
+                <MainScreen/>
               }
             />
             <Route

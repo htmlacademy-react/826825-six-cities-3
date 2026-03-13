@@ -14,7 +14,7 @@ function MainScreen(): JSX.Element {
   const currentCity = useAppSelector((state) => state.currentCity);
   const currentSortType = useAppSelector((state) => state.sortType);
   const placeCount:number = offersByCity.length;
-  
+
   return (
     <div className="page page--gray page--main">
       <Helmet>
