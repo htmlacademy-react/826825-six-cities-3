@@ -27,7 +27,7 @@ const reducer = createReducer(initialState, (builder) => {
     })
 
     .addCase(changeSortType, (state, action) => {
-      state.sortType = action.payload;
+      state.sortType = action.payload as SortTypes;
 
       switch (action.payload) {
         case SortTypes.POPULAR:
