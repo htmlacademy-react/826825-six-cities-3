@@ -6,7 +6,7 @@ export const Setting = {
   maxNearOfferCount: 3,
 };
 
-export const TIMEOUT_SHOW_ERROR = 2000;
+export const TIMEOUT_SHOW_ERROR:number = 2000;
 
 export const IMAGE_SETTINGS = {
   width: 260,

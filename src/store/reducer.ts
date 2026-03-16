@@ -1,5 +1,13 @@
 import {createReducer } from '@reduxjs/toolkit';
-import {changeCity, fillOffersList, setCurrentOffer, changeSortType, loadOffers, requireAuthorization, setError} from './action';
+import {
+  changeCity,
+  fillOffersList,
+  setCurrentOffer,
+  changeSortType,
+  loadOffers,
+  requireAuthorization,
+  setError,
+  setOffersDataLoadingStatus} from './action';
 import {CITIES, SortTypes, AuthorizationStatus} from '../const';
 import { setOffers } from '../utils';
 import { Offers, OfferCity } from '../types/offer';
@@ -11,6 +19,7 @@ type InitalState = {
   mapCurrentOffer: string;
   authorizationStatus: AuthorizationStatus;
   error: string | null;
+  isOffersDataLoading: boolean;
 }
 
 const initialState: InitalState = {
@@ -20,6 +29,7 @@ const initialState: InitalState = {
   mapCurrentOffer: '',
   authorizationStatus: AuthorizationStatus.Unknown,
   error: null,
+  isOffersDataLoading: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -35,6 +45,7 @@ const reducer = createReducer(initialState, (builder) => {
 
     .addCase(fillOffersList, (state, action) => {
       state.offersList = setOffers(action.payload);
+      // state.offersList = offers.filter(({city}) => city.name === cityName
     })
 
     .addCase(setCurrentOffer, (state, action) => {
@@ -61,6 +72,10 @@ const reducer = createReducer(initialState, (builder) => {
           state.offersList = setOffers(state.currentCity.name);
       }
 
+    })
+
+    .addCase(setOffersDataLoadingStatus, (state, action) => {
+      state.isOffersDataLoading = action.payload;
     })
 
     .addCase(requireAuthorization, (state, action) => {
