@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import { CITIES } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fillOffersList, changeCity } from '../../store/action';
+import { changeCity } from '../../store/action';
 
 
 function CitiesTabs ():JSX.Element {
@@ -18,7 +18,6 @@ function CitiesTabs ():JSX.Element {
                 onClick={(evt) => {
                   evt.preventDefault();
                   dispatch(changeCity(city));
-                  dispatch(fillOffersList(city.name));
                 }}
               >
                 <span>{city.name}</span>

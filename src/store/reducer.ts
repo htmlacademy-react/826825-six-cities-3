@@ -1,34 +1,35 @@
 import {createReducer } from '@reduxjs/toolkit';
 import {
   changeCity,
-  fillOffersList,
   setCurrentOffer,
   changeSortType,
   loadOffers,
   requireAuthorization,
-  setError,
+  // setError,
+  getOffer,
   setOffersDataLoadingStatus} from './action';
-import {CITIES, SortTypes, AuthorizationStatus} from '../const';
-import { setOffers } from '../utils';
-import { Offers, OfferCity } from '../types/offer';
+import {SortTypes, AuthorizationStatus, DEFAUL_CITY} from '../const';
+import { Offers, OfferCity, Offer } from '../types/offer';
 
 type InitalState = {
   currentCity: OfferCity;
   offersList: Offers;
+  offersByCity: Offers;
+  currentOffer: Offer;
   sortType: SortTypes;
   mapCurrentOffer: string;
   authorizationStatus: AuthorizationStatus;
-  error: string | null;
   isOffersDataLoading: boolean;
 }
 
 const initialState: InitalState = {
-  currentCity: CITIES[0],
+  currentCity: DEFAUL_CITY,
   offersList: [],
+  offersByCity: [],
+  currentOffer: {} as Offer,
   sortType: SortTypes.POPULAR,
   mapCurrentOffer: '',
   authorizationStatus: AuthorizationStatus.Unknown,
-  error: null,
   isOffersDataLoading: false,
 };
 
@@ -36,16 +37,17 @@ const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(loadOffers, (state, action) => {
       state.offersList = action.payload;
+      state.offersByCity = action.payload.filter(({city}) => city.name === state.currentCity.name);
     })
 
     .addCase(changeCity, (state, action) => {
       state.currentCity = action.payload;
       state.sortType = SortTypes.POPULAR;
+      state.offersByCity = state.offersList.filter(({city}) => city.name === action.payload.name);
     })
 
-    .addCase(fillOffersList, (state, action) => {
-      state.offersList = setOffers(action.payload);
-      // state.offersList = offers.filter(({city}) => city.name === cityName
+    .addCase(getOffer, (state, action) => {
+      state.currentOffer = action.payload;
     })
 
     .addCase(setCurrentOffer, (state, action) => {
@@ -57,19 +59,19 @@ const reducer = createReducer(initialState, (builder) => {
 
       switch (action.payload) {
         case SortTypes.POPULAR:
-          state.offersList = setOffers(state.currentCity.name);
+          state.offersByCity = state.offersList.filter(({city}) => city.name === state.currentCity.name);
           return;
         case SortTypes.PRICE_LOW_TO_HIGH:
-          state.offersList.sort((first, second) => first.price - second.price);
+          state.offersByCity.sort((first, second) => first.price - second.price);
           return;
         case SortTypes.PRICE_HIGH_TO_LOW:
-          state.offersList.sort((first, second) => second.price - first.price);
+          state.offersByCity.sort((first, second) => second.price - first.price);
           return;
         case SortTypes.TOP_RATED_FIRST:
-          state.offersList.sort((first, second) => second.rating - first.rating);
+          state.offersByCity.sort((first, second) => second.rating - first.rating);
           return;
         default:
-          state.offersList = setOffers(state.currentCity.name);
+          state.offersByCity = state.offersList.filter(({city}) => city.name === state.currentCity.name);
       }
 
     })
@@ -80,11 +82,11 @@ const reducer = createReducer(initialState, (builder) => {
 
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
-    })
-
-    .addCase(setError, (state, action) => {
-      state.error = action.payload;
     });
+
+    // .addCase(setError, (state, action) => {
+    //   state.error = action.payload;
+    // });
 
 });
 

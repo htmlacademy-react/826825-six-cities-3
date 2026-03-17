@@ -1,8 +1,10 @@
 import {Helmet} from 'react-helmet-async';
 import {useParams} from 'react-router-dom';
+import {useEffect} from 'react';
 import {Comments} from '../../types/comment';
+// import {store} from '../../store';
 import {Offers} from '../../types/offer';
-import {Offer} from '../../types/offer';
+// import {Offer} from '../../types/offer';
 import {Review} from '../../types/comment';
 import {PAGES, Setting} from '../../const';
 import CardsList from '../../components/cards-list/cards-list';
@@ -10,6 +12,8 @@ import Rating from '../../components/rating/rating';
 import Map from '../../components/map/map';
 import OfferReviewsList from '../../components/offer/offer-reviews-list';
 import OfferFormReview from '../../components/offer/offer-form-review';
+import {fetchOfferAction} from '../../store/api-actions';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 
 type OfferScreenProps = {
   comments: Comments;
@@ -20,9 +24,25 @@ type OfferScreenProps = {
 const offersListClassName: string = 'near-places__list places__list';
 
 function OfferScreen({comments, offers, onComment} : OfferScreenProps): JSX.Element {
-  const params = useParams();
+  const { id } = useParams();
+  const dispatch = useAppDispatch();
   const nearOffers = offers.slice(0, Setting.maxNearOfferCount);
-  const selectedOffer = offers.find((offer)=>offer.id === params.id) as Offer;
+  const selectedOffer = useAppSelector((state) => state.currentOffer);
+  if (id !== selectedOffer?.id) {
+    dispatch(fetchOfferAction(id));
+  }
+  
+  // useEffect(() => {
+  //   if (id) {
+  //     dispatch(fetchOfferAction(id));
+  //     // dispatch(getReviews(id));
+  //   }
+  // }, [id, dispatch]);
+
+  
+
+  console.log(selectedOffer);
+  // const selectedOffer = offers.find((offer)=>offer.id === params.id) as Offer;
   const {images, isPremium, title, maxAdults, bedrooms, type, rating, price, goods, host, description, city} = selectedOffer;
 
   return (

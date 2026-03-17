@@ -10,9 +10,8 @@ import {useAppSelector} from '../../hooks';
 const offersListClassName: string = 'cities__places-list places__list tabs__content';
 
 function MainScreen(): JSX.Element {
-  const offersByCity = useAppSelector((state) => state.offersList);
+  const offersByCity = useAppSelector((state) => state.offersByCity);
   const currentCity = useAppSelector((state) => state.currentCity);
-  // const currentSortType = useAppSelector((state) => state.sortType);
   const placeCount:number = offersByCity.length;
 
   return (

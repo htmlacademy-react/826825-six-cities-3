@@ -1,23 +1,31 @@
 import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, State} from '../types/state.js';
-import { Offers } from '../types/offer';
-import {loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, redirectToRoute} from './action';
+import { Offers, Offer } from '../types/offer';
+import {
+  loadOffers,
+  requireAuthorization,
+  // setError,
+  setOffersDataLoadingStatus,
+  redirectToRoute,
+  getOffer} from './action';
 import {saveToken, dropToken} from '../services/token';
-import {APIRoute, AuthorizationStatus, AppRoute, TIMEOUT_SHOW_ERROR} from '../const';
+import {APIRoute,
+  AuthorizationStatus,
+  AppRoute} from '../const';
 import {AuthData} from '../types/auth-data';
 import {UserData} from '../types/user-data';
-import {store} from './';
+// import {store} from './';
 
-export const clearErrorAction = createAsyncThunk(
-  'main/clearError',
-  () => {
-    setTimeout(
-      () => store.dispatch(setError(null)),
-      TIMEOUT_SHOW_ERROR,
-    );
-  },
-);
+// export const clearErrorAction = createAsyncThunk(
+//   'main/clearError',
+//   () => {
+//     setTimeout(
+//       () => store.dispatch(setError(null)),
+//       TIMEOUT_SHOW_ERROR,
+//     );
+//   },
+// );
 
 export const fetchOffersAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -30,6 +38,24 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
     const {data} = await api.get<Offers>(APIRoute.Offers);
     dispatch(setOffersDataLoadingStatus(false));
     dispatch(loadOffers(data));
+  },
+);
+
+export const fetchOfferAction = createAsyncThunk<void, undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchOffer',
+  async (id, {dispatch, extra: api}) => {
+    if (!id) {
+      return;
+    }
+    console.log(id);
+    dispatch(setOffersDataLoadingStatus(true));
+    const {data} = await api.get<Offer>(`${APIRoute.Offers}/${id}`);
+    dispatch(setOffersDataLoadingStatus(false));
+    dispatch(getOffer(data));
   },
 );
 
