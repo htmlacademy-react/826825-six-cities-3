@@ -5,27 +5,18 @@ import { Offers, Offer } from '../types/offer';
 import {
   loadOffers,
   requireAuthorization,
-  // setError,
   setOffersDataLoadingStatus,
   redirectToRoute,
-  getOffer} from './action';
+  getOffer,
+  getReviews,
+  getNearByOffer,
+  loadFavoriteOffers} from './action';
 import {saveToken, dropToken} from '../services/token';
 import {APIRoute,
   AuthorizationStatus,
   AppRoute} from '../const';
 import {AuthData} from '../types/auth-data';
 import {UserData} from '../types/user-data';
-// import {store} from './';
-
-// export const clearErrorAction = createAsyncThunk(
-//   'main/clearError',
-//   () => {
-//     setTimeout(
-//       () => store.dispatch(setError(null)),
-//       TIMEOUT_SHOW_ERROR,
-//     );
-//   },
-// );
 
 export const fetchOffersAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -41,21 +32,56 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
   },
 );
 
-export const fetchOfferAction = createAsyncThunk<void, undefined, {
+export const fetchFavoriteOffersAction = createAsyncThunk<void, undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchFavoriteOffers',
+  async (_arg, {dispatch, extra: api}) => {
+    dispatch(setOffersDataLoadingStatus(true));
+    const {data} = await api.get<Offers>(APIRoute.Favorite);
+    dispatch(setOffersDataLoadingStatus(false));
+    dispatch(loadFavoriteOffers(data));
+  },
+);
+
+export const fetchOfferAction = createAsyncThunk<void, string, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetchOffer',
   async (id, {dispatch, extra: api}) => {
-    if (!id) {
-      return;
-    }
-    console.log(id);
+
     dispatch(setOffersDataLoadingStatus(true));
     const {data} = await api.get<Offer>(`${APIRoute.Offers}/${id}`);
     dispatch(setOffersDataLoadingStatus(false));
     dispatch(getOffer(data));
+  },
+);
+
+export const fetchReviewsAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchReviews',
+  async (id, {dispatch, extra: api}) => {
+    const {data} = await api.get<Offer>(`${APIRoute.Comments}/${id}`);
+    dispatch(getReviews(data));
+  },
+);
+
+export const fetchNearByOfferAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchNearByOffer',
+  async (id, {dispatch, extra: api}) => {
+    const {data} = await api.get<Offer>(`${APIRoute.Offers}/${id}/nearby`);
+    dispatch(getNearByOffer(data));
   },
 );
 

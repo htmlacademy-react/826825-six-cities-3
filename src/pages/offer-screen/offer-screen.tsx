@@ -1,18 +1,18 @@
+import {useEffect} from 'react';
 import {Helmet} from 'react-helmet-async';
 import {useParams} from 'react-router-dom';
-import {useEffect} from 'react';
 import {Comments} from '../../types/comment';
-// import {store} from '../../store';
 import {Offers} from '../../types/offer';
-// import {Offer} from '../../types/offer';
 import {Review} from '../../types/comment';
-import {PAGES, Setting} from '../../const';
+import {PAGES} from '../../const';
 import CardsList from '../../components/cards-list/cards-list';
 import Rating from '../../components/rating/rating';
 import Map from '../../components/map/map';
 import OfferReviewsList from '../../components/offer/offer-reviews-list';
 import OfferFormReview from '../../components/offer/offer-form-review';
-import {fetchOfferAction} from '../../store/api-actions';
+import LoadingScreen from '../loading-screen/loading-screen';
+import NotFoundScreen from '../not-found-screen/not-found-screen';
+import {fetchOfferAction, fetchReviewsAction, fetchNearByOfferAction} from '../../store/api-actions';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 
 type OfferScreenProps = {
@@ -23,26 +23,33 @@ type OfferScreenProps = {
 
 const offersListClassName: string = 'near-places__list places__list';
 
-function OfferScreen({comments, offers, onComment} : OfferScreenProps): JSX.Element {
+function OfferScreen({onComment} : OfferScreenProps): JSX.Element {
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  const nearOffers = offers.slice(0, Setting.maxNearOfferCount);
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
   const selectedOffer = useAppSelector((state) => state.currentOffer);
-  if (id !== selectedOffer?.id) {
-    dispatch(fetchOfferAction(id));
+  const comments = useAppSelector((state) => state.reviews);
+  const nearOffers = useAppSelector((state) => state.nearByOffer);
+  
+  useEffect(() => {
+    
+    if (id !== selectedOffer?.id) {
+      dispatch(fetchOfferAction(id));
+      dispatch(fetchReviewsAction(id));
+      dispatch(fetchNearByOfferAction(id));
+    }
+  },[id]);
+
+  if (!selectedOffer.id) {
+    return <NotFoundScreen />;
   }
-  
-  // useEffect(() => {
-  //   if (id) {
-  //     dispatch(fetchOfferAction(id));
-  //     // dispatch(getReviews(id));
-  //   }
-  // }, [id, dispatch]);
 
-  
+  if (isOffersDataLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
-  console.log(selectedOffer);
-  // const selectedOffer = offers.find((offer)=>offer.id === params.id) as Offer;
   const {images, isPremium, title, maxAdults, bedrooms, type, rating, price, goods, host, description, city} = selectedOffer;
 
   return (

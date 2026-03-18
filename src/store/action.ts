@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { OfferCity, Offers, Offer } from '../types/offer';
+import {Comments} from '../types/comment';
 import {AppRoute, AuthorizationStatus} from '../const';
 
 export const changeCity = createAction<OfferCity>('main/changeCity');
@@ -17,3 +18,9 @@ export const requireAuthorization = createAction<AuthorizationStatus>('user/requ
 export const redirectToRoute = createAction<AppRoute>('main/redirectToRoute');
 
 export const getOffer = createAction<Offer>('offer/getOffer');
+
+export const getReviews = createAction<Comments>('offer/getReviews');
+
+export const getNearByOffer = createAction<Offer>('offer/getNearByOffer');
+
+export const loadFavoriteOffers = createAction<Offer>('offer/loadFavoriteOffers');

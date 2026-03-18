@@ -5,17 +5,23 @@ import {
   changeSortType,
   loadOffers,
   requireAuthorization,
-  // setError,
+  getReviews,
   getOffer,
-  setOffersDataLoadingStatus} from './action';
+  setOffersDataLoadingStatus,
+  getNearByOffer,
+  loadFavoriteOffers} from './action';
 import {SortTypes, AuthorizationStatus, DEFAUL_CITY} from '../const';
 import { Offers, OfferCity, Offer } from '../types/offer';
+import {Comments} from '../types/comment';
 
 type InitalState = {
   currentCity: OfferCity;
   offersList: Offers;
+  favoriteOffers: Offers;
+  nearByOffer: Offers;
   offersByCity: Offers;
   currentOffer: Offer;
+  reviews: Comments;
   sortType: SortTypes;
   mapCurrentOffer: string;
   authorizationStatus: AuthorizationStatus;
@@ -25,8 +31,11 @@ type InitalState = {
 const initialState: InitalState = {
   currentCity: DEFAUL_CITY,
   offersList: [],
+  favoriteOffers: [],
+  nearByOffer: [],
   offersByCity: [],
   currentOffer: {} as Offer,
+  reviews: [],
   sortType: SortTypes.POPULAR,
   mapCurrentOffer: '',
   authorizationStatus: AuthorizationStatus.Unknown,
@@ -40,6 +49,11 @@ const reducer = createReducer(initialState, (builder) => {
       state.offersByCity = action.payload.filter(({city}) => city.name === state.currentCity.name);
     })
 
+    .addCase(loadFavoriteOffers, (state, action) => {
+      state.favoriteOffers = action.payload;
+      // state.offersByCity = action.payload.filter(({city}) => city.name === state.currentCity.name);
+    })
+
     .addCase(changeCity, (state, action) => {
       state.currentCity = action.payload;
       state.sortType = SortTypes.POPULAR;
@@ -48,6 +62,10 @@ const reducer = createReducer(initialState, (builder) => {
 
     .addCase(getOffer, (state, action) => {
       state.currentOffer = action.payload;
+    })
+
+    .addCase(getNearByOffer, (state, action) => {
+      state.nearByOffer = action.payload;
     })
 
     .addCase(setCurrentOffer, (state, action) => {
@@ -82,11 +100,11 @@ const reducer = createReducer(initialState, (builder) => {
 
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
-    });
+    })
 
-    // .addCase(setError, (state, action) => {
-    //   state.error = action.payload;
-    // });
+    .addCase(getReviews, (state, action) => {
+      state.reviews = action.payload;
+    });
 
 });
 

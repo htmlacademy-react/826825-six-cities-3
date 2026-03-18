@@ -26,7 +26,7 @@ function Card({offer, page}: CardListProps) : JSX.Element {
         <span>Premium</span>
       </div>}
       <div className={`${page}__image-wrapper place-card__image-wrapper`}>
-        <Link to={{pathname: `/offer/${id}`}}>
+        <Link to={{pathname: `/offer/${id}`}} state={offer}>
           <img
             className="place-card__image"
             src={previewImage}
