@@ -2,8 +2,9 @@ import {Offer} from '../../types/offer';
 import classnames from 'classnames';
 import {Link} from 'react-router-dom';
 import Rating from '../rating/rating';
-import { useAppDispatch } from '../../hooks/index';
+import { useAppDispatch, useAppSelector } from '../../hooks/index';
 import { setCurrentOffer } from '../../store/action';
+import {favoriteChangeAction} from '../../store/api-actions';
 import {IMAGE_SETTINGS, PAGES} from '../../const';
 
 type CardListProps = {
@@ -15,6 +16,16 @@ function Card({offer, page}: CardListProps) : JSX.Element {
   const {previewImage, price, isFavorite, isPremium, type, title, id, rating} = offer;
   const bookMarks = isFavorite ? 'In bookmarks' : 'To bookmarks';
   const dispatch = useAppDispatch();
+
+  const handleSubmit = () => {
+    dispatch(favoriteChangeAction({
+      id: id,
+      favoriteStatus: !isFavorite ? '1' : '0',
+    }));
+    // dispatch(fetchOffersAction());
+  }
+  
+
   return (
     <article
       onMouseOver = {() => dispatch(setCurrentOffer(id))}
@@ -43,6 +54,7 @@ function Card({offer, page}: CardListProps) : JSX.Element {
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button
+            onClick={handleSubmit}
             className={classnames('place-card__bookmark-button', 'button', {'place-card__bookmark-button--active': isFavorite})}
             type="button"
           >

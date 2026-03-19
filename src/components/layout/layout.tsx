@@ -2,7 +2,6 @@ import {Outlet} from 'react-router-dom';
 import Logo from '../../components/logo/logo';
 import HeaderNavigate from '../navigate/heder-navigate';
 import {AuthorizationStatus} from '../../const';
-
 type LayoutProps = {
   authorizationStatus: AuthorizationStatus;
 }

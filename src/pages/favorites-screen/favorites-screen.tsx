@@ -4,10 +4,6 @@ import {Offers} from '../../types/offer';
 import {PAGES} from '../../const';
 import {useAppSelector} from '../../hooks';
 
-// type FavoritesScreenProps = {
-//   offers: Offers;
-// }
-
 const offersListClassName: string = 'favorites__places';
 
 function FavoritesScreen() : JSX.Element {

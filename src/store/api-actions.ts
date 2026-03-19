@@ -85,6 +85,19 @@ export const fetchNearByOfferAction = createAsyncThunk<void, string, {
   },
 );
 
+export const favoriteChangeAction = createAsyncThunk<void, AuthData, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/favoriteChange',
+  async ({id, favoriteStatus}, {dispatch, extra: api}) => {
+    await api.post<UserData>(`${APIRoute.Favorite}/${id}/${favoriteStatus}`);
+    dispatch(fetchOffersAction());
+    dispatch(fetchFavoriteOffersAction());
+  },
+);
+
 export const checkAuthAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
   state: State;
@@ -100,6 +113,7 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
     }
   },
 );
+
 
 export const loginAction = createAsyncThunk<void, AuthData, {
   dispatch: AppDispatch;
