@@ -1,7 +1,7 @@
 import {createReducer } from '@reduxjs/toolkit';
 import {
   changeCity,
-  setCurrentOffer,
+  setMapCurrentOffer,
   changeSortType,
   loadOffers,
   requireAuthorization,
@@ -68,7 +68,7 @@ const reducer = createReducer(initialState, (builder) => {
       state.nearByOffer = action.payload;
     })
 
-    .addCase(setCurrentOffer, (state, action) => {
+    .addCase(setMapCurrentOffer, (state, action) => {
       state.mapCurrentOffer = action.payload;
     })
 

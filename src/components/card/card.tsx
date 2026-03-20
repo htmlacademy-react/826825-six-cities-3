@@ -1,10 +1,11 @@
 import {Offer} from '../../types/offer';
+import {useState} from 'react';
 import classnames from 'classnames';
 import {Link} from 'react-router-dom';
 import Rating from '../rating/rating';
 import { useAppDispatch, useAppSelector } from '../../hooks/index';
-import { setCurrentOffer } from '../../store/action';
-import {favoriteChangeAction} from '../../store/api-actions';
+import { setMapCurrentOffer, getOffer } from '../../store/action';
+import {favoriteChangeAction, fetchFavoriteOffersAction} from '../../store/api-actions';
 import {IMAGE_SETTINGS, PAGES} from '../../const';
 
 type CardListProps = {
@@ -14,22 +15,30 @@ type CardListProps = {
 
 function Card({offer, page}: CardListProps) : JSX.Element {
   const {previewImage, price, isFavorite, isPremium, type, title, id, rating} = offer;
-  const bookMarks = isFavorite ? 'In bookmarks' : 'To bookmarks';
+  const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
+  const currentOffer = useAppSelector((state) => state.currentOffer);
+  // const favorite = currentOffer.id === id ? currentOffer.isFavorite : isFavorite;
+  const bookMarks = isFavoriteStatus ? 'In bookmarks' : 'To bookmarks';
   const dispatch = useAppDispatch();
+  if (currentOffer.id === id) {
+    console.log(currentOffer);
+    console.log(isFavorite);
+  }
 
-  const handleSubmit = () => {
+  const handleBookmark = () => {
+    // dispatch(getOffer({}))
+    setFavoriteStatus(!isFavoriteStatus);
     dispatch(favoriteChangeAction({
       id: id,
-      favoriteStatus: !isFavorite ? '1' : '0',
+      favoriteStatus: !isFavoriteStatus ? '1' : '0',
     }));
-    // dispatch(fetchOffersAction());
+    // dispatch(fetchFavoriteOffersAction());
   }
-  
-
+ 
   return (
     <article
-      onMouseOver = {() => dispatch(setCurrentOffer(id))}
-      onMouseLeave = {() => dispatch(setCurrentOffer(''))}
+      onMouseOver = {() => dispatch(setMapCurrentOffer(id))}
+      onMouseLeave = {() => dispatch(setMapCurrentOffer(''))}
       className = {`${page}__card place-card`}
     >
       {isPremium &&
@@ -54,8 +63,8 @@ function Card({offer, page}: CardListProps) : JSX.Element {
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button
-            onClick={handleSubmit}
-            className={classnames('place-card__bookmark-button', 'button', {'place-card__bookmark-button--active': isFavorite})}
+            onClick={handleBookmark}
+            className={classnames('place-card__bookmark-button', 'button', {'place-card__bookmark-button--active': isFavoriteStatus})}
             type="button"
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">

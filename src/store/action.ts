@@ -7,7 +7,7 @@ export const changeCity = createAction<OfferCity>('main/changeCity');
 
 export const changeSortType = createAction<string>('main/changeSortType');
 
-export const setCurrentOffer = createAction<string>('map/setCurrentOffer');
+export const setMapCurrentOffer = createAction<string>('map/setCurrentOffer');
 
 export const loadOffers = createAction<Offers>('data/loadOffers');
 

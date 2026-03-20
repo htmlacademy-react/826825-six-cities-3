@@ -37,7 +37,7 @@ function HeaderNavigate(props: HeaderNavigateProps): JSX.Element {
               to={AppRoute.Login}
               className="header__nav-link"
             >
-              <div class="header__avatar-wrapper user__avatar-wrapper"></div>
+              <div className="header__avatar-wrapper user__avatar-wrapper"></div>
               <span className="header__login">Sign in</span>
             </Link>
           </li>
