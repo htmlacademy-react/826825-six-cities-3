@@ -9,10 +9,12 @@ import {
   getOffer,
   setOffersDataLoadingStatus,
   getNearByOffer,
-  loadFavoriteOffers} from './action';
+  loadFavoriteOffers,
+  replaceOffer} from './action';
 import {SortTypes, AuthorizationStatus, DEFAUL_CITY} from '../const';
 import { Offers, OfferCity, Offer } from '../types/offer';
 import {Comments} from '../types/comment';
+import {replaceOffers} from '../utils';
 
 type InitalState = {
   currentCity: OfferCity;
@@ -104,6 +106,10 @@ const reducer = createReducer(initialState, (builder) => {
 
     .addCase(getReviews, (state, action) => {
       state.reviews = action.payload;
+    })
+
+    .addCase(replaceOffer, (state, action) => {
+      state.offersList = replaceOffers(state.offersList, action.payload);
     });
 
 });

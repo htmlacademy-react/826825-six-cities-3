@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import {Link} from 'react-router-dom';
 import Rating from '../rating/rating';
 import { useAppDispatch, useAppSelector } from '../../hooks/index';
-import { setMapCurrentOffer, getOffer } from '../../store/action';
+import { setMapCurrentOffer, getOffer, replaceOffer } from '../../store/action';
 import {favoriteChangeAction, fetchFavoriteOffersAction} from '../../store/api-actions';
 import {IMAGE_SETTINGS, PAGES} from '../../const';
 
@@ -16,14 +16,14 @@ type CardListProps = {
 function Card({offer, page}: CardListProps) : JSX.Element {
   const {previewImage, price, isFavorite, isPremium, type, title, id, rating} = offer;
   const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
-  const currentOffer = useAppSelector((state) => state.currentOffer);
+  // const currentOffer = useAppSelector((state) => state.currentOffer);
   // const favorite = currentOffer.id === id ? currentOffer.isFavorite : isFavorite;
   const bookMarks = isFavoriteStatus ? 'In bookmarks' : 'To bookmarks';
   const dispatch = useAppDispatch();
-  if (currentOffer.id === id) {
-    console.log(currentOffer);
-    console.log(isFavorite);
-  }
+  // if (currentOffer.id === id) {
+  //   console.log(currentOffer);
+  //   console.log(isFavorite);
+  // }
 
   const handleBookmark = () => {
     // dispatch(getOffer({}))
@@ -32,6 +32,7 @@ function Card({offer, page}: CardListProps) : JSX.Element {
       id: id,
       favoriteStatus: !isFavoriteStatus ? '1' : '0',
     }));
+    dispatch(replaceOffer(id));
     // dispatch(fetchFavoriteOffersAction());
   }
  

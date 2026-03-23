@@ -24,3 +24,5 @@ export const getReviews = createAction<Comments>('offer/getReviews');
 export const getNearByOffer = createAction<Offer>('offer/getNearByOffer');
 
 export const loadFavoriteOffers = createAction<Offer>('offer/loadFavoriteOffers');
+
+export const replaceOffer = createAction<string>('offer/replaceOffer');

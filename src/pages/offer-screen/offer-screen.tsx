@@ -1,5 +1,6 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {Helmet} from 'react-helmet-async';
+import classnames from 'classnames';
 import {useParams} from 'react-router-dom';
 import {Comments} from '../../types/comment';
 import {Offers} from '../../types/offer';
@@ -12,7 +13,7 @@ import OfferReviewsList from '../../components/offer/offer-reviews-list';
 import OfferFormReview from '../../components/offer/offer-form-review';
 import LoadingScreen from '../loading-screen/loading-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
-import {fetchOfferAction, fetchReviewsAction, fetchNearByOfferAction} from '../../store/api-actions';
+import {fetchOfferAction, fetchReviewsAction, fetchNearByOfferAction, favoriteChangeAction} from '../../store/api-actions';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 
 type OfferScreenProps = {
@@ -28,8 +29,13 @@ function OfferScreen({onComment} : OfferScreenProps): JSX.Element {
   const dispatch = useAppDispatch();
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
   const selectedOffer = useAppSelector((state) => state.currentOffer);
+  const {images, isPremium, isFavorite, title, maxAdults, bedrooms, type, rating, price, goods, host, description, city} = selectedOffer;
+  
+  const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
   const comments = useAppSelector((state) => state.reviews);
   const nearOffers = useAppSelector((state) => state.nearByOffer);
+
+  const bookMarks = isFavoriteStatus ? 'In bookmarks' : 'To bookmarks';
   
   useEffect(() => {
     
@@ -40,7 +46,7 @@ function OfferScreen({onComment} : OfferScreenProps): JSX.Element {
     }
   },[id]);
 
-  if (!selectedOffer.id) {
+  if (id !== selectedOffer?.id) {
     return <NotFoundScreen />;
   }
 
@@ -49,8 +55,16 @@ function OfferScreen({onComment} : OfferScreenProps): JSX.Element {
       <LoadingScreen />
     );
   }
-
-  const {images, isPremium, title, maxAdults, bedrooms, type, rating, price, goods, host, description, city} = selectedOffer;
+  
+  const handleBookmark = () => {
+    // dispatch(getOffer({}))
+    setFavoriteStatus(!isFavoriteStatus);
+    dispatch(favoriteChangeAction({
+      id: id,
+      favoriteStatus: !isFavoriteStatus ? '1' : '0',
+    }));
+    // dispatch(fetchFavoriteOffersAction());
+  }
 
   return (
     <div className="page">
@@ -84,11 +98,14 @@ function OfferScreen({onComment} : OfferScreenProps): JSX.Element {
                 <h1 className="offer__name">
                   {title}
                 </h1>
-                <button className="offer__bookmark-button button" type="button">
+                <button
+                  onClick={handleBookmark}
+                  className = {classnames('offer__bookmark-button', 'button', {'offer__bookmark-button--active': isFavoriteStatus})}
+                  type="button">
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
-                  <span className="visually-hidden">To bookmarks</span>
+                  <span className="visually-hidden">{bookMarks}</span>
                 </button>
               </div>
               <div className="offer__rating rating">
