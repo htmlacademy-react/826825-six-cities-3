@@ -49,6 +49,7 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(loadOffers, (state, action) => {
       state.offersList = action.payload;
       state.offersByCity = action.payload.filter(({city}) => city.name === state.currentCity.name);
+      // state.offersList = action.payload.filter(({city}) => city.name === state.currentCity.name);
     })
 
     .addCase(loadFavoriteOffers, (state, action) => {

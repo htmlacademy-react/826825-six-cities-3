@@ -5,5 +5,6 @@ export const setOffers = (cityName:string) => offers.filter(({city}) => city.nam
 
 export const replaceOffers = (offers: Offers, offerId: string) => {
     const offerIndex = offers.findIndex((offer) => offer.id === offerId);
-    return offers[offerIndex].isFavorite = !offers[offerIndex].isFavorite;
+    offers[offerIndex].isFavorite = !offers[offerIndex].isFavorite;
+    return offers;
 }

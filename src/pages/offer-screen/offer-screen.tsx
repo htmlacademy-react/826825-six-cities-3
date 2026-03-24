@@ -1,11 +1,11 @@
 import {useEffect, useState} from 'react';
 import {Helmet} from 'react-helmet-async';
 import classnames from 'classnames';
-import {useParams} from 'react-router-dom';
+import {useParams, Navigate} from 'react-router-dom';
 import {Comments} from '../../types/comment';
 import {Offers} from '../../types/offer';
 import {Review} from '../../types/comment';
-import {PAGES} from '../../const';
+import {PAGES, AuthorizationStatus, AppRoute} from '../../const';
 import CardsList from '../../components/cards-list/cards-list';
 import Rating from '../../components/rating/rating';
 import Map from '../../components/map/map';
@@ -32,6 +32,8 @@ function OfferScreen({onComment} : OfferScreenProps): JSX.Element {
   const {images, isPremium, isFavorite, title, maxAdults, bedrooms, type, rating, price, goods, host, description, city} = selectedOffer;
   
   const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
+  const loggedStatus = useAppSelector((state) => state.authorizationStatus);
   const comments = useAppSelector((state) => state.reviews);
   const nearOffers = useAppSelector((state) => state.nearByOffer);
 
@@ -57,6 +59,11 @@ function OfferScreen({onComment} : OfferScreenProps): JSX.Element {
   }
   
   const handleBookmark = () => {
+    if (loggedStatus !== AuthorizationStatus.Auth) {
+      setRedirectToLogin(true);
+
+      return;
+    }
     // dispatch(getOffer({}))
     setFavoriteStatus(!isFavoriteStatus);
     dispatch(favoriteChangeAction({
@@ -64,6 +71,10 @@ function OfferScreen({onComment} : OfferScreenProps): JSX.Element {
       favoriteStatus: !isFavoriteStatus ? '1' : '0',
     }));
     // dispatch(fetchFavoriteOffersAction());
+  }
+
+  if (redirectToLogin) {
+    return <Navigate to={AppRoute.Login} />;
   }
 
   return (
