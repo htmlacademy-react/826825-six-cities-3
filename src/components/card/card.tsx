@@ -1,12 +1,12 @@
 import {Offer} from '../../types/offer';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import classnames from 'classnames';
-import {Link} from 'react-router-dom';
+import {Link, Navigate} from 'react-router-dom';
 import Rating from '../rating/rating';
 import { useAppDispatch, useAppSelector } from '../../hooks/index';
-import { setMapCurrentOffer, getOffer, replaceOffer } from '../../store/action';
-import {favoriteChangeAction, fetchFavoriteOffersAction} from '../../store/api-actions';
-import {IMAGE_SETTINGS, PAGES} from '../../const';
+import { setMapCurrentOffer, replaceOffer } from '../../store/action';
+import {favoriteChangeAction} from '../../store/api-actions';
+import {IMAGE_SETTINGS, PAGES, AuthorizationStatus, AppRoute} from '../../const';
 
 type CardListProps = {
   offer: Offer;
@@ -16,29 +16,30 @@ type CardListProps = {
 function Card({offer, page}: CardListProps) : JSX.Element {
   const {previewImage, price, isFavorite, isPremium, type, title, id, rating} = offer;
   const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
-  // const currentOffer = useAppSelector((state) => state.currentOffer);
-  // const favorite = currentOffer.id === id ? currentOffer.isFavorite : isFavorite;
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
+  const loggedStatus = useAppSelector((state) => state.authorizationStatus);
+
   const bookMarks = isFavoriteStatus ? 'In bookmarks' : 'To bookmarks';
   const dispatch = useAppDispatch();
-  // if (currentOffer.id === id) {
-  //   console.log(currentOffer);
-  //   console.log(isFavorite);
-  // }
-  // useEffect(() => {
-  //   setFavoriteStatus(!isFavoriteStatus);
-  // },[isFavoriteStatus]);
 
   const handleBookmark = () => {
-    // dispatch(getOffer({}))
+    if (loggedStatus !== AuthorizationStatus.Auth) {
+      setRedirectToLogin(true);
+
+      return;
+    }
     setFavoriteStatus(!isFavoriteStatus);
     dispatch(favoriteChangeAction({
       id: id,
       favoriteStatus: !isFavoriteStatus ? '1' : '0',
     }));
     dispatch(replaceOffer(id));
-    // dispatch(fetchFavoriteOffersAction());
+  };
+
+  if (redirectToLogin) {
+    return <Navigate to={AppRoute.Login} />;
   }
- 
+
   return (
     <article
       onMouseOver = {() => dispatch(setMapCurrentOffer(id))}

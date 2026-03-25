@@ -3,15 +3,16 @@ import CardsList from '../../components/cards-list/cards-list';
 import CitiesTabs from '../../components/cities-tabs/cities-tabs';
 import Sort from '../../components/sort/sort';
 import {PAGES} from '../../const';
-// import { sortOffers } from '../../utils';
+import { filterByCityOffers } from '../../utils';
 import Map from '../../components/map/map';
 import {useAppSelector} from '../../hooks';
 
 const offersListClassName: string = 'cities__places-list places__list tabs__content';
 
 function MainScreen(): JSX.Element {
-  const offersByCity = useAppSelector((state) => state.offersByCity);
+  const offers = useAppSelector((state) => state.offersList);
   const currentCity = useAppSelector((state) => state.currentCity);
+  const offersByCity = filterByCityOffers(offers, currentCity.name);
   const placeCount:number = offersByCity.length;
 
   return (

@@ -2,8 +2,6 @@ import {useEffect, useState} from 'react';
 import {Helmet} from 'react-helmet-async';
 import classnames from 'classnames';
 import {useParams, Navigate} from 'react-router-dom';
-import {Comments} from '../../types/comment';
-import {Offers} from '../../types/offer';
 import {Review} from '../../types/comment';
 import {PAGES, AuthorizationStatus, AppRoute} from '../../const';
 import CardsList from '../../components/cards-list/cards-list';
@@ -13,12 +11,11 @@ import OfferReviewsList from '../../components/offer/offer-reviews-list';
 import OfferFormReview from '../../components/offer/offer-form-review';
 import LoadingScreen from '../loading-screen/loading-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
+import {replaceOffer} from '../../store/action';
 import {fetchOfferAction, fetchReviewsAction, fetchNearByOfferAction, favoriteChangeAction} from '../../store/api-actions';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 
 type OfferScreenProps = {
-  comments: Comments;
-  offers: Offers;
   onComment: (formData:Review) => void;
 }
 
@@ -30,7 +27,7 @@ function OfferScreen({onComment} : OfferScreenProps): JSX.Element {
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
   const selectedOffer = useAppSelector((state) => state.currentOffer);
   const {images, isPremium, isFavorite, title, maxAdults, bedrooms, type, rating, price, goods, host, description, city} = selectedOffer;
-  
+
   const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
   const [redirectToLogin, setRedirectToLogin] = useState(false);
   const loggedStatus = useAppSelector((state) => state.authorizationStatus);
@@ -38,15 +35,14 @@ function OfferScreen({onComment} : OfferScreenProps): JSX.Element {
   const nearOffers = useAppSelector((state) => state.nearByOffer);
 
   const bookMarks = isFavoriteStatus ? 'In bookmarks' : 'To bookmarks';
-  
+
   useEffect(() => {
-    
     if (id !== selectedOffer?.id) {
       dispatch(fetchOfferAction(id));
       dispatch(fetchReviewsAction(id));
       dispatch(fetchNearByOfferAction(id));
     }
-  },[id]);
+  },[id, dispatch, selectedOffer?.id]);
 
   if (id !== selectedOffer?.id) {
     return <NotFoundScreen />;
@@ -57,21 +53,20 @@ function OfferScreen({onComment} : OfferScreenProps): JSX.Element {
       <LoadingScreen />
     );
   }
-  
+
   const handleBookmark = () => {
     if (loggedStatus !== AuthorizationStatus.Auth) {
       setRedirectToLogin(true);
 
       return;
     }
-    // dispatch(getOffer({}))
     setFavoriteStatus(!isFavoriteStatus);
     dispatch(favoriteChangeAction({
       id: id,
       favoriteStatus: !isFavoriteStatus ? '1' : '0',
     }));
-    // dispatch(fetchFavoriteOffersAction());
-  }
+    dispatch(replaceOffer(id));
+  };
 
   if (redirectToLogin) {
     return <Navigate to={AppRoute.Login} />;
@@ -112,7 +107,8 @@ function OfferScreen({onComment} : OfferScreenProps): JSX.Element {
                 <button
                   onClick={handleBookmark}
                   className = {classnames('offer__bookmark-button', 'button', {'offer__bookmark-button--active': isFavoriteStatus})}
-                  type="button">
+                  type="button"
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>

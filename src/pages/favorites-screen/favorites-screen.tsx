@@ -8,6 +8,7 @@ const offersListClassName: string = 'favorites__places';
 
 function FavoritesScreen() : JSX.Element {
   const favoritesOffers = useAppSelector((state) => state.favoriteOffers);
+
   const favoritesCitys:string[] = Array.from(new Set(favoritesOffers.map(({city}) => city.name)));
   return (
     <div className="page">

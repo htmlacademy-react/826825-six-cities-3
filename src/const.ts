@@ -106,4 +106,4 @@ export const CITIES: OfferCity[] = [
   }
 ];
 
-export const DEFAUL_CITY:OfferCity = CITIES[0]
+export const DEFAUL_CITY:OfferCity = CITIES[0];

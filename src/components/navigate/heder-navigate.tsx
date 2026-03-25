@@ -11,37 +11,31 @@ type HeaderNavigateProps = {
 function HeaderNavigate(props: HeaderNavigateProps): JSX.Element {
   const {authorizationStatus} = props;
   const dispatch = useAppDispatch();
-  const handleLogOut = () => dispatch(logoutAction());
-  
-
-  // const linkName = authorizationStatus === AuthorizationStatus.Auth? 'Sign out' : 'Sign in';
 
   return (
     <nav className="header__nav">
       <ul className="header__nav-list">
         {authorizationStatus === AuthorizationStatus.Auth ?
           <>
-          <HeaderUser/>
+            <HeaderUser/>
+            <li className="header__nav-item">
+              <Link
+                className="header__nav-link"
+                onClick={dispatch(logoutAction())}
+              >
+                <span className="header__signout">Sign out</span>
+              </Link>
+            </li>
+          </> :
           <li className="header__nav-item">
-            <Link 
-              className="header__nav-link"
-              onClick={handleLogOut}
-              
-            >
-              <span className="header__signout">Sign out</span>
-            </Link>
-          </li>
-          </>: 
-          <li className="header__nav-item">
-            <Link 
+            <Link
               to={AppRoute.Login}
               className="header__nav-link"
             >
               <div className="header__avatar-wrapper user__avatar-wrapper"></div>
               <span className="header__login">Sign in</span>
             </Link>
-          </li>
-        }
+          </li>}
       </ul>
     </nav>
   );

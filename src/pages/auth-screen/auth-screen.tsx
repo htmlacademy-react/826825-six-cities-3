@@ -1,6 +1,5 @@
 import {Helmet} from 'react-helmet-async';
 import {useRef, FormEvent} from 'react';
-import {useNavigate} from 'react-router-dom';
 import Logo from '../../components/logo/logo';
 import {Navigate} from 'react-router-dom';
 import {useAppDispatch} from '../../hooks';
@@ -16,7 +15,6 @@ function AuthScreen({authorizationStatus}:AuthScreenProps): JSX.Element {
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();

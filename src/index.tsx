@@ -10,8 +10,8 @@ import {checkAuthAction, fetchOffersAction, fetchFavoriteOffersAction} from './s
 import 'react-toastify/dist/ReactToastify.css';
 
 store.dispatch(fetchOffersAction());
-store.dispatch(fetchFavoriteOffersAction());
 store.dispatch(checkAuthAction());
+store.dispatch(fetchFavoriteOffersAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -20,7 +20,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store = {store}>
-    <ToastContainer />
+      <ToastContainer />
       <App
         offers = {offers}
         comments = {comments}
