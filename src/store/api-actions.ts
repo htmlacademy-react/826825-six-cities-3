@@ -1,7 +1,7 @@
 import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, State} from '../types/state.js';
-import { Offers, Offer } from '../types/offer';
+import { Offers, Offer, FavoriteData } from '../types/offer';
 import {
   loadOffers,
   requireAuthorization,
@@ -85,7 +85,7 @@ export const fetchNearByOfferAction = createAsyncThunk<void, string, {
   },
 );
 
-export const favoriteChangeAction = createAsyncThunk<void, AuthData, {
+export const favoriteChangeAction = createAsyncThunk<void, FavoriteData, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
