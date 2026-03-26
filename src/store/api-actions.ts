@@ -10,13 +10,15 @@ import {
   getOffer,
   getReviews,
   getNearByOffer,
-  loadFavoriteOffers} from './action';
+  loadFavoriteOffers,
+  loadUserData} from './action';
 import {saveToken, dropToken} from '../services/token';
 import {APIRoute,
   AuthorizationStatus,
   AppRoute} from '../const';
 import {AuthData} from '../types/auth-data';
 import {UserData} from '../types/user-data';
+import { Comments } from '../types/comment.js';
 
 export const fetchOffersAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -68,7 +70,7 @@ export const fetchReviewsAction = createAsyncThunk<void, string, {
 }>(
   'data/fetchReviews',
   async (id, {dispatch, extra: api}) => {
-    const {data} = await api.get<Offer>(`${APIRoute.Comments}/${id}`);
+    const {data} = await api.get<Comments>(`${APIRoute.Comments}/${id}`);
     dispatch(getReviews(data));
   },
 );
@@ -80,7 +82,7 @@ export const fetchNearByOfferAction = createAsyncThunk<void, string, {
 }>(
   'data/fetchNearByOffer',
   async (id, {dispatch, extra: api}) => {
-    const {data} = await api.get<Offer>(`${APIRoute.Offers}/${id}/nearby`);
+    const {data} = await api.get<Offers>(`${APIRoute.Offers}/${id}/nearby`);
     dispatch(getNearByOffer(data));
   },
 );
@@ -124,6 +126,18 @@ export const loginAction = createAsyncThunk<void, AuthData, {
     saveToken(token);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
     dispatch(redirectToRoute(AppRoute.Main));
+  },
+);
+
+export const fetchUserDataAction = createAsyncThunk<void, AuthData, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'user/fetchUserDataAction',
+  async (_arg, {dispatch, extra: api}) => {
+    const data = (await api.get(APIRoute.Login));
+    dispatch(loadUserData(data.data as UserData));
   },
 );
 

@@ -56,8 +56,7 @@ function App(): JSX.Element {
                 <PrivateRoute
                   authorizationStatus={authorizationStatus}
                 >
-                  <FavoritesScreen
-                  />
+                  <FavoritesScreen/>
                 </PrivateRoute>
               }
             />

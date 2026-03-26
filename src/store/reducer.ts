@@ -10,9 +10,11 @@ import {
   setOffersDataLoadingStatus,
   getNearByOffer,
   loadFavoriteOffers,
-  replaceOffer} from './action';
+  replaceOffer,
+  loadUserData} from './action';
 import {SortTypes, AuthorizationStatus, DEFAUL_CITY} from '../const';
 import { Offers, OfferCity, Offer } from '../types/offer';
+import { UserData } from '../types/user-data';
 import {Comments} from '../types/comment';
 import {replaceOffers} from '../utils';
 
@@ -21,13 +23,14 @@ type InitalState = {
   offersList: Offers;
   favoriteOffers: Offers;
   nearByOffer: Offers;
-  offersByCity: Offers;
+  // offersByCity: Offers;
   currentOffer: Offer;
   reviews: Comments;
   sortType: SortTypes;
   mapCurrentOffer: string;
   authorizationStatus: AuthorizationStatus;
   isOffersDataLoading: boolean;
+  userData: UserData;
 }
 
 const initialState: InitalState = {
@@ -35,20 +38,21 @@ const initialState: InitalState = {
   offersList: [],
   favoriteOffers: [],
   nearByOffer: [],
-  offersByCity: [],
+  // offersByCity: [],
   currentOffer: {} as Offer,
   reviews: [],
   sortType: SortTypes.POPULAR,
   mapCurrentOffer: '',
   authorizationStatus: AuthorizationStatus.Unknown,
   isOffersDataLoading: false,
+  userData: {} as UserData,
 };
 
 const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(loadOffers, (state, action) => {
       state.offersList = action.payload;
-      state.offersByCity = action.payload.filter(({city}) => city.name === state.currentCity.name);
+      // state.offersByCity = action.payload.filter(({city}) => city.name === state.currentCity.name);
       // state.offersList = action.payload.filter(({city}) => city.name === state.currentCity.name);
     })
 
@@ -60,7 +64,7 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(changeCity, (state, action) => {
       state.currentCity = action.payload;
       state.sortType = SortTypes.POPULAR;
-      state.offersByCity = state.offersList.filter(({city}) => city.name === action.payload.name);
+      // state.offersByCity = state.offersList.filter(({city}) => city.name === action.payload.name);
     })
 
     .addCase(getOffer, (state, action) => {
@@ -78,23 +82,6 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(changeSortType, (state, action) => {
       state.sortType = action.payload as SortTypes;
 
-      switch (action.payload) {
-        case SortTypes.POPULAR:
-          state.offersByCity = state.offersList.filter(({city}) => city.name === state.currentCity.name);
-          return;
-        case SortTypes.PRICE_LOW_TO_HIGH:
-          state.offersByCity.sort((first, second) => first.price - second.price);
-          return;
-        case SortTypes.PRICE_HIGH_TO_LOW:
-          state.offersByCity.sort((first, second) => second.price - first.price);
-          return;
-        case SortTypes.TOP_RATED_FIRST:
-          state.offersByCity.sort((first, second) => second.rating - first.rating);
-          return;
-        default:
-          state.offersByCity = state.offersList.filter(({city}) => city.name === state.currentCity.name);
-      }
-
     })
 
     .addCase(setOffersDataLoadingStatus, (state, action) => {
@@ -103,6 +90,10 @@ const reducer = createReducer(initialState, (builder) => {
 
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
+    })
+
+    .addCase(loadUserData, (state, action) => {
+      state.userData = action.payload;
     })
 
     .addCase(getReviews, (state, action) => {

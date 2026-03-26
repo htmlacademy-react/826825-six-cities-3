@@ -11,6 +11,9 @@ type HeaderNavigateProps = {
 function HeaderNavigate(props: HeaderNavigateProps): JSX.Element {
   const {authorizationStatus} = props;
   const dispatch = useAppDispatch();
+  const handleClick = () => {
+    dispatch(logoutAction());
+  };
 
   return (
     <nav className="header__nav">
@@ -20,8 +23,9 @@ function HeaderNavigate(props: HeaderNavigateProps): JSX.Element {
             <HeaderUser/>
             <li className="header__nav-item">
               <Link
+                to="/login"
                 className="header__nav-link"
-                onClick={dispatch(logoutAction())}
+                onClick={handleClick}
               >
                 <span className="header__signout">Sign out</span>
               </Link>
