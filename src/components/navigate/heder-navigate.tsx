@@ -23,7 +23,7 @@ function HeaderNavigate(props: HeaderNavigateProps): JSX.Element {
             <HeaderUser/>
             <li className="header__nav-item">
               <Link
-                to="/login"
+                to={AppRoute.Login}
                 className="header__nav-link"
                 onClick={handleClick}
               >
