@@ -3,16 +3,18 @@ import CardsList from '../../components/cards-list/cards-list';
 import CitiesTabs from '../../components/cities-tabs/cities-tabs';
 import Sort from '../../components/sort/sort';
 import {PAGES} from '../../const';
-// import { sortOffers } from '../../utils';
+import { filterByCityOffers, sortOffers } from '../../utils';
 import Map from '../../components/map/map';
 import {useAppSelector} from '../../hooks';
 
 const offersListClassName: string = 'cities__places-list places__list tabs__content';
 
 function MainScreen(): JSX.Element {
-  const offersByCity = useAppSelector((state) => state.offersList);
+  const offers = useAppSelector((state) => state.offersList);
   const currentCity = useAppSelector((state) => state.currentCity);
-  // const currentSortType = useAppSelector((state) => state.sortType);
+  const currenSortType = useAppSelector((state) => state.sortType);
+  const offersByCity = filterByCityOffers(offers, currentCity.name);
+  const curretnOffers = sortOffers(offersByCity, currenSortType);
   const placeCount:number = offersByCity.length;
 
   return (
@@ -31,13 +33,13 @@ function MainScreen(): JSX.Element {
               <Sort/>
               <CardsList
                 listClassName={offersListClassName}
-                offers={offersByCity}
+                offers={curretnOffers}
                 page={PAGES.main}
               />
             </section>
             <div className="cities__right-section">
               <Map
-                offers={offersByCity}
+                offers={curretnOffers}
                 currentCity={currentCity}
                 mapClassName='cities__map map'
               />

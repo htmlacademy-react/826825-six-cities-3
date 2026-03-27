@@ -1,10 +1,12 @@
 import {Offer} from '../../types/offer';
+import {useState} from 'react';
 import classnames from 'classnames';
-import {Link} from 'react-router-dom';
+import {Link, Navigate} from 'react-router-dom';
 import Rating from '../rating/rating';
-import { useAppDispatch } from '../../hooks/index';
-import { setCurrentOffer } from '../../store/action';
-import {IMAGE_SETTINGS, PAGES} from '../../const';
+import { useAppDispatch, useAppSelector } from '../../hooks/index';
+import { setMapCurrentOffer, replaceOffer } from '../../store/action';
+import {favoriteChangeAction} from '../../store/api-actions';
+import {IMAGE_SETTINGS, PAGES, AuthorizationStatus, AppRoute} from '../../const';
 
 type CardListProps = {
   offer: Offer;
@@ -13,12 +15,35 @@ type CardListProps = {
 
 function Card({offer, page}: CardListProps) : JSX.Element {
   const {previewImage, price, isFavorite, isPremium, type, title, id, rating} = offer;
-  const bookMarks = isFavorite ? 'In bookmarks' : 'To bookmarks';
+  const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
+  const loggedStatus = useAppSelector((state) => state.authorizationStatus);
+
+  const bookMarks = isFavoriteStatus ? 'In bookmarks' : 'To bookmarks';
   const dispatch = useAppDispatch();
+
+  const handleBookmark = () => {
+    if (loggedStatus !== AuthorizationStatus.Auth) {
+      setRedirectToLogin(true);
+
+      return;
+    }
+    setFavoriteStatus(!isFavoriteStatus);
+    dispatch(favoriteChangeAction({
+      id: id,
+      favoriteStatus: !isFavoriteStatus ? '1' : '0',
+    }));
+    dispatch(replaceOffer(id));
+  };
+
+  if (redirectToLogin) {
+    return <Navigate to={AppRoute.Login} />;
+  }
+
   return (
     <article
-      onMouseOver = {() => dispatch(setCurrentOffer(id))}
-      onMouseLeave = {() => dispatch(setCurrentOffer(''))}
+      onMouseOver = {() => dispatch(setMapCurrentOffer(id))}
+      onMouseLeave = {() => dispatch(setMapCurrentOffer(''))}
       className = {`${page}__card place-card`}
     >
       {isPremium &&
@@ -26,7 +51,7 @@ function Card({offer, page}: CardListProps) : JSX.Element {
         <span>Premium</span>
       </div>}
       <div className={`${page}__image-wrapper place-card__image-wrapper`}>
-        <Link to={{pathname: `/offer/${id}`}}>
+        <Link to={{pathname: `/offer/${id}`}} state={offer}>
           <img
             className="place-card__image"
             src={previewImage}
@@ -43,7 +68,8 @@ function Card({offer, page}: CardListProps) : JSX.Element {
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button
-            className={classnames('place-card__bookmark-button', 'button', {'place-card__bookmark-button--active': isFavorite})}
+            onClick={handleBookmark}
+            className={classnames('place-card__bookmark-button', 'button', {'place-card__bookmark-button--active': isFavoriteStatus})}
             type="button"
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">

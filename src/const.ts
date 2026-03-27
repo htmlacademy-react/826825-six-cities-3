@@ -6,6 +6,8 @@ export const Setting = {
   maxNearOfferCount: 3,
 };
 
+// export const TIMEOUT_SHOW_ERROR:number = 2000;
+
 export const IMAGE_SETTINGS = {
   width: 260,
   height: 200,
@@ -18,6 +20,14 @@ export enum AppRoute {
   Favorites = '/favorites',
   Offer = '/offer/:id',
   Main = '/'
+}
+
+export enum APIRoute {
+  Offers = '/offers',
+  Login = '/login',
+  Logout = '/logout',
+  Comments = '/comments',
+  Favorite = '/favorite'
 }
 
 export enum AuthorizationStatus {
@@ -95,3 +105,5 @@ export const CITIES: OfferCity[] = [
     }
   }
 ];
+
+export const DEFAUL_CITY:OfferCity = CITIES[0];

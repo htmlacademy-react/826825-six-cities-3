@@ -1,21 +1,26 @@
-import { offers } from './mocks/offers';
-import { Offers } from './types/offer';
+import {Offers} from './types/offer';
+import {SortTypes} from './const';
 
-export const setOffers = (cityName:string) => offers.filter(({city}) => city.name === cityName);
+export const filterByCityOffers = (offers:Offers, cityName:string) => offers.filter(({city}) => city.name === cityName);
 
-export const sortOffers = (offer: Offers, sortType: string) => {
-  const popularOffers = offer.slice();
-
+export const sortOffers = (offers:Offers, sortType:string) => {
+  const popularOffers = offers;
   switch (sortType) {
-    case 'Popular':
+    case SortTypes.POPULAR:
       return popularOffers;
-    case 'Price: low to high':
+    case SortTypes.PRICE_LOW_TO_HIGH:
       return popularOffers.sort((first, second) => first.price - second.price);
-    case 'Price: high to low':
+    case SortTypes.PRICE_HIGH_TO_LOW:
       return popularOffers.sort((first, second) => second.price - first.price);
-    case 'Top rated first':
+    case SortTypes.TOP_RATED_FIRST:
       return popularOffers.sort((first, second) => second.rating - first.rating);
     default:
       return popularOffers;
   }
+};
+
+export const replaceOffers = (offers: Offers, offerId: string) => {
+  const offerIndex = offers.findIndex((offer) => offer.id === offerId);
+  offers[offerIndex].isFavorite = !offers[offerIndex].isFavorite;
+  return offers;
 };

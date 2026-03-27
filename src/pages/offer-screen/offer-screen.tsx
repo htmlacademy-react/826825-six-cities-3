@@ -1,29 +1,76 @@
+import {useEffect, useState} from 'react';
 import {Helmet} from 'react-helmet-async';
-import {useParams} from 'react-router-dom';
-import {Comments} from '../../types/comment';
-import {Offers} from '../../types/offer';
-import {Offer} from '../../types/offer';
+import classnames from 'classnames';
+import {useParams, Navigate} from 'react-router-dom';
 import {Review} from '../../types/comment';
-import {PAGES, Setting} from '../../const';
+import {PAGES, AuthorizationStatus, AppRoute} from '../../const';
 import CardsList from '../../components/cards-list/cards-list';
 import Rating from '../../components/rating/rating';
 import Map from '../../components/map/map';
 import OfferReviewsList from '../../components/offer/offer-reviews-list';
 import OfferFormReview from '../../components/offer/offer-form-review';
+import LoadingScreen from '../loading-screen/loading-screen';
+import NotFoundScreen from '../not-found-screen/not-found-screen';
+import {replaceOffer} from '../../store/action';
+import {fetchOfferAction, fetchReviewsAction, fetchNearByOfferAction, favoriteChangeAction} from '../../store/api-actions';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 
 type OfferScreenProps = {
-  comments: Comments;
-  offers: Offers;
   onComment: (formData:Review) => void;
 }
 
 const offersListClassName: string = 'near-places__list places__list';
 
-function OfferScreen({comments, offers, onComment} : OfferScreenProps): JSX.Element {
-  const params = useParams();
-  const nearOffers = offers.slice(0, Setting.maxNearOfferCount);
-  const selectedOffer = offers.find((offer)=>offer.id === params.id) as Offer;
-  const {images, isPremium, title, maxAdults, bedrooms, type, rating, price, goods, host, description, city} = selectedOffer;
+function OfferScreen({onComment} : OfferScreenProps): JSX.Element {
+  const { id } = useParams();
+  const dispatch = useAppDispatch();
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  const selectedOffer = useAppSelector((state) => state.currentOffer);
+  const {images, isPremium, isFavorite, title, maxAdults, bedrooms, type, rating, price, goods, host, description, city} = selectedOffer;
+
+  const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
+  const loggedStatus = useAppSelector((state) => state.authorizationStatus);
+  const comments = useAppSelector((state) => state.reviews);
+  const nearOffers = useAppSelector((state) => state.nearByOffer);
+
+  const bookMarks = isFavoriteStatus ? 'In bookmarks' : 'To bookmarks';
+
+  useEffect(() => {
+    if (id !== selectedOffer?.id) {
+      dispatch(fetchOfferAction(id));
+      dispatch(fetchReviewsAction(id));
+      dispatch(fetchNearByOfferAction(id));
+    }
+  },[id, dispatch, selectedOffer?.id]);
+
+  if (id !== selectedOffer?.id) {
+    return <NotFoundScreen />;
+  }
+
+  if (isOffersDataLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
+  const handleBookmark = () => {
+    if (loggedStatus !== AuthorizationStatus.Auth) {
+      setRedirectToLogin(true);
+
+      return;
+    }
+    setFavoriteStatus(!isFavoriteStatus);
+    dispatch(favoriteChangeAction({
+      id: id,
+      favoriteStatus: !isFavoriteStatus ? '1' : '0',
+    }));
+    dispatch(replaceOffer(id));
+  };
+
+  if (redirectToLogin) {
+    return <Navigate to={AppRoute.Login} />;
+  }
 
   return (
     <div className="page">
@@ -57,11 +104,15 @@ function OfferScreen({comments, offers, onComment} : OfferScreenProps): JSX.Elem
                 <h1 className="offer__name">
                   {title}
                 </h1>
-                <button className="offer__bookmark-button button" type="button">
+                <button
+                  onClick={handleBookmark}
+                  className = {classnames('offer__bookmark-button', 'button', {'offer__bookmark-button--active': isFavoriteStatus})}
+                  type="button"
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
-                  <span className="visually-hidden">To bookmarks</span>
+                  <span className="visually-hidden">{bookMarks}</span>
                 </button>
               </div>
               <div className="offer__rating rating">

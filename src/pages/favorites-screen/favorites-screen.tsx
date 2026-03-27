@@ -2,15 +2,13 @@ import {Helmet} from 'react-helmet-async';
 import CardsList from '../../components/cards-list/cards-list';
 import {Offers} from '../../types/offer';
 import {PAGES} from '../../const';
-
-type FavoritesScreenProps = {
-  offers: Offers;
-}
+import {useAppSelector} from '../../hooks';
 
 const offersListClassName: string = 'favorites__places';
 
-function FavoritesScreen({offers} : FavoritesScreenProps) : JSX.Element {
-  const favoritesOffers:Offers = offers.filter(({isFavorite}) => isFavorite === true);
+function FavoritesScreen() : JSX.Element {
+  const favoritesOffers = useAppSelector((state) => state.favoriteOffers);
+
   const favoritesCitys:string[] = Array.from(new Set(favoritesOffers.map(({city}) => city.name)));
   return (
     <div className="page">
