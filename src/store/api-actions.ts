@@ -95,7 +95,7 @@ export const favoriteChangeAction = createAsyncThunk<void, FavoriteData, {
 }>(
   'data/favoriteChange',
   async ({id, favoriteStatus}, {extra: api}) => {
-    await api.post<UserData>(`${APIRoute.Favorite}/${id}/${favoriteStatus}`);
+    await api.post(`${APIRoute.Favorite}/${id}/${favoriteStatus}`);
   },
 );
 
@@ -125,7 +125,8 @@ export const reviewAction = createAsyncThunk<void, Review, {
     if (!id) {
       return;
     }
-    const {data} = await api.post<Comment>(`${APIRoute.Comments}/${id}`, {comment, rating});
+    const {data} = await api.post(`${APIRoute.Comments}/${id}`, {comment, rating});
+    console.log(data);
     dispatch(addReview(data));
     // saveToken(token);
     // dispatch(requireAuthorization(AuthorizationStatus.Auth));
