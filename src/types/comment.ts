@@ -10,7 +10,7 @@ export type Comment = {
   id: string;
   date: string;
   user: User;
-  // comment: string;
+  comment: string;
   rating: number;
 }
 

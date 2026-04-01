@@ -14,8 +14,9 @@ export type User = {
   name: string;
   avatarUrl: string;
   isPro: boolean;
+  token: string;
+  email: string;
 }
-
 
 export type Offer = {
   id: string;
