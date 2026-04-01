@@ -1,4 +1,4 @@
-// import { User } from './offer';
+import { User } from './offer';
 
 export type Review = {
   id: string;
@@ -9,11 +9,7 @@ export type Review = {
 export type Comment = {
   id: string;
   date: string;
-  user: {
-    name: string;
-    avatarUrl: string;
-    isPro: boolean;
-  };
+  user: User;
   comment: string;
   rating: number;
 }

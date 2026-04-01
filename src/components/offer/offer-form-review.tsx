@@ -1,7 +1,9 @@
 import {useState, Fragment, FormEvent} from 'react';
 import { Setting } from '../../const';
 import { reviewAction } from '../../store/api-actions';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { AuthorizationStatus } from '../../const';
+import { store } from '../../store/index';
 
 const ratingTitles:string[] = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
 
@@ -15,17 +17,26 @@ function OfferFormReview({offerId}: OfferFormReviewProps) : JSX.Element {
   const [rating, setRating] = useState('1');
 
   const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector((store) => store.authorizationStatus);
+
+  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    dispatch(reviewAction({
+      id: offerId,
+      comment: text,
+      rating: Number(rating),
+    }));
+    setText('');
+    setRating('1');
+  }
+
+  if (authorizationStatus !== AuthorizationStatus.Auth) {
+    return '';
+  }
 
   return (
     <form
-      onSubmit={(evt: FormEvent<HTMLFormElement>) => {
-        evt.preventDefault();
-        dispatch(reviewAction({
-          id: offerId,
-          comment: text,
-          rating: Number(rating),
-        }));
-      }}
+      onSubmit={handleFormSubmit}
       className="reviews__form form" action="#" method="post"
     >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
@@ -54,6 +65,7 @@ function OfferFormReview({offerId}: OfferFormReviewProps) : JSX.Element {
       <textarea
         onChange={(evt) => setText(evt.target.value)}
         className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved"
+        value = {text}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
