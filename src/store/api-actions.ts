@@ -125,8 +125,7 @@ export const reviewAction = createAsyncThunk<void, Review, {
     if (!id) {
       return;
     }
-    const {data} = await api.post(`${APIRoute.Comments}/${id}`, {comment, rating});
-    console.log(data);
+    const {data} = await api.post<Comment>(`${APIRoute.Comments}/${id}`, {comment, rating});
     dispatch(addReview(data));
     // saveToken(token);
     // dispatch(requireAuthorization(AuthorizationStatus.Auth));
