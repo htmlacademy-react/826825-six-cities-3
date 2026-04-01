@@ -16,7 +16,6 @@ export type User = {
   isPro: boolean;
 }
 
-
 export type Offer = {
   id: string;
   title: string;

@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { OfferCity, Offers, Offer } from '../types/offer';
 import {UserData} from '../types/user-data';
-import {Comments} from '../types/comment';
+import {Comments, Comment} from '../types/comment';
 import {AppRoute, AuthorizationStatus} from '../const';
 
 export const changeCity = createAction<OfferCity>('main/changeCity');
@@ -29,3 +29,5 @@ export const getNearByOffer = createAction<Offers>('offer/getNearByOffer');
 export const loadFavoriteOffers = createAction<Offers>('offer/loadFavoriteOffers');
 
 export const replaceOffer = createAction<string>('offer/replaceOffer');
+
+export const addReview = createAction<Comment>('offer/addReview');

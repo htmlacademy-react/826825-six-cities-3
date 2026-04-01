@@ -11,14 +11,15 @@ import {
   getReviews,
   getNearByOffer,
   loadFavoriteOffers,
-  loadUserData} from './action';
+  loadUserData,
+  addReview} from './action';
 import {saveToken, dropToken} from '../services/token';
 import {APIRoute,
   AuthorizationStatus,
   AppRoute} from '../const';
 import {AuthData} from '../types/auth-data';
 import {UserData} from '../types/user-data';
-import { Comments } from '../types/comment.js';
+import { Comments, Review } from '../types/comment.js';
 
 export const fetchOffersAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -94,7 +95,7 @@ export const favoriteChangeAction = createAsyncThunk<void, FavoriteData, {
 }>(
   'data/favoriteChange',
   async ({id, favoriteStatus}, {extra: api}) => {
-    await api.post<UserData>(`${APIRoute.Favorite}/${id}/${favoriteStatus}`);
+    await api.post(`${APIRoute.Favorite}/${id}/${favoriteStatus}`);
   },
 );
 
@@ -114,6 +115,23 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
   },
 );
 
+export const reviewAction = createAsyncThunk<void, Review, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'offer/reviewAction',
+  async ({id, comment, rating}, {dispatch, extra: api}) => {
+    if (!id) {
+      return;
+    }
+    const {data} = await api.post<Comment>(`${APIRoute.Comments}/${id}`, {comment, rating});
+    dispatch(addReview(data));
+    // saveToken(token);
+    // dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    // dispatch(redirectToRoute(AppRoute.Main));
+  },
+);
 
 export const loginAction = createAsyncThunk<void, AuthData, {
   dispatch: AppDispatch;

@@ -2,7 +2,6 @@ import {useEffect, useState} from 'react';
 import {Helmet} from 'react-helmet-async';
 import classnames from 'classnames';
 import {useParams, Navigate} from 'react-router-dom';
-import {Review} from '../../types/comment';
 import {PAGES, AuthorizationStatus, AppRoute} from '../../const';
 import CardsList from '../../components/cards-list/cards-list';
 import Rating from '../../components/rating/rating';
@@ -15,13 +14,10 @@ import {replaceOffer} from '../../store/action';
 import {fetchOfferAction, fetchReviewsAction, fetchNearByOfferAction, favoriteChangeAction} from '../../store/api-actions';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 
-type OfferScreenProps = {
-  onComment: (formData:Review) => void;
-}
 
 const offersListClassName: string = 'near-places__list places__list';
 
-function OfferScreen({onComment} : OfferScreenProps): JSX.Element {
+function OfferScreen(): JSX.Element {
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
@@ -177,7 +173,7 @@ function OfferScreen({onComment} : OfferScreenProps): JSX.Element {
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments.length}</span></h2>
                 <OfferReviewsList comments={comments} />
-                <OfferFormReview onComment={onComment}/>
+                <OfferFormReview offerId = {selectedOffer.id}/>
               </section>
             </div>
           </div>

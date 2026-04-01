@@ -1,31 +1,42 @@
-import {useState, Fragment, FormEvent, ChangeEvent} from 'react';
-import { Review } from '../../types/comment';
+import {useState, Fragment, FormEvent} from 'react';
 import { Setting } from '../../const';
+import { reviewAction } from '../../store/api-actions';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { AuthorizationStatus } from '../../const';
+// import { store } from '../../store/index';
 
 const ratingTitles:string[] = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
 
 type OfferFormReviewProps = {
-  onComment: (formData:Review) => void;
+  offerId: string;
 };
 
 
-function OfferFormReview({onComment}: OfferFormReviewProps) : JSX.Element {
-  const [formData, setFormData] = useState({
-    rating: '',
-    review: '',
-  });
+function OfferFormReview({offerId}: OfferFormReviewProps) : JSX.Element | string {
+  const [text, setText] = useState('');
+  const [rating, setRating] = useState('1');
 
-  const handleFieldChange = (evt:ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
-    const {name, value} = evt.target;
-    setFormData({...formData, [name]: value});
+  const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector((store) => store.authorizationStatus);
+
+  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    dispatch(reviewAction({
+      id: offerId,
+      comment: text,
+      rating: Number(rating),
+    }));
+    setText('');
+    setRating('1');
   };
+
+  if (authorizationStatus !== AuthorizationStatus.Auth) {
+    return '';
+  }
 
   return (
     <form
-      onSubmit={(evt: FormEvent<HTMLFormElement>) => {
-        evt.preventDefault();
-        onComment(formData);
-      }}
+      onSubmit={handleFormSubmit}
       className="reviews__form form" action="#" method="post"
     >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
@@ -33,7 +44,7 @@ function OfferFormReview({onComment}: OfferFormReviewProps) : JSX.Element {
         {ratingTitles.map((title, index)=>(
           <Fragment key={`${title + index}`}>
             <input
-              onChange={handleFieldChange}
+              onChange={(evt) => setRating(evt.target.value)}
               className="form__rating-input visually-hidden"
               name="rating"
               value={Setting.maxRating - index}
@@ -52,9 +63,9 @@ function OfferFormReview({onComment}: OfferFormReviewProps) : JSX.Element {
         ))}
       </div>
       <textarea
-        onChange={handleFieldChange}
-        value={formData.review}
+        onChange={(evt) => setText(evt.target.value)}
         className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved"
+        value = {text}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">

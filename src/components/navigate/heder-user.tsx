@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import {useAppSelector, useAppDispatch} from '../../hooks';
-import {fetchUserDataAction} from '../../store/api-actions';
+import {useAppSelector} from '../../hooks';
+// import {fetchUserDataAction} from '../../store/api-actions';
 
 function HeaderUser(): JSX.Element {
-  const dispatch = useAppDispatch();
-  dispatch(fetchUserDataAction());
+  // const dispatch = useAppDispatch();
+  // dispatch(fetchUserDataAction());
 
   const favoriteCount:number = useAppSelector((state) => state.favoriteOffers).length;
   const userData = useAppSelector((state) => state.userData);
