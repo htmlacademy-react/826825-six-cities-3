@@ -1,30 +1,30 @@
-import {useState, Fragment, FormEvent, ChangeEvent} from 'react';
-import { Review } from '../../types/comment';
+import {useState, Fragment, FormEvent} from 'react';
 import { Setting } from '../../const';
+import { reviewAction } from '../../store/api-actions';
+import { useAppDispatch } from '../../hooks';
 
 const ratingTitles:string[] = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
 
 type OfferFormReviewProps = {
-  onComment: (formData:Review) => void;
+  offerId: string;
 };
 
 
-function OfferFormReview({onComment}: OfferFormReviewProps) : JSX.Element {
-  const [formData, setFormData] = useState({
-    rating: '',
-    review: '',
-  });
+function OfferFormReview({offerId}: OfferFormReviewProps) : JSX.Element {
+  const [text, setText] = useState('');
+  const [rating, setRating] = useState('1');
 
-  const handleFieldChange = (evt:ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
-    const {name, value} = evt.target;
-    setFormData({...formData, [name]: value});
-  };
+  const dispatch = useAppDispatch();
 
   return (
     <form
       onSubmit={(evt: FormEvent<HTMLFormElement>) => {
         evt.preventDefault();
-        onComment(formData);
+        dispatch(reviewAction({
+          id: offerId,
+          comment: text,
+          rating: Number(rating),
+        }));
       }}
       className="reviews__form form" action="#" method="post"
     >
@@ -33,7 +33,7 @@ function OfferFormReview({onComment}: OfferFormReviewProps) : JSX.Element {
         {ratingTitles.map((title, index)=>(
           <Fragment key={`${title + index}`}>
             <input
-              onChange={handleFieldChange}
+              onChange={(evt) => setRating(evt.target.value)}
               className="form__rating-input visually-hidden"
               name="rating"
               value={Setting.maxRating - index}
@@ -52,8 +52,7 @@ function OfferFormReview({onComment}: OfferFormReviewProps) : JSX.Element {
         ))}
       </div>
       <textarea
-        onChange={handleFieldChange}
-        value={formData.review}
+        onChange={(evt) => setText(evt.target.value)}
         className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved"
       />
       <div className="reviews__button-wrapper">

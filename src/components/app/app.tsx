@@ -43,11 +43,7 @@ function App(): JSX.Element {
             <Route
               path={AppRoute.Offer}
               element={
-                <OfferScreen
-                  onComment={() => {
-                    throw new Error('Function \'onComment\' isn\'t implemented.');
-                  }}
-                />
+                <OfferScreen/>
               }
             />
             <Route

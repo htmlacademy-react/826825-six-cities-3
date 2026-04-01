@@ -11,7 +11,8 @@ import {
   getNearByOffer,
   loadFavoriteOffers,
   replaceOffer,
-  loadUserData} from './action';
+  loadUserData,
+  addReview} from './action';
 import {SortTypes, AuthorizationStatus, DEFAUL_CITY} from '../const';
 import { Offers, OfferCity, Offer } from '../types/offer';
 import { UserData } from '../types/user-data';
@@ -98,6 +99,10 @@ const reducer = createReducer(initialState, (builder) => {
 
     .addCase(getReviews, (state, action) => {
       state.reviews = action.payload;
+    })
+
+    .addCase(addReview, (state, action) => {
+      state.reviews.push(action.payload);
     })
 
     .addCase(replaceOffer, (state, action) => {
