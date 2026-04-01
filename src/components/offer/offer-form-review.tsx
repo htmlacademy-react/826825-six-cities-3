@@ -3,7 +3,7 @@ import { Setting } from '../../const';
 import { reviewAction } from '../../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AuthorizationStatus } from '../../const';
-import { store } from '../../store/index';
+// import { store } from '../../store/index';
 
 const ratingTitles:string[] = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
 
@@ -12,7 +12,7 @@ type OfferFormReviewProps = {
 };
 
 
-function OfferFormReview({offerId}: OfferFormReviewProps) : JSX.Element {
+function OfferFormReview({offerId}: OfferFormReviewProps) : JSX.Element | string {
   const [text, setText] = useState('');
   const [rating, setRating] = useState('1');
 
@@ -28,7 +28,7 @@ function OfferFormReview({offerId}: OfferFormReviewProps) : JSX.Element {
     }));
     setText('');
     setRating('1');
-  }
+  };
 
   if (authorizationStatus !== AuthorizationStatus.Auth) {
     return '';
