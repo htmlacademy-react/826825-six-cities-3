@@ -2,12 +2,7 @@ import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, State} from '../types/state.js';
 import { Offers, Offer, FavoriteData } from '../types/offer';
-import {
-  redirectToRoute,
-  getReviews,
-  // getNearByOffer,
-  loadUserData,
-  addReview} from './action';
+import {redirectToRoute} from './action';
 import {saveToken, dropToken} from '../services/token';
 import {APIRoute, AppRoute} from '../const';
 import {AuthData} from '../types/auth-data';
@@ -50,15 +45,15 @@ export const fetchOfferAction = createAsyncThunk<Offer, string | undefined, {
   },
 );
 
-export const fetchReviewsAction = createAsyncThunk<void, string | undefined, {
+export const fetchReviewsAction = createAsyncThunk<Comments, string | undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetchReviews',
-  async (id, {dispatch, extra: api}) => {
+  async (id, {extra: api}) => {
     const {data} = await api.get<Comments>(`${APIRoute.Comments}/${id}`);
-    dispatch(getReviews(data));
+    return data;
   },
 );
 
@@ -96,21 +91,18 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
   },
 );
 
-export const reviewAction = createAsyncThunk<void, Review, {
+export const reviewAction = createAsyncThunk<Comment, Review, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'offer/reviewAction',
-  async ({id, comment, rating}, {dispatch, extra: api}) => {
+  async ({id, comment, rating}, {extra: api}) => {
     if (!id) {
       return;
     }
     const {data} = await api.post<Comment>(`${APIRoute.Comments}/${id}`, {comment, rating});
-    dispatch(addReview(data));
-    // saveToken(token);
-    // dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    // dispatch(redirectToRoute(AppRoute.Main));
+    return data;
   },
 );
 
@@ -127,15 +119,15 @@ export const loginAction = createAsyncThunk<void, AuthData, {
   },
 );
 
-export const fetchUserDataAction = createAsyncThunk<void, undefined, {
+export const fetchUserDataAction = createAsyncThunk<UserData, undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'user/fetchUserDataAction',
-  async (_arg, {dispatch, extra: api}) => {
-    const data = (await api.get(APIRoute.Login));
-    dispatch(loadUserData(data.data as UserData));
+  async (_arg, {extra: api}) => {
+    const {data} = (await api.get(APIRoute.Login));
+    return data
   },
 );
 

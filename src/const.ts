@@ -33,6 +33,8 @@ export enum APIRoute {
 export enum NameSpace {
   Data = 'DATA',
   User = 'USER',
+  Review = 'REVIEW',
+  Main = 'MAIN',
 }
 
 export enum AuthorizationStatus {
