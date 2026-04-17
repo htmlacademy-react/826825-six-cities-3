@@ -2,15 +2,13 @@ import {Link} from 'react-router-dom';
 import {AuthorizationStatus, AppRoute} from '../../const';
 import HeaderUser from './heder-user';
 import {logoutAction} from '../../store/api-actions';
-import {useAppDispatch} from '../../hooks';
+import {getAuthorizationStatus} from '../../store/user-process/user-selectors';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 
-type HeaderNavigateProps = {
-  authorizationStatus: AuthorizationStatus;
-}
 
-function HeaderNavigate(props: HeaderNavigateProps): JSX.Element {
-  const {authorizationStatus} = props;
+function HeaderNavigate(): JSX.Element {
   const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const handleClick = () => {
     dispatch(logoutAction());
   };

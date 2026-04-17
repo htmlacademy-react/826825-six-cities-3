@@ -10,25 +10,27 @@ import OfferReviewsList from '../../components/offer/offer-reviews-list';
 import OfferFormReview from '../../components/offer/offer-form-review';
 import LoadingScreen from '../loading-screen/loading-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
-import {replaceOffer} from '../../store/action';
+import {replaceOffer} from '../../store/offer-data/offer-data';
 import {fetchOfferAction, fetchReviewsAction, fetchNearByOfferAction, favoriteChangeAction} from '../../store/api-actions';
 import {useAppDispatch, useAppSelector} from '../../hooks';
-
+import { getCurrentOffer, getOffersDataLoadingStatus, getNearByOffer } from '../../store/offer-data/offer-selectors';
+import { getAuthCheckedStatus } from '../../store/user-process/user-selectors';
+import { getReviews } from '../../store/reviews-data/review-selectors';
 
 const offersListClassName: string = 'near-places__list places__list';
 
 function OfferScreen(): JSX.Element {
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
-  const selectedOffer = useAppSelector((state) => state.currentOffer);
+  const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
+  const selectedOffer = useAppSelector(getCurrentOffer);
   const {images, isPremium, isFavorite, title, maxAdults, bedrooms, type, rating, price, goods, host, description, city} = selectedOffer;
 
   const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
   const [redirectToLogin, setRedirectToLogin] = useState(false);
-  const loggedStatus = useAppSelector((state) => state.authorizationStatus);
-  const comments = useAppSelector((state) => state.reviews);
-  const nearOffers = useAppSelector((state) => state.nearByOffer);
+  const loggedStatus = useAppSelector(getAuthCheckedStatus);
+  const comments = useAppSelector(getReviews);
+  const nearOffers = useAppSelector(getNearByOffer);
 
   const bookMarks = isFavoriteStatus ? 'In bookmarks' : 'To bookmarks';
 

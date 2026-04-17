@@ -6,16 +6,16 @@ import { Offers, OfferCity, OffferLocation } from '../../types/offer';
 import MarkerActive from'/img/pin-active.svg';
 import MarkerDefault from '/img/pin.svg';
 import {useAppSelector} from '../../hooks/index';
+import {getMapCurrentOffer} from '../../store/main-process/main-selectors';
 
 type MapProps = {
   offers: Offers;
   currentCity: OfferCity;
-  // currentOffer: string;
   mapClassName: string;
 }
 
 function Map({offers, currentCity, mapClassName}:MapProps) : JSX.Element {
-  const currentOffer = useAppSelector((state) => state.mapCurrentOffer);
+  const currentOffer = useAppSelector(getMapCurrentOffer);
   const currentCityLocation:OffferLocation = currentCity.location;
   const mapRef = useRef(null);
   const map = useMap({mapRef, location: currentCityLocation});

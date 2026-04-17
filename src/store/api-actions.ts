@@ -113,23 +113,24 @@ export const loginAction = createAsyncThunk<void, AuthData, {
 }>(
   'user/login',
   async ({login: email, password}, {dispatch, extra: api}) => {
-    const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
-    saveToken(token);
+    const {data} = await api.post<UserData>(APIRoute.Login, {email, password});
+    saveToken(data.token);
     dispatch(redirectToRoute(AppRoute.Main));
+    return data;
   },
 );
 
-export const fetchUserDataAction = createAsyncThunk<UserData, undefined, {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}>(
-  'user/fetchUserDataAction',
-  async (_arg, {extra: api}) => {
-    const {data} = (await api.get(APIRoute.Login));
-    return data
-  },
-);
+// export const fetchUserDataAction = createAsyncThunk<UserData, undefined, {
+//   dispatch: AppDispatch;
+//   state: State;
+//   extra: AxiosInstance;
+// }>(
+//   'user/fetchUserDataAction',
+//   async (_arg, {extra: api}) => {
+//     const {data} = (await api.get(APIRoute.Login));
+//     return data
+//   },
+// );
 
 export const logoutAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;

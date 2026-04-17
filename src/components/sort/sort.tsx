@@ -2,10 +2,11 @@ import {SortTypes} from '../../const';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import classnames from 'classnames';
-import {changeSortType} from '../../store/action';
+import {changeSortType} from '../../store/main-process/main-process';
+import {getSortType} from '../../store/main-process/main-selectors';
 
 function Sort(): JSX.Element {
-  const currentSortType = useAppSelector((state) => state.sortType);
+  const currentSortType = useAppSelector(getSortType);
   const dispatch = useAppDispatch();
   const [isSortOpened, setisSortOpened] = useState(false);
   const handleOpenClick = () => {

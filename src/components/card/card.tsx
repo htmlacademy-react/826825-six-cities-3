@@ -4,9 +4,11 @@ import classnames from 'classnames';
 import {Link, Navigate} from 'react-router-dom';
 import Rating from '../rating/rating';
 import { useAppDispatch, useAppSelector } from '../../hooks/index';
-import { setMapCurrentOffer, replaceOffer } from '../../store/action';
+import {replaceOffer} from '../../store/offer-data/offer-data';
+import {setMapCurrentOffer} from '../../store/main-process/main-process';
 import {favoriteChangeAction} from '../../store/api-actions';
 import {IMAGE_SETTINGS, PAGES, AuthorizationStatus, AppRoute} from '../../const';
+import {getAuthorizationStatus} from '../../store/user-process/user-selectors';
 
 type CardListProps = {
   offer: Offer;
@@ -17,13 +19,13 @@ function Card({offer, page}: CardListProps) : JSX.Element {
   const {previewImage, price, isFavorite, isPremium, type, title, id, rating} = offer;
   const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
   const [redirectToLogin, setRedirectToLogin] = useState(false);
-  const loggedStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const bookMarks = isFavoriteStatus ? 'In bookmarks' : 'To bookmarks';
   const dispatch = useAppDispatch();
 
   const handleBookmark = () => {
-    if (loggedStatus !== AuthorizationStatus.Auth) {
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
       setRedirectToLogin(true);
 
       return;

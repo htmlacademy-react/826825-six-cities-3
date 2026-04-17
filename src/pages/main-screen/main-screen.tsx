@@ -6,13 +6,15 @@ import {PAGES} from '../../const';
 import { filterByCityOffers, sortOffers } from '../../utils';
 import Map from '../../components/map/map';
 import {useAppSelector} from '../../hooks';
+import { getOffers } from '../../store/offer-data/offer-selectors';
+import { getCurrentCity, getSortType } from '../../store/main-process/main-selectors';
 
 const offersListClassName: string = 'cities__places-list places__list tabs__content';
 
 function MainScreen(): JSX.Element {
-  const offers = useAppSelector((state) => state.offersList);
-  const currentCity = useAppSelector((state) => state.currentCity);
-  const currenSortType = useAppSelector((state) => state.sortType);
+  const offers = useAppSelector(getOffers);
+  const currentCity = useAppSelector(getCurrentCity);
+  const currenSortType = useAppSelector(getSortType);
   const offersByCity = filterByCityOffers(offers, currentCity.name);
   const curretnOffers = sortOffers(offersByCity, currenSortType);
   const placeCount:number = offersByCity.length;

@@ -12,7 +12,7 @@ import PrivateRoute from '../private-route/private-route';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
-import {getAuthorizationStatus, getAuthCheckedStatus} from '../../store/user-process/selectors';
+import {getAuthorizationStatus, getAuthCheckedStatus} from '../../store/user-process/user-selectors';
 import {getOffersDataLoadingStatus} from '../../store/offer-data/offer-selectors';
 
 
@@ -21,7 +21,7 @@ function App(): JSX.Element {
   const isAuthChecked = useAppSelector(getAuthCheckedStatus);
   const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
 
-  if (isAuthChecked === isOffersDataLoading) {
+  if (!isAuthChecked || isOffersDataLoading) {
     return (
       <LoadingScreen />
     );
@@ -32,9 +32,7 @@ function App(): JSX.Element {
         <Routes>
           <Route path={AppRoute.Main}
             element={
-              <Layout
-                authorizationStatus={authorizationStatus}
-              />
+              <Layout/>
             }
           >
             <Route
