@@ -13,14 +13,14 @@ const offersListClassName: string = 'favorites__places';
 
 function FavoritesScreen() : JSX.Element {
   const favoritesOffers = useAppSelector(getFavoriteOffers);
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const dispatch = useAppDispatch();
+  // const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  // const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (authorizationStatus === AuthorizationStatus.Auth) {
-      dispatch(fetchFavoriteOffersAction());
-    }
-  }, [authorizationStatus, dispatch]);
+  // useEffect(() => {
+  //   if (authorizationStatus === AuthorizationStatus.Auth) {
+  //     dispatch(fetchFavoriteOffersAction());
+  //   }
+  // }, [authorizationStatus, dispatch]);
 
   const favoritesCitys:string[] = Array.from(new Set(favoritesOffers.map(({city}) => city.name)));
   return (

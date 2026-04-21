@@ -5,6 +5,7 @@ import {Navigate} from 'react-router-dom';
 import {useAppDispatch} from '../../hooks';
 import {loginAction} from '../../store/api-actions';
 import {AppRoute, AuthorizationStatus} from '../../const';
+// import {fetchFavoriteOffersAction} from '../../store/api-actions';
 
 type AuthScreenProps = {
   authorizationStatus: AuthorizationStatus;

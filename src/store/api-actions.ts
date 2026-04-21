@@ -69,14 +69,15 @@ export const fetchNearByOfferAction = createAsyncThunk<Offers, string | undefine
   },
 );
 
-export const favoriteChangeAction = createAsyncThunk<void, FavoriteData, {
+export const favoriteChangeAction = createAsyncThunk<Offer, FavoriteData, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/favoriteChange',
   async ({id, favoriteStatus}, {extra: api}) => {
-    await api.post(`${APIRoute.Favorite}/${id}/${favoriteStatus}`);
+    const {data} = await api.post(`${APIRoute.Favorite}/${id}/${favoriteStatus}`);
+    return data;
   },
 );
 
@@ -116,6 +117,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
     const {data} = await api.post<UserData>(APIRoute.Login, {email, password});
     saveToken(data.token);
     dispatch(redirectToRoute(AppRoute.Main));
+    dispatch(fetchFavoriteOffersAction());
     return data;
   },
 );

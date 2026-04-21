@@ -6,7 +6,8 @@ import {
     fetchOffersAction,
     fetchFavoriteOffersAction,
     fetchOfferAction,
-    fetchNearByOfferAction} from '../api-actions';
+    fetchNearByOfferAction,
+    favoriteChangeAction} from '../api-actions';
 import { replaceOffers } from '../../utils';
 
 const initialState: OfferData = {
@@ -52,6 +53,15 @@ export const offerData = createSlice({
             state.currentOffer = action.payload;
             state.isOffersDataLoading = false;
         })
+
+        // .addCase(favoriteChangeAction.pending, (state) => {
+        //     state.isOffersDataLoading = true;
+        // })
+        
+        // .addCase(favoriteChangeAction.fulfilled, (state, action) => {
+        //     state.favoriteOffers.push(action.payload);
+        //     state.isOffersDataLoading = false;
+        // })
 
         .addCase(fetchNearByOfferAction.pending, (state) => {
             state.isOffersDataLoading = true;

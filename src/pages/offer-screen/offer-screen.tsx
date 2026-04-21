@@ -1,8 +1,8 @@
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {Helmet} from 'react-helmet-async';
-import classnames from 'classnames';
-import {useParams, Navigate} from 'react-router-dom';
-import {PAGES, AuthorizationStatus, AppRoute} from '../../const';
+import {useParams} from 'react-router-dom';
+// import classnames from 'classnames';
+import {PAGES} from '../../const';
 import CardsList from '../../components/cards-list/cards-list';
 import Rating from '../../components/rating/rating';
 import Map from '../../components/map/map';
@@ -10,12 +10,13 @@ import OfferReviewsList from '../../components/offer/offer-reviews-list';
 import OfferFormReview from '../../components/offer/offer-form-review';
 import LoadingScreen from '../loading-screen/loading-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
-import {replaceOffer} from '../../store/offer-data/offer-data';
-import {fetchOfferAction, fetchReviewsAction, fetchNearByOfferAction, favoriteChangeAction} from '../../store/api-actions';
+// import {replaceOffer} from '../../store/offer-data/offer-data';
+import {fetchOfferAction, fetchReviewsAction, fetchNearByOfferAction} from '../../store/api-actions';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import { getCurrentOffer, getOffersDataLoadingStatus, getNearByOffer } from '../../store/offer-data/offer-selectors';
-import { getAuthCheckedStatus } from '../../store/user-process/user-selectors';
+// import { getAuthorizationStatus } from '../../store/user-process/user-selectors';
 import { getReviews } from '../../store/reviews-data/review-selectors';
+import CardBookmark from '../../components/card/card-bookmark';
 
 const offersListClassName: string = 'near-places__list places__list';
 
@@ -26,13 +27,27 @@ function OfferScreen(): JSX.Element {
   const selectedOffer = useAppSelector(getCurrentOffer);
   const {images, isPremium, isFavorite, title, maxAdults, bedrooms, type, rating, price, goods, host, description, city} = selectedOffer;
 
-  const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
-  const [redirectToLogin, setRedirectToLogin] = useState(false);
-  const loggedStatus = useAppSelector(getAuthCheckedStatus);
+  // const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
+  // const [redirectToLogin, setRedirectToLogin] = useState(false);
+  // const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const comments = useAppSelector(getReviews);
   const nearOffers = useAppSelector(getNearByOffer);
 
-  const bookMarks = isFavoriteStatus ? 'In bookmarks' : 'To bookmarks';
+  // const bookMarks = isFavoriteStatus ? 'In bookmarks' : 'To bookmarks';
+
+  // const handleBookmark = () => {
+  //   if (authorizationStatus !== AuthorizationStatus.Auth) {
+  //     setRedirectToLogin(true);
+
+  //     return;
+  //   }
+  //   setFavoriteStatus(!isFavoriteStatus);
+  //   dispatch(favoriteChangeAction({
+  //     id: id,
+  //     favoriteStatus: !isFavoriteStatus ? '1' : '0',
+  //   }));
+  //   dispatch(replaceOffer(id));
+  // };
 
   useEffect(() => {
     if (id !== selectedOffer?.id) {
@@ -47,28 +62,13 @@ function OfferScreen(): JSX.Element {
   }
 
   if (isOffersDataLoading) {
-    return (
-      <LoadingScreen />
-    );
+    return <LoadingScreen />;
   }
 
-  const handleBookmark = () => {
-    if (loggedStatus !== AuthorizationStatus.Auth) {
-      setRedirectToLogin(true);
 
-      return;
-    }
-    setFavoriteStatus(!isFavoriteStatus);
-    dispatch(favoriteChangeAction({
-      id: id,
-      favoriteStatus: !isFavoriteStatus ? '1' : '0',
-    }));
-    dispatch(replaceOffer(id));
-  };
-
-  if (redirectToLogin) {
-    return <Navigate to={AppRoute.Login} />;
-  }
+  // if (redirectToLogin) {
+  //   return <Navigate to={AppRoute.Login} />;
+  // }
 
   return (
     <div className="page">
@@ -102,24 +102,16 @@ function OfferScreen(): JSX.Element {
                 <h1 className="offer__name">
                   {title}
                 </h1>
-                <button
-                  onClick={handleBookmark}
-                  className = {classnames('offer__bookmark-button', 'button', {'offer__bookmark-button--active': isFavoriteStatus})}
-                  type="button"
-                >
-                  <svg className="offer__bookmark-icon" width="31" height="33">
-                    <use xlinkHref="#icon-bookmark"></use>
-                  </svg>
-                  <span className="visually-hidden">{bookMarks}</span>
-                </button>
-              </div>
-              <div className="offer__rating rating">
-                <Rating
-                  className='offer__stars'
-                  rating={rating}
+                <CardBookmark
+                  id={id}
+                  isFavorite={isFavorite}
+                  page={PAGES.offer}
                 />
-                <span className="offer__rating-value rating__value">{rating}</span>
               </div>
+              <Rating
+                className='offer__stars'
+                rating={rating}
+              />
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
                   {type}

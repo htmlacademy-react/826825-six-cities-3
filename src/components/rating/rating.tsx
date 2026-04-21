@@ -9,11 +9,14 @@ function Rating (props:RatingProps) : JSX.Element {
   const {className = '', rating} = props;
 
   return (
-    <div
-      className={`${className} rating__stars`}
-    >
-      <span style={{width: `${rating * Setting.ratingWidthModifier}%`}}></span>
-      <span className='visually-hidden'>Rating</span>
+    <div className="offer__rating rating">
+      <div
+        className={`${className} rating__stars`}
+      >
+        <span style={{width: `${rating * Setting.ratingWidthModifier}%`}}></span>
+        <span className='visually-hidden'>Rating</span>
+      </div>
+      <span className="offer__rating-value rating__value">{rating}</span>
     </div>
   );
 }

@@ -1,46 +1,20 @@
 import {Offer} from '../../types/offer';
-import {useState} from 'react';
 import classnames from 'classnames';
-import {Link, Navigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Rating from '../rating/rating';
-import { useAppDispatch, useAppSelector } from '../../hooks/index';
-import {replaceOffer} from '../../store/offer-data/offer-data';
+import { useAppDispatch} from '../../hooks/index';
 import {setMapCurrentOffer} from '../../store/main-process/main-process';
-import {favoriteChangeAction} from '../../store/api-actions';
-import {IMAGE_SETTINGS, PAGES, AuthorizationStatus, AppRoute} from '../../const';
-import {getAuthorizationStatus} from '../../store/user-process/user-selectors';
+import {IMAGE_SETTINGS, PAGES} from '../../const';
+import CardBookmark from './card-bookmark';
 
-type CardListProps = {
+type CardProps = {
   offer: Offer;
   page: string;
 }
 
-function Card({offer, page}: CardListProps) : JSX.Element {
+function Card({offer, page}: CardProps) : JSX.Element {
   const {previewImage, price, isFavorite, isPremium, type, title, id, rating} = offer;
-  const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
-  const [redirectToLogin, setRedirectToLogin] = useState(false);
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
-
-  const bookMarks = isFavoriteStatus ? 'In bookmarks' : 'To bookmarks';
   const dispatch = useAppDispatch();
-
-  const handleBookmark = () => {
-    if (authorizationStatus !== AuthorizationStatus.Auth) {
-      setRedirectToLogin(true);
-
-      return;
-    }
-    setFavoriteStatus(!isFavoriteStatus);
-    dispatch(favoriteChangeAction({
-      id: id,
-      favoriteStatus: !isFavoriteStatus ? '1' : '0',
-    }));
-    dispatch(replaceOffer(id));
-  };
-
-  if (redirectToLogin) {
-    return <Navigate to={AppRoute.Login} />;
-  }
 
   return (
     <article
@@ -69,16 +43,10 @@ function Card({offer, page}: CardListProps) : JSX.Element {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button
-            onClick={handleBookmark}
-            className={classnames('place-card__bookmark-button', 'button', {'place-card__bookmark-button--active': isFavoriteStatus})}
-            type="button"
-          >
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">{bookMarks}</span>
-          </button>
+          <CardBookmark
+            id={id}
+            isFavorite={isFavorite}
+          />
         </div>
         <div className="place-card__rating rating">
           <Rating
