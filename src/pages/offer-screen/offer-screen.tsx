@@ -105,7 +105,7 @@ function OfferScreen(): JSX.Element {
                 <CardBookmark
                   id={id}
                   isFavorite={isFavorite}
-                  page={PAGES.offer}
+                  bemBlock='offer'
                 />
               </div>
               <Rating

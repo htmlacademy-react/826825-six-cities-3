@@ -1,6 +1,7 @@
+import {useEffect} from 'react';
 import {Route, Routes} from 'react-router-dom';
 import {HelmetProvider} from 'react-helmet-async';
-import {useAppSelector} from '../../hooks';
+import {useAppSelector, useAppDispatch} from '../../hooks';
 import {AppRoute} from '../../const';
 import Layout from '../layout/layout';
 import MainScreen from '../../pages/main-screen/main-screen';
@@ -14,18 +15,25 @@ import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
 import {getAuthorizationStatus, getAuthCheckedStatus} from '../../store/user-process/user-selectors';
 import {getOffersDataLoadingStatus} from '../../store/offer-data/offer-selectors';
+import {fetchOffersAction} from '../../store/api-actions';
 
 
 function App(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const isAuthChecked = useAppSelector(getAuthCheckedStatus);
-  const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
+  // const isAuthChecked = useAppSelector(getAuthCheckedStatus);
+  // const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
 
-  if (!isAuthChecked || isOffersDataLoading) {
-    return (
-      <LoadingScreen />
-    );
-  }
+  // const dispatch = useAppDispatch();
+
+  // useEffect(() => {
+  //   dispatch(fetchOffersAction())
+  // },[]);
+
+  // if (!isAuthChecked || isOffersDataLoading) {
+  //   return (
+  //     <LoadingScreen />
+  //   );
+  // }
   return (
     <HelmetProvider>
       <HistoryRouter history={browserHistory}>

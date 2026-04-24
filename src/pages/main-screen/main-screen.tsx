@@ -1,13 +1,18 @@
 import {Helmet} from 'react-helmet-async';
+import {useEffect} from 'react';
 import CardsList from '../../components/cards-list/cards-list';
 import CitiesTabs from '../../components/cities-tabs/cities-tabs';
 import Sort from '../../components/sort/sort';
 import {PAGES} from '../../const';
 import { filterByCityOffers, sortOffers } from '../../utils';
 import Map from '../../components/map/map';
-import {useAppSelector} from '../../hooks';
+import {useAppSelector, useAppDispatch} from '../../hooks';
 import { getOffers } from '../../store/offer-data/offer-selectors';
 import { getCurrentCity, getSortType } from '../../store/main-process/main-selectors';
+import {fetchOffersAction} from '../../store/api-actions';
+import {getAuthCheckedStatus} from '../../store/user-process/user-selectors';
+import {getOffersDataLoadingStatus} from '../../store/offer-data/offer-selectors';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
 
 const offersListClassName: string = 'cities__places-list places__list tabs__content';
 
@@ -18,6 +23,21 @@ function MainScreen(): JSX.Element {
   const offersByCity = filterByCityOffers(offers, currentCity.name);
   const curretnOffers = sortOffers(offersByCity, currenSortType);
   const placeCount:number = offersByCity.length;
+
+  const isAuthChecked = useAppSelector(getAuthCheckedStatus);
+  const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchOffersAction())
+  },[]);
+
+  if (!isAuthChecked || isOffersDataLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (
     <div className="page page--gray page--main">

@@ -4,26 +4,25 @@ import {Navigate} from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/index';
 import {getAuthorizationStatus} from '../../store/user-process/user-selectors';
 import {favoriteChangeAction} from '../../store/api-actions';
-import {replaceOffer} from '../../store/offer-data/offer-data';
-import {AuthorizationStatus, AppRoute, PAGES} from '../../const';
+import {AuthorizationStatus, AppRoute} from '../../const';
 
 type CardBookmarkProps = {
   id: string;
   isFavorite: boolean;
-  page?: string;
+  bemBlock?: string;
 }
 
 
-function CardBookmark({id, isFavorite, page}: CardBookmarkProps) : JSX.Element {
+function CardBookmark({id, isFavorite, bemBlock = 'place-card'}: CardBookmarkProps) : JSX.Element {
   const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
   const [redirectToLogin, setRedirectToLogin] = useState(false);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const bookMarks = isFavoriteStatus ? 'In bookmarks' : 'To bookmarks';
-  const pageClass = page === PAGES.offer ? 'offer' : 'place-card';
-  const pageClassActive = `${pageClass}__bookmark-button--active`;
-  const iconWidth = page === PAGES.offer ? '31' : '18';
-  const iconHeight = page === PAGES.offer ? '33' : '19';
+  // const pageClass = page === PAGES.offer ? 'offer' : 'place-card';
+  const pageClassActive = `${bemBlock}__bookmark-button--active`;
+  const iconWidth = bemBlock === 'offer' ? '31' : '18';
+  const iconHeight = bemBlock === 'offer' ? '33' : '19';
   const dispatch = useAppDispatch();
 
   const handleBookmark = () => {
@@ -37,7 +36,7 @@ function CardBookmark({id, isFavorite, page}: CardBookmarkProps) : JSX.Element {
       id: id,
       favoriteStatus: !isFavoriteStatus ? '1' : '0',
     }));
-    dispatch(replaceOffer(id));
+    // dispatch(replaceOffer(id));
   };
 
   if (redirectToLogin) {
@@ -47,11 +46,11 @@ function CardBookmark({id, isFavorite, page}: CardBookmarkProps) : JSX.Element {
   return (
     <button
         onClick={handleBookmark}
-        className={classnames(`${pageClass}__bookmark-button`, 'button', isFavoriteStatus? pageClassActive : '')}
+        className={classnames(`${bemBlock}__bookmark-button`, 'button', isFavoriteStatus? pageClassActive : '')}
         type="button"
       >
         <svg 
-          className={`${pageClass}__bookmark-icon`} 
+          className={`${bemBlock}__bookmark-icon`} 
           width={iconWidth}
           height={iconHeight}
         >

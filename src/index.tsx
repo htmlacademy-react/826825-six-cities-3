@@ -7,7 +7,7 @@ import {store} from './store';
 import {checkAuthAction, fetchOffersAction, fetchFavoriteOffersAction} from './store/api-actions';
 import 'react-toastify/dist/ReactToastify.css';
 
-store.dispatch(fetchOffersAction());
+// store.dispatch(fetchOffersAction());
 store.dispatch(checkAuthAction());
 // store.dispatch(fetchFavoriteOffersAction());
 

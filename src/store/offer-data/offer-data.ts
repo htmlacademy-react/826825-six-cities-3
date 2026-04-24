@@ -58,10 +58,19 @@ export const offerData = createSlice({
         //     state.isOffersDataLoading = true;
         // })
         
-        // .addCase(favoriteChangeAction.fulfilled, (state, action) => {
-        //     state.favoriteOffers.push(action.payload);
-        //     state.isOffersDataLoading = false;
-        // })
+        .addCase(favoriteChangeAction.fulfilled, (state, action) => {
+            console.log(action.payload.data)
+            switch (action.payload.favoriteStatus) {
+                case '1':
+                    state.favoriteOffers.push(action.payload.data);
+                    break;
+                case '0':
+                    state.favoriteOffers = state.favoriteOffers.filter(({id}) => id !== action.
+                    payload.data.id)
+            }
+            // state.favoriteOffers.push(action.payload);
+            // state.isOffersDataLoading = false;
+        })
 
         .addCase(fetchNearByOfferAction.pending, (state) => {
             state.isOffersDataLoading = true;
