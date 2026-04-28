@@ -1,7 +1,8 @@
 import {Route, Routes} from 'react-router-dom';
+// import {useEffect} from 'react';
 import {HelmetProvider} from 'react-helmet-async';
-import {useAppSelector} from '../../hooks';
 import {AppRoute} from '../../const';
+import {useAppDispatch} from '../../hooks';
 import Layout from '../layout/layout';
 import MainScreen from '../../pages/main-screen/main-screen';
 import FavoritesScreen from '../../pages/favorites-screen/favorites-screen';
@@ -11,11 +12,13 @@ import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import PrivateRoute from '../private-route/private-route';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
-import {getAuthorizationStatus} from '../../store/user-process/user-selectors';
-
+import {fetchUserDataAction} from '../../store/api-actions';
 
 function App(): JSX.Element {
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+
+  const dispatch = useAppDispatch();
+
+  // dispatch(fetchUserDataAction());
 
   return (
     <HelmetProvider>
@@ -41,9 +44,7 @@ function App(): JSX.Element {
             <Route
               path={AppRoute.Favorites}
               element = {
-                <PrivateRoute
-                  authorizationStatus={authorizationStatus}
-                >
+                <PrivateRoute>
                   <FavoritesScreen/>
                 </PrivateRoute>
               }

@@ -27,7 +27,6 @@ export const favoriteData = createSlice({
       })
 
       .addCase(favoriteChangeAction.fulfilled, (state, action) => {
-        console.log(action.payload.data)
         switch (action.payload.favoriteStatus) {
           case '1':
             state.favoriteOffers.push(action.payload.data);

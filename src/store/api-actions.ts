@@ -117,21 +117,21 @@ export const loginAction = createAsyncThunk<UserData, AuthData, {
     const {data} = await api.post<UserData>(APIRoute.Login, {email, password});
     saveToken(data.token);
     dispatch(redirectToRoute(AppRoute.Main));
-    return data;
+    // return data;
   },
 );
 
-// export const fetchUserDataAction = createAsyncThunk<UserData, undefined, {
-//   dispatch: AppDispatch;
-//   state: State;
-//   extra: AxiosInstance;
-// }>(
-//   'user/fetchUserDataAction',
-//   async (_arg, {extra: api}) => {
-//     const {data} = (await api.get(APIRoute.Login));
-//     return data
-//   },
-// );
+export const fetchUserDataAction = createAsyncThunk<UserData, AuthData, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'user/fetchUserDataAction',
+  async (_arg, {extra: api}) => {
+    const {data} = (await api.get(APIRoute.Login));
+    return data
+  },
+);
 
 export const logoutAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;

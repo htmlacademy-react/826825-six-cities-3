@@ -1,17 +1,14 @@
 import {Helmet} from 'react-helmet-async';
 import CardsList from '../../components/cards-list/cards-list';
-import {Offers} from '../../types/offer';
 import {PAGES} from '../../const';
 import {useAppSelector} from '../../hooks';
-import { getFavoriteOffers } from '../../store/favorite-data/favorite-selectors';
+import { getFavoritesByCity } from '../../store/favorite-data/favorite-selectors';
 
 const offersListClassName: string = 'favorites__places';
 
 function FavoritesScreen() : JSX.Element {
-  const favoritesOffers = useAppSelector(getFavoriteOffers);
+  const favoritesByCity = useAppSelector(getFavoritesByCity);
 
-
-  const favoritesCitys:string[] = Array.from(new Set(favoritesOffers.map(({city}) => city.name)));
   return (
     <div className="page">
       <Helmet>
@@ -22,10 +19,7 @@ function FavoritesScreen() : JSX.Element {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              {favoritesCitys.map((cityName, index) => {
-                const favoritesOffersByCity:Offers = favoritesOffers.
-                  filter(({city}) => city.name === cityName);
-                return (
+              {Object.entries(favoritesByCity).map(([cityName, offers], index) => (
                   <li
                     key={`${cityName + index}`}
                     className="favorites__locations-items"
@@ -39,12 +33,11 @@ function FavoritesScreen() : JSX.Element {
                     </div>
                     <CardsList
                       listClassName={offersListClassName}
-                      offers={favoritesOffersByCity}
+                      offers={offers}
                       page={PAGES.favorites}
                     />
                   </li>
-                );
-              })}
+              ))}
             </ul>
           </section>
         </div>
