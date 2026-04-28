@@ -1,26 +1,15 @@
 import {Helmet} from 'react-helmet-async';
-import { useEffect } from 'react';
 import CardsList from '../../components/cards-list/cards-list';
 import {Offers} from '../../types/offer';
 import {PAGES} from '../../const';
-import {useAppSelector, useAppDispatch} from '../../hooks';
-import { getFavoriteOffers } from '../../store/offer-data/offer-selectors';
-import { AuthorizationStatus } from '../../const';
-import { getAuthorizationStatus } from '../../store/user-process/user-selectors';
-import { fetchFavoriteOffersAction } from '../../store/api-actions';
+import {useAppSelector} from '../../hooks';
+import { getFavoriteOffers } from '../../store/favorite-data/favorite-selectors';
 
 const offersListClassName: string = 'favorites__places';
 
 function FavoritesScreen() : JSX.Element {
   const favoritesOffers = useAppSelector(getFavoriteOffers);
-  // const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  // const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   if (authorizationStatus === AuthorizationStatus.Auth) {
-  //     dispatch(fetchFavoriteOffersAction());
-  //   }
-  // }, [authorizationStatus, dispatch]);
 
   const favoritesCitys:string[] = Array.from(new Set(favoritesOffers.map(({city}) => city.name)));
   return (

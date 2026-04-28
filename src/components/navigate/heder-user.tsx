@@ -4,15 +4,17 @@ import {useAppSelector, useAppDispatch} from '../../hooks';
 import {fetchUserDataAction, fetchFavoriteOffersAction} from '../../store/api-actions';
 import {getFavoriteOffers} from '../../store/offer-data/offer-selectors';
 import {getUserData} from '../../store/user-process/user-selectors';
+import useFavoriteCount from '../../hooks/use-favorite-count';
 
 function HeaderUser(): JSX.Element {
   // const dispatch = useAppDispatch();
- 
+
 
   // dispatch(fetchFavoriteOffersAction());
   // dispatch(fetchUserDataAction());
+  const favoriteCount = useFavoriteCount();
 
-  const favoriteCount:number = useAppSelector(getFavoriteOffers).length;
+  // const favoriteCount:number = useAppSelector(getFavoriteOffers).length;
   const userData = useAppSelector(getUserData);
 
   return (

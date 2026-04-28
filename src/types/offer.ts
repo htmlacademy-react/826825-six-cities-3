@@ -37,7 +37,7 @@ export type Offer = {
 
 export type FavoriteData = {
   id: string;
-  favoriteStatus: string;
+  favoriteStatus: number;
 }
 
 export type Offers = Offer[];

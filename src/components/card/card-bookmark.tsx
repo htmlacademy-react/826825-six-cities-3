@@ -19,7 +19,6 @@ function CardBookmark({id, isFavorite, bemBlock = 'place-card'}: CardBookmarkPro
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const bookMarks = isFavoriteStatus ? 'In bookmarks' : 'To bookmarks';
-  // const pageClass = page === PAGES.offer ? 'offer' : 'place-card';
   const pageClassActive = `${bemBlock}__bookmark-button--active`;
   const iconWidth = bemBlock === 'offer' ? '31' : '18';
   const iconHeight = bemBlock === 'offer' ? '33' : '19';
@@ -36,7 +35,6 @@ function CardBookmark({id, isFavorite, bemBlock = 'place-card'}: CardBookmarkPro
       id: id,
       favoriteStatus: !isFavoriteStatus ? '1' : '0',
     }));
-    // dispatch(replaceOffer(id));
   };
 
   if (redirectToLogin) {
@@ -45,18 +43,18 @@ function CardBookmark({id, isFavorite, bemBlock = 'place-card'}: CardBookmarkPro
 
   return (
     <button
-        onClick={handleBookmark}
-        className={classnames(`${bemBlock}__bookmark-button`, 'button', isFavoriteStatus? pageClassActive : '')}
-        type="button"
+      onClick={handleBookmark}
+      className={classnames(`${bemBlock}__bookmark-button`, 'button', isFavoriteStatus? pageClassActive : '')}
+      type="button"
+    >
+      <svg
+        className={`${bemBlock}__bookmark-icon`}
+        width={iconWidth}
+        height={iconHeight}
       >
-        <svg 
-          className={`${bemBlock}__bookmark-icon`} 
-          width={iconWidth}
-          height={iconHeight}
-        >
-          <use xlinkHref="#icon-bookmark"></use>
-        </svg>
-        <span className="visually-hidden">{bookMarks}</span>
+        <use xlinkHref="#icon-bookmark"></use>
+      </svg>
+      <span className="visually-hidden">{bookMarks}</span>
     </button>
   );
 

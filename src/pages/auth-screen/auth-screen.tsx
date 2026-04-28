@@ -2,19 +2,16 @@ import {Helmet} from 'react-helmet-async';
 import {useRef, FormEvent} from 'react';
 import Logo from '../../components/logo/logo';
 import {Navigate} from 'react-router-dom';
-import {useAppDispatch} from '../../hooks';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 import {loginAction} from '../../store/api-actions';
 import {AppRoute, AuthorizationStatus} from '../../const';
-// import {fetchFavoriteOffersAction} from '../../store/api-actions';
+import {getAuthorizationStatus} from '../../store/user-process/user-selectors';
 
-type AuthScreenProps = {
-  authorizationStatus: AuthorizationStatus;
-}
 
-function AuthScreen({authorizationStatus}:AuthScreenProps): JSX.Element {
+function AuthScreen(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const dispatch = useAppDispatch();
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {

@@ -12,10 +12,14 @@ export type UserProcess = {
 
 export type OfferData = {
   offersList: Offers;
-  favoriteOffers: Offers;
   nearByOffer: Offers;
-  currentOffer: Offer;
+  currentOffer: Offer | null;
   isOffersDataLoading: boolean;
+}
+
+export type FavoriteData = {
+  favoriteOffers: Offers;
+  isFavoritesDataLoading: boolean;
 }
 
 export type ReviewsData = {
@@ -23,9 +27,9 @@ export type ReviewsData = {
 }
 
 export type MainProcess = {
-  currentCity: OfferCity,
-  sortType: SortTypes,
-  mapCurrentOffer: string,
+  currentCity: OfferCity;
+  sortType: SortTypes;
+  mapCurrentOffer: string;
 };
 
 export type State = ReturnType<typeof store.getState>;

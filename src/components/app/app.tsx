@@ -1,7 +1,6 @@
-import {useEffect} from 'react';
 import {Route, Routes} from 'react-router-dom';
 import {HelmetProvider} from 'react-helmet-async';
-import {useAppSelector, useAppDispatch} from '../../hooks';
+import {useAppSelector} from '../../hooks';
 import {AppRoute} from '../../const';
 import Layout from '../layout/layout';
 import MainScreen from '../../pages/main-screen/main-screen';
@@ -10,30 +9,14 @@ import AuthScreen from '../../pages/auth-screen/auth-screen';
 import OfferScreen from '../../pages/offer-screen/offer-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import PrivateRoute from '../private-route/private-route';
-import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
-import {getAuthorizationStatus, getAuthCheckedStatus} from '../../store/user-process/user-selectors';
-import {getOffersDataLoadingStatus} from '../../store/offer-data/offer-selectors';
-import {fetchOffersAction} from '../../store/api-actions';
+import {getAuthorizationStatus} from '../../store/user-process/user-selectors';
 
 
 function App(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  // const isAuthChecked = useAppSelector(getAuthCheckedStatus);
-  // const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
 
-  // const dispatch = useAppDispatch();
-
-  // useEffect(() => {
-  //   dispatch(fetchOffersAction())
-  // },[]);
-
-  // if (!isAuthChecked || isOffersDataLoading) {
-  //   return (
-  //     <LoadingScreen />
-  //   );
-  // }
   return (
     <HelmetProvider>
       <HistoryRouter history={browserHistory}>
@@ -69,9 +52,7 @@ function App(): JSX.Element {
           <Route
             path={AppRoute.Login}
             element = {
-              <AuthScreen
-                authorizationStatus={authorizationStatus}
-              />
+              <AuthScreen/>
             }
           />
           <Route
