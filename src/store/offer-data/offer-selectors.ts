@@ -6,3 +6,4 @@ export const getOffers = (state: State): Offers => state[NameSpace.Data].offersL
 export const getNearByOffer = (state: State): Offers => state[NameSpace.Data].nearByOffer;
 export const getCurrentOffer = (state: State): Offer => state[NameSpace.Data].currentOffer;
 export const getOffersDataLoadingStatus = (state: State): boolean => state[NameSpace.Data].isOffersDataLoading;
+export const getErrorStatus = (state: State): boolean => state[NameSpace.Data].hasError;

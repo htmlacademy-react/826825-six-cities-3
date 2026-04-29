@@ -1,4 +1,4 @@
-export type UserData = {
+export type UserData = null | {
     id: number;
     email: string;
     token: string;

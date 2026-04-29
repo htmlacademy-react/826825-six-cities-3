@@ -6,7 +6,7 @@ import { UserData } from '../../types/user-data';
 
 const initialState: UserProcess = {
   authorizationStatus: AuthorizationStatus.Unknown,
-  userData: {} as UserData,
+  userData: null,
 };
 
 export const userProcess = createSlice({
@@ -21,15 +21,21 @@ export const userProcess = createSlice({
       .addCase(checkAuthAction.rejected, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
       })
-      .addCase(fetchUserDataAction.fulfilled, (state, action: PayloadAction<UserData>) => {
+      .addCase(loginAction.fulfilled, (state) => {
         state.authorizationStatus = AuthorizationStatus.Auth;
+      })
+      .addCase(loginAction.rejected, (state) => {
+        state.authorizationStatus = AuthorizationStatus.NoAuth;
+      })
+
+      .addCase(fetchUserDataAction.fulfilled, (state, action: PayloadAction<UserData>) => {
+        // state.authorizationStatus = AuthorizationStatus.Auth;
         state.userData = action.payload;
       })
-      .addCase(fetchUserDataAction.rejected, (state) => {
-        state.authorizationStatus = AuthorizationStatus.NoAuth;
-      })
+
       .addCase(logoutAction.fulfilled, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
+        state.userData = null;
       });
   }
 });

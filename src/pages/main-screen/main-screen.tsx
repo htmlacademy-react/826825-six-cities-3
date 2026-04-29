@@ -31,7 +31,7 @@ function MainScreen(): JSX.Element {
 
   useEffect(() => {
     dispatch(fetchOffersAction())
-  },[]);
+  },[isAuthChecked]);
 
   if (!isAuthChecked || isOffersDataLoading) {
     return (

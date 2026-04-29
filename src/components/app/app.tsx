@@ -1,8 +1,8 @@
 import {Route, Routes} from 'react-router-dom';
-// import {useEffect} from 'react';
+import {useEffect} from 'react';
 import {HelmetProvider} from 'react-helmet-async';
 import {AppRoute} from '../../const';
-import {useAppDispatch} from '../../hooks';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 import Layout from '../layout/layout';
 import MainScreen from '../../pages/main-screen/main-screen';
 import FavoritesScreen from '../../pages/favorites-screen/favorites-screen';
@@ -13,10 +13,22 @@ import PrivateRoute from '../private-route/private-route';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
 import {fetchUserDataAction} from '../../store/api-actions';
+import {getAuthCheckedStatus} from '../../store/user-process/user-selectors';
 
 function App(): JSX.Element {
 
   const dispatch = useAppDispatch();
+  const isAuth = useAppSelector(getAuthCheckedStatus);
+
+  // if (authorizationStatus === AuthorizationStatus.Auth) {
+  //   dispatch(fetchUserDataAction());
+  // }
+
+  useEffect(() => {
+    if (isAuth) {
+      dispatch(fetchUserDataAction());
+    }
+  },[dispatch]);
 
   // dispatch(fetchUserDataAction());
 
@@ -49,17 +61,18 @@ function App(): JSX.Element {
                 </PrivateRoute>
               }
             />
+            <Route
+              path="*"
+              element={<NotFoundScreen />}
+            />
           </Route>
           <Route
             path={AppRoute.Login}
             element = {
-              <AuthScreen/>
+                <AuthScreen/>
             }
           />
-          <Route
-            path="*"
-            element={<NotFoundScreen />}
-          />
+          
         </Routes>
       </HistoryRouter>
     </HelmetProvider>

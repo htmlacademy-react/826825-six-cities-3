@@ -11,7 +11,7 @@ import LoadingScreen from '../loading-screen/loading-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import {fetchOfferAction, fetchReviewsAction, fetchNearByOfferAction} from '../../store/api-actions';
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import { getCurrentOffer, getOffersDataLoadingStatus, getNearByOffer } from '../../store/offer-data/offer-selectors';
+import { getCurrentOffer, getOffersDataLoadingStatus, getNearByOffer, getErrorStatus } from '../../store/offer-data/offer-selectors';
 import { getReviews } from '../../store/reviews-data/review-selectors';
 import CardBookmark from '../../components/card/card-bookmark';
 
@@ -22,24 +22,29 @@ function OfferScreen(): JSX.Element {
   const dispatch = useAppDispatch();
   const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
   const selectedOffer = useAppSelector(getCurrentOffer);
+  const isOfferLoadError = useAppSelector(getErrorStatus);
 
   const comments = useAppSelector(getReviews);
   const nearOffers = useAppSelector(getNearByOffer);
 
   useEffect(() => {
-    if (id !== selectedOffer?.id) {
+    if (id) {
       dispatch(fetchOfferAction(id));
       dispatch(fetchReviewsAction(id));
       dispatch(fetchNearByOfferAction(id));
     }
-  },[id, dispatch, selectedOffer?.id]);
+  },[id]);
 
+  if (isOfferLoadError) {
+    return <NotFoundScreen />;
+  }
+  
   if (isOffersDataLoading) {
     return <LoadingScreen />;
   }
 
-  if (id !== selectedOffer?.id) {
-    return <NotFoundScreen />;
+  if (!selectedOffer) {
+    return null;
   }
 
   const {images, isPremium, isFavorite, title, maxAdults, bedrooms, type, rating, price, goods, host, description, city} = selectedOffer;

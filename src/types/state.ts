@@ -15,6 +15,7 @@ export type OfferData = {
   nearByOffer: Offers;
   currentOffer: Offer | null;
   isOffersDataLoading: boolean;
+  hasError: boolean;
 }
 
 export type FavoriteData = {

@@ -1,15 +1,20 @@
 import { useEffect } from 'react';
 import {getFavoriteOffers, getOffersDataLoadingStatus} from '../store/favorite-data/favorite-selectors';
+import {getAuthorizationStatus} from '../store/user-process/user-selectors';
 import { fetchFavoriteOffersAction } from '../store/api-actions';
 import { useAppDispatch, useAppSelector } from '.';
+import {AuthorizationStatus} from '../const';
 
 function useFavoriteCount() {
-  const status = useAppSelector(getOffersDataLoadingStatus);
+  // const status = useAppSelector(getOffersDataLoadingStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const count = useAppSelector(getFavoriteOffers).length;
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchFavoriteOffersAction());
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchFavoriteOffersAction());
+    }
   },[dispatch]);
 
   return count;

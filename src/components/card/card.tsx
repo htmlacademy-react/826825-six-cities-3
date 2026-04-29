@@ -18,8 +18,8 @@ function Card({offer, page}: CardProps) : JSX.Element {
 
   return (
     <article
-      onMouseOver = {() => dispatch(setMapCurrentOffer(id))}
-      onMouseLeave = {() => dispatch(setMapCurrentOffer(''))}
+      onMouseOver = {() => {page ==! PAGES.favorites & dispatch(setMapCurrentOffer(id))}}
+      onMouseLeave = {() => {page ==! PAGES.favorites & dispatch(setMapCurrentOffer(''))}}
       className = {`${page}__card place-card`}
     >
       {isPremium &&
