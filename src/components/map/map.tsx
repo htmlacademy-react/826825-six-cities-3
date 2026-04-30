@@ -11,10 +11,10 @@ import {getMapCurrentOffer} from '../../store/main-process/main-selectors';
 type MapProps = {
   offers: Offers;
   currentCity: OfferCity;
-  mapClassName: string;
+  bemBlock: string;
 }
 
-function Map({offers, currentCity, mapClassName}:MapProps) : JSX.Element {
+function Map({offers, currentCity, bemBlock}:MapProps) : JSX.Element {
   const currentOffer = useAppSelector(getMapCurrentOffer);
   const currentCityLocation:OffferLocation = currentCity.location;
   const mapRef = useRef(null);
@@ -52,7 +52,7 @@ function Map({offers, currentCity, mapClassName}:MapProps) : JSX.Element {
 
   return (
     <section
-      className={mapClassName}
+      className={`${bemBlock}__map map`}
       ref={mapRef}
     >
     </section>

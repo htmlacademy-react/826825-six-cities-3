@@ -4,40 +4,40 @@ import {Link} from 'react-router-dom';
 import Rating from '../rating/rating';
 import { useAppDispatch} from '../../hooks/index';
 import {setMapCurrentOffer} from '../../store/main-process/main-process';
-import {IMAGE_SETTINGS, PAGES} from '../../const';
+import {IMAGE_SETTINGS, BemBlocks} from '../../const';
 import CardBookmark from './card-bookmark';
 
 type CardProps = {
   offer: Offer;
-  page: string;
+  bemBlock: string;
 }
 
-function Card({offer, page}: CardProps) : JSX.Element {
+function Card({offer, bemBlock}: CardProps) : JSX.Element {
   const {previewImage, price, isFavorite, isPremium, type, title, id, rating} = offer;
   const dispatch = useAppDispatch();
 
   return (
     <article
-      onMouseOver = {() => {page ==! PAGES.favorites & dispatch(setMapCurrentOffer(id))}}
-      onMouseLeave = {() => {page ==! PAGES.favorites & dispatch(setMapCurrentOffer(''))}}
-      className = {`${page}__card place-card`}
+      onMouseOver = {() => dispatch(setMapCurrentOffer(id))}
+      onMouseLeave = {() => dispatch(setMapCurrentOffer(''))}
+      className = {`${bemBlock}__card place-card`}
     >
       {isPremium &&
       <div className="place-card__mark">
         <span>Premium</span>
       </div>}
-      <div className={`${page}__image-wrapper place-card__image-wrapper`}>
+      <div className={`${bemBlock}__image-wrapper place-card__image-wrapper`}>
         <Link to={{pathname: `/offer/${id}`}} state={offer}>
           <img
             className="place-card__image"
             src={previewImage}
-            width={page === PAGES.favorites ? IMAGE_SETTINGS.favoriteWidth : IMAGE_SETTINGS.width}
-            height={page === PAGES.favorites ? IMAGE_SETTINGS.favoriteHeight : IMAGE_SETTINGS.height}
+            width={bemBlock === 'favorites' ? IMAGE_SETTINGS.favoriteWidth : IMAGE_SETTINGS.width}
+            height={bemBlock === 'favorites' ? IMAGE_SETTINGS.favoriteHeight : IMAGE_SETTINGS.height}
             alt="Place image"
           />
         </Link>
       </div>
-      <div className={classnames({'favorites__card-info': page === 'favorites'}, 'place-card__info')}>
+      <div className={classnames({'favorites__card-info': bemBlock === 'favorites'}, 'place-card__info')}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>
@@ -50,7 +50,7 @@ function Card({offer, page}: CardProps) : JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <Rating
-            className='place-card__stars'
+            bemBlock={BemBlocks.placeCard}
             rating={rating}
           />
         </div>

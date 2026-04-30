@@ -1,6 +1,6 @@
 import {Helmet} from 'react-helmet-async';
 import CardsList from '../../components/cards-list/cards-list';
-import {PAGES} from '../../const';
+import {BemBlocks} from '../../const';
 import {useAppSelector} from '../../hooks';
 import { getFavoriteOffers } from '../../store/favorite-data/favorite-selectors';
 import { Offer } from '../../types/offer';
@@ -47,7 +47,7 @@ function FavoritesScreen() : JSX.Element {
                     <CardsList
                       listClassName={offersListClassName}
                       offers={offers}
-                      page={PAGES.favorites}
+                      bemBlock={BemBlocks.favorites}
                     />
                   </li>
               ))}

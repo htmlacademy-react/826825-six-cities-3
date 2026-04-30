@@ -4,7 +4,7 @@ import {Navigate} from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/index';
 import {getAuthorizationStatus} from '../../store/user-process/user-selectors';
 import {favoriteChangeAction} from '../../store/api-actions';
-import {AuthorizationStatus, AppRoute} from '../../const';
+import {AuthorizationStatus, AppRoute, FavoriteStatus} from '../../const';
 
 type CardBookmarkProps = {
   id: string;
@@ -13,7 +13,7 @@ type CardBookmarkProps = {
 }
 
 
-function CardBookmark({id, isFavorite, bemBlock = 'place-card'}: CardBookmarkProps) : JSX.Element {
+function CardBookmark({id, isFavorite = false, bemBlock = 'place-card'}: CardBookmarkProps) : JSX.Element {
   const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
   const [redirectToLogin, setRedirectToLogin] = useState(false);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
@@ -27,13 +27,11 @@ function CardBookmark({id, isFavorite, bemBlock = 'place-card'}: CardBookmarkPro
   const handleBookmark = () => {
     if (authorizationStatus !== AuthorizationStatus.Auth) {
       setRedirectToLogin(true);
-
-      return;
     }
     setFavoriteStatus(!isFavoriteStatus);
     dispatch(favoriteChangeAction({
       id: id,
-      favoriteStatus: !isFavoriteStatus ? '1' : '0',
+      favoriteStatus: !isFavoriteStatus ? FavoriteStatus.Addad : FavoriteStatus.Removed,
     }));
   };
 

@@ -13,6 +13,7 @@ import {fetchOffersAction} from '../../store/api-actions';
 import {getAuthCheckedStatus} from '../../store/user-process/user-selectors';
 import {getOffersDataLoadingStatus} from '../../store/offer-data/offer-selectors';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
+import {BemBlocks} from '../../const';
 
 const offersListClassName: string = 'cities__places-list places__list tabs__content';
 
@@ -56,14 +57,14 @@ function MainScreen(): JSX.Element {
               <CardsList
                 listClassName={offersListClassName}
                 offers={curretnOffers}
-                page={PAGES.main}
+                bemBlock={BemBlocks.cities}
               />
             </section>
             <div className="cities__right-section">
               <Map
                 offers={curretnOffers}
                 currentCity={currentCity}
-                mapClassName='cities__map map'
+                bemBlock={BemBlocks.cities}
               />
             </div>
           </div>

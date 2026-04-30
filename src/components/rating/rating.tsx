@@ -2,23 +2,24 @@ import { Setting } from '../../const';
 
 type RatingProps = {
   rating: number;
-  className: string;
+  bemBlock: string;
 }
 
 function Rating (props:RatingProps) : JSX.Element {
-  const {className = '', rating} = props;
-
+  const {rating, bemBlock} = props;
+  
   return (
-    <div className="offer__rating rating">
+    <div className={`${bemBlock}__rating rating`}>
       <div
-        className={`${className} rating__stars`}
+        className={`${bemBlock}__stars rating__stars`}
       >
         <span style={{width: `${rating * Setting.ratingWidthModifier}%`}}></span>
         <span className='visually-hidden'>Rating</span>
       </div>
-      <span className="offer__rating-value rating__value">{rating}</span>
+      {bemBlock === 'offer' &&
+        <span className="offer__rating-value rating__value">{rating}</span>
+      }
     </div>
   );
 }
-
 export default Rating;

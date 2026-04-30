@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import {Helmet} from 'react-helmet-async';
 import {useParams} from 'react-router-dom';
-import {PAGES} from '../../const';
+import {Setting, BemBlocks} from '../../const';
 import CardsList from '../../components/cards-list/cards-list';
 import Rating from '../../components/rating/rating';
 import Map from '../../components/map/map';
@@ -25,7 +25,7 @@ function OfferScreen(): JSX.Element {
   const isOfferLoadError = useAppSelector(getErrorStatus);
 
   const comments = useAppSelector(getReviews);
-  const nearOffers = useAppSelector(getNearByOffer);
+  const nearOffers = useAppSelector(getNearByOffer).slice(0, Setting.maxNearOfferCount);
 
   useEffect(() => {
     if (id) {
@@ -88,7 +88,7 @@ function OfferScreen(): JSX.Element {
                 />
               </div>
               <Rating
-                className='offer__stars'
+                bemBlock={BemBlocks.offer}
                 rating={rating}
               />
               <ul className="offer__features">
@@ -153,7 +153,7 @@ function OfferScreen(): JSX.Element {
           <Map
             offers={nearOffers}
             currentCity={city}
-            mapClassName='offer__map map'
+            bemBlock={BemBlocks.offer}
           />
         </section>
         <div className="container">
@@ -162,7 +162,7 @@ function OfferScreen(): JSX.Element {
             <CardsList
               listClassName={offersListClassName}
               offers={nearOffers}
-              page={PAGES.offer}
+              bemBlock = {BemBlocks.nearPlaces}
             />
           </section>
         </div>

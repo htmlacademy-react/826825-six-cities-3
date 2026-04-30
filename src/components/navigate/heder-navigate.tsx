@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom';
 import {useEffect} from 'react';
 import {AuthorizationStatus, AppRoute} from '../../const';
 import HeaderUser from './heder-user';
-import {logoutAction, fetchUserDataAction} from '../../store/api-actions';
+import {logoutAction, fetchUserDataAction, fetchOffersAction} from '../../store/api-actions';
 import {getAuthorizationStatus} from '../../store/user-process/user-selectors';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 
@@ -12,12 +12,13 @@ function HeaderNavigate(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const handleClick = () => {
     dispatch(logoutAction());
+    dispatch(fetchOffersAction());
   };
 
   // useEffect(() => {
-  //   if (authorizationStatus === AuthorizationStatus.Auth) {
-  //     dispatch(fetchUserDataAction());
-  //   }
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchUserDataAction());
+    }
   // },[dispatch]);
   // dispatch(fetchUserDataAction());
 

@@ -50,12 +50,18 @@ export enum DateFormat {
   Data = 'yyyy-MM-dd',
 }
 
+export enum FavoriteStatus {
+  Addad = '1',
+  Removed = '0'
+} 
 
-export const PAGES = {
-  main: 'cities',
-  favorites: 'favorites',
-  offer: 'near-places'
-};
+export enum BemBlocks {
+  offer = 'offer',
+  placeCard = 'place-card',
+  cities = 'cities',
+  favorites = 'favorites',
+  nearPlaces = 'near-places'
+}
 
 export enum SortTypes {
   POPULAR = 'Popular',
