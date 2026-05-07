@@ -1,4 +1,5 @@
 import { Setting } from '../../const';
+import {memo} from 'react';
 
 type RatingProps = {
   rating: number;
@@ -22,4 +23,4 @@ function Rating (props:RatingProps) : JSX.Element {
     </div>
   );
 }
-export default Rating;
+export default memo(Rating);

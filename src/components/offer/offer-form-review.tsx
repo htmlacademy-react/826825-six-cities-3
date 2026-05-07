@@ -1,4 +1,4 @@
-import {useState, Fragment, FormEvent} from 'react';
+import {useState, Fragment, FormEvent, memo} from 'react';
 import { Setting } from '../../const';
 import { reviewAction } from '../../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -79,4 +79,4 @@ function OfferFormReview({offerId}: OfferFormReviewProps) : JSX.Element | string
 
 }
 
-export default OfferFormReview;
+export default memo(OfferFormReview);

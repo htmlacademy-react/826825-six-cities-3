@@ -1,5 +1,5 @@
 import {SortTypes} from '../../const';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import classnames from 'classnames';
 import {changeSortType} from '../../store/main-process/main-process';
@@ -38,4 +38,4 @@ function Sort(): JSX.Element {
   );
 }
 
-export default Sort;
+export default memo(Sort);

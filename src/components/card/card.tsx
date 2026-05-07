@@ -1,11 +1,13 @@
 import {Offer} from '../../types/offer';
+import {useCallback} from 'react';
 import classnames from 'classnames';
-import {Link} from 'react-router-dom';
 import Rating from '../rating/rating';
 import { useAppDispatch} from '../../hooks/index';
 import {setMapCurrentOffer} from '../../store/main-process/main-process';
-import {IMAGE_SETTINGS, BemBlocks} from '../../const';
+import {BemBlocks} from '../../const';
 import CardBookmark from './card-bookmark';
+import CardImg from './card-img';
+import CardTitle from './card-title'
 
 type CardProps = {
   offer: Offer;
@@ -13,30 +15,27 @@ type CardProps = {
 }
 
 function Card({offer, bemBlock}: CardProps) : JSX.Element {
-  const {previewImage, price, isFavorite, isPremium, type, title, id, rating} = offer;
+  const {price, isFavorite, isPremium, type, id, rating} = offer;
   const dispatch = useAppDispatch();
+
+  const onCardHover = useCallback((id: string) => {
+    return () => dispatch(setMapCurrentOffer(id))
+  },[])
 
   return (
     <article
-      onMouseOver = {() => dispatch(setMapCurrentOffer(id))}
-      onMouseLeave = {() => dispatch(setMapCurrentOffer(''))}
+      onMouseOver = {onCardHover(id)}
+      onMouseLeave = {onCardHover('')}
       className = {`${bemBlock}__card place-card`}
     >
       {isPremium &&
       <div className="place-card__mark">
         <span>Premium</span>
       </div>}
-      <div className={`${bemBlock}__image-wrapper place-card__image-wrapper`}>
-        <Link to={{pathname: `/offer/${id}`}} state={offer}>
-          <img
-            className="place-card__image"
-            src={previewImage}
-            width={bemBlock === 'favorites' ? IMAGE_SETTINGS.favoriteWidth : IMAGE_SETTINGS.width}
-            height={bemBlock === 'favorites' ? IMAGE_SETTINGS.favoriteHeight : IMAGE_SETTINGS.height}
-            alt="Place image"
-          />
-        </Link>
-      </div>
+      <CardImg
+        offer = {offer}
+        bemBlock = {bemBlock}
+      />
       <div className={classnames({'favorites__card-info': bemBlock === 'favorites'}, 'place-card__info')}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
@@ -54,9 +53,9 @@ function Card({offer, bemBlock}: CardProps) : JSX.Element {
             rating={rating}
           />
         </div>
-        <h2 className="place-card__name">
-          <Link to={{pathname: `/offer/${id}`}} state={offer}>{title}</Link>
-        </h2>
+        <CardTitle
+          offer={offer}
+        />
         <p className="place-card__type">{type}</p>
       </div>
     </article>

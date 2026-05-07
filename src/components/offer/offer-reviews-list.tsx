@@ -1,4 +1,5 @@
 import { Comments } from '../../types/comment';
+import {memo} from 'react'; 
 import OfferReview from './offer-review';
 
 type OfferReviewsListProps = {
@@ -15,4 +16,4 @@ function OfferReviewsList({comments}: OfferReviewsListProps) : JSX.Element {
 
 }
 
-export default OfferReviewsList;
+export default memo(OfferReviewsList);

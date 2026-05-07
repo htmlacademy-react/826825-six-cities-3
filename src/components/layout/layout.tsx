@@ -2,11 +2,12 @@ import {Outlet} from 'react-router-dom';
 import Logo from '../../components/logo/logo';
 import HeaderNavigate from '../navigate/heder-navigate';
 
-function Layout(): JSX.Element {
+function Layout({page}): JSX.Element {
 
   return (
     <>
       <header className="header">
+        <h1>{page}</h1>
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
@@ -16,9 +17,9 @@ function Layout(): JSX.Element {
           </div>
         </div>
       </header>
-      <main>
+      {/* <main> */}
         <Outlet />
-      </main>
+      {/* </main> */}
     </>
   );
 }

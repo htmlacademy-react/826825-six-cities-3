@@ -15,8 +15,6 @@ import { getCurrentOffer, getOffersDataLoadingStatus, getNearByOffer, getErrorSt
 import { getReviews } from '../../store/reviews-data/review-selectors';
 import CardBookmark from '../../components/card/card-bookmark';
 
-const offersListClassName: string = 'near-places__list places__list';
-
 function OfferScreen(): JSX.Element {
   const { id } = useParams();
   const dispatch = useAppDispatch();
@@ -159,11 +157,12 @@ function OfferScreen(): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <CardsList
-              listClassName={offersListClassName}
-              offers={nearOffers}
-              bemBlock = {BemBlocks.nearPlaces}
-            />
+            <div className='near-places__list places__list'>
+              <CardsList
+                offers={nearOffers}
+                bemBlock = {BemBlocks.nearPlaces}
+              />
+            </div>
           </section>
         </div>
       </main>

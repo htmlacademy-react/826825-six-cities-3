@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import {memo} from 'react';
 import {useAppSelector, useAppDispatch} from '../../hooks';
 import {fetchUserDataAction, fetchFavoriteOffersAction} from '../../store/api-actions';
 import {getFavoriteOffers} from '../../store/offer-data/offer-selectors';
@@ -30,4 +31,4 @@ function HeaderUser(): JSX.Element {
   );
 }
 
-export default HeaderUser;
+export default memo(HeaderUser);

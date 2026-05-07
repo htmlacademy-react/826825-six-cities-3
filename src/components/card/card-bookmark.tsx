@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, memo} from 'react';
 import classnames from 'classnames';
 import {Navigate} from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/index';
@@ -58,4 +58,4 @@ function CardBookmark({id, isFavorite = false, bemBlock = 'place-card'}: CardBoo
 
 }
 
-export default CardBookmark;
+export default memo(CardBookmark);

@@ -1,5 +1,5 @@
 import {Link} from 'react-router-dom';
-import {useEffect} from 'react';
+import {useEffect, memo} from 'react';
 import {AuthorizationStatus, AppRoute} from '../../const';
 import HeaderUser from './heder-user';
 import {logoutAction, fetchUserDataAction, fetchOffersAction} from '../../store/api-actions';
@@ -12,14 +12,14 @@ function HeaderNavigate(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const handleClick = () => {
     dispatch(logoutAction());
-    dispatch(fetchOffersAction());
+    // dispatch(fetchOffersAction());
   };
 
   // useEffect(() => {
-    if (authorizationStatus === AuthorizationStatus.Auth) {
-      dispatch(fetchUserDataAction());
-    }
-  // },[dispatch]);
+  //   if (authorizationStatus === AuthorizationStatus.Auth) {
+  //     dispatch(fetchUserDataAction());
+  //   }
+  // },[]);
   // dispatch(fetchUserDataAction());
 
   return (
@@ -52,4 +52,4 @@ function HeaderNavigate(): JSX.Element {
   );
 }
 
-export default HeaderNavigate;
+export default memo(HeaderNavigate);

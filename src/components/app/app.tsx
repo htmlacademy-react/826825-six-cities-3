@@ -13,33 +13,27 @@ import PrivateRoute from '../private-route/private-route';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
 import {fetchUserDataAction} from '../../store/api-actions';
-import {getAuthCheckedStatus} from '../../store/user-process/user-selectors';
+import {getAuthCheckedStatus, getAuthorizationStatus, getUserData} from '../../store/user-process/user-selectors';
+import {AuthorizationStatus} from '../../const';
 
 function App(): JSX.Element {
 
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(getAuthCheckedStatus);
-
-  // if (authorizationStatus === AuthorizationStatus.Auth) {
-  //   dispatch(fetchUserDataAction());
-  // }
+  const userData = useAppSelector(getUserData);
 
   useEffect(() => {
-    if (isAuth) {
+    if (isAuth || userData === null) {
       dispatch(fetchUserDataAction());
     }
-  },[dispatch]);
-
-  // dispatch(fetchUserDataAction());
+  },[]);
 
   return (
     <HelmetProvider>
       <HistoryRouter history={browserHistory}>
         <Routes>
-          <Route path={AppRoute.Main}
-            element={
-              <Layout/>
-            }
+          <Route
+            element={<Layout page={'main'}/>}
           >
             <Route
               path={AppRoute.Main}
@@ -47,12 +41,20 @@ function App(): JSX.Element {
                 <MainScreen/>
               }
             />
+          </Route>
+          <Route
+            element={<Layout page={'offer'}/>}
+          >
             <Route
               path={AppRoute.Offer}
               element={
                 <OfferScreen/>
               }
             />
+          </Route>
+          <Route
+            element={<Layout page={'favorite'}/>}
+          >
             <Route
               path={AppRoute.Favorites}
               element = {
@@ -61,6 +63,10 @@ function App(): JSX.Element {
                 </PrivateRoute>
               }
             />
+          </Route>
+          <Route
+            element={<Layout/>}
+          >
             <Route
               path="*"
               element={<NotFoundScreen />}

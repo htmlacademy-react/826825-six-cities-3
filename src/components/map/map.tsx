@@ -1,4 +1,4 @@
-import {useRef, useEffect} from 'react';
+import {useRef, useEffect, memo} from 'react';
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/use-map';
@@ -59,4 +59,4 @@ function Map({offers, currentCity, bemBlock}:MapProps) : JSX.Element {
   );
 }
 
-export default Map;
+export default memo(Map);
