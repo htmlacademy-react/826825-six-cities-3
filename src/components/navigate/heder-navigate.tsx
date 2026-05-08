@@ -3,7 +3,9 @@ import {useEffect, memo} from 'react';
 import {AuthorizationStatus, AppRoute} from '../../const';
 import HeaderUser from './heder-user';
 import {logoutAction, fetchUserDataAction, fetchOffersAction} from '../../store/api-actions';
-import {getAuthorizationStatus} from '../../store/user-process/user-selectors';
+import {removeFavorite} from '../../store/offer-data/offer-data';
+// import {getAuthorizationStatus} from '../../store/user-process/user-selectors';
+import {getAuthCheckedStatus, getAuthorizationStatus, getUserData} from '../../store/user-process/user-selectors';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 
 
@@ -12,15 +14,17 @@ function HeaderNavigate(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const handleClick = () => {
     dispatch(logoutAction());
-    // dispatch(fetchOffersAction());
+    // dispatch(removeFavorite());
   };
 
-  // useEffect(() => {
-  //   if (authorizationStatus === AuthorizationStatus.Auth) {
-  //     dispatch(fetchUserDataAction());
-  //   }
-  // },[]);
-  // dispatch(fetchUserDataAction());
+  const isAuth = useAppSelector(getAuthCheckedStatus);
+  const userData = useAppSelector(getUserData);
+
+  useEffect(() => {
+    if (isAuth || userData === null) {
+      dispatch(fetchUserDataAction());
+    }
+  },[]);
 
   return (
     <nav className="header__nav">

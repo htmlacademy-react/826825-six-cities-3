@@ -22,11 +22,11 @@ function App(): JSX.Element {
   const isAuth = useAppSelector(getAuthCheckedStatus);
   const userData = useAppSelector(getUserData);
 
-  useEffect(() => {
-    if (isAuth || userData === null) {
-      dispatch(fetchUserDataAction());
-    }
-  },[]);
+  // useEffect(() => {
+  //   if (isAuth || userData === null) {
+  //     dispatch(fetchUserDataAction());
+  //   }
+  // },[]);
 
   return (
     <HelmetProvider>

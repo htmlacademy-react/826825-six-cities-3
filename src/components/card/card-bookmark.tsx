@@ -13,7 +13,7 @@ type CardBookmarkProps = {
 }
 
 
-function CardBookmark({id, isFavorite = false, bemBlock = 'place-card'}: CardBookmarkProps) : JSX.Element {
+function CardBookmark({id, isFavorite, bemBlock = 'place-card'}: CardBookmarkProps) : JSX.Element {
   const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
   const [redirectToLogin, setRedirectToLogin] = useState(false);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
