@@ -48,7 +48,7 @@ function OfferScreen(): JSX.Element {
   const {images, isPremium, isFavorite, title, maxAdults, bedrooms, type, rating, price, goods, host, description, city} = selectedOffer;
 
   return (
-    <div className="page">
+    <>
       <Helmet>
         <title>6 cities: offer</title>
       </Helmet>
@@ -166,7 +166,7 @@ function OfferScreen(): JSX.Element {
           </section>
         </div>
       </main>
-    </div>
+    </>
   );
 }
 

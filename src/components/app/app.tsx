@@ -3,7 +3,9 @@ import {useEffect} from 'react';
 import {HelmetProvider} from 'react-helmet-async';
 import {AppRoute} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import Layout from '../layout/layout';
+import Layout from '../layout/Layout';
+import MainLayout from '../layout/main-layout';
+import FavoritesLayout from '../layout/favorites-layout';
 import MainScreen from '../../pages/main-screen/main-screen';
 import FavoritesScreen from '../../pages/favorites-screen/favorites-screen';
 import AuthScreen from '../../pages/auth-screen/auth-screen';
@@ -33,7 +35,7 @@ function App(): JSX.Element {
       <HistoryRouter history={browserHistory}>
         <Routes>
           <Route
-            element={<Layout page={'main'}/>}
+            element={<MainLayout/>}
           >
             <Route
               path={AppRoute.Main}
@@ -43,7 +45,7 @@ function App(): JSX.Element {
             />
           </Route>
           <Route
-            element={<Layout page={'offer'}/>}
+            element={<Layout/>}
           >
             <Route
               path={AppRoute.Offer}
@@ -53,7 +55,7 @@ function App(): JSX.Element {
             />
           </Route>
           <Route
-            element={<Layout page={'favorite'}/>}
+            element={<FavoritesLayout/>}
           >
             <Route
               path={AppRoute.Favorites}

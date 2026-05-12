@@ -8,7 +8,7 @@ import { getFavoriteOffers } from '../../store/favorite-data/favorite-selectors'
 import { Offer } from '../../types/offer';
 import FavoritesEmpty from "./favorites-empty";
 
-function FavoritesScreen() : JSX.Element {
+function FavoritesScreen({isEmpty}) : JSX.Element {
   const favoriteOffers = useAppSelector(getFavoriteOffers);
 
   const favoritesByCity = favoriteOffers.reduce((acc: string, offer: Offer) => {
@@ -23,17 +23,17 @@ function FavoritesScreen() : JSX.Element {
     return acc;
   }, {})
 
-  console.log(favoriteOffers.length === 0);
+  // console.log(favoriteOffers.length === 0);
 
   return (
-    <div className="page">
+    <>
       <Helmet>
         <title>6 cities: favorites</title>
       </Helmet>
-      <main lassName={classnames('page__main page__main--favorites', {'page__main--favorites-empty': favoriteOffers.length === 0})}>
+      <main className={classnames('page__main page__main--favorites', {'page__main--favorites-empty': isEmpty})}>
         <div className="page__favorites-container container">
           
-            { favoriteOffers.length === 0 ?
+            { isEmpty ?
               <FavoritesEmpty/> :
               <section className='favorites'>
                 <h1 className="favorites__title">Saved listing</h1>
@@ -68,7 +68,7 @@ function FavoritesScreen() : JSX.Element {
           <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33"/>
         </Link>
       </footer>
-    </div>
+    </>
   );
 }
 

@@ -40,7 +40,7 @@ function MainScreen(): JSX.Element {
   }
 
   return (
-    <div className="page page--gray page--main">
+    <>
       <Helmet>
         <title>6 cities</title>
       </Helmet>
@@ -75,7 +75,7 @@ function MainScreen(): JSX.Element {
           }
         </div>
       </main>
-    </div>
+    </>
   );
 }
 
