@@ -7,11 +7,10 @@ import Header from '../header/header';
 function FavoritesLayout(): JSX.Element {
   const favoriteOffers = useAppSelector(getFavoriteOffers);
   const isEmpty = favoriteOffers.length === 0;
-  console.log(isEmpty);
   return (
     <div className={classnames('page', {'page--favorites-empty': isEmpty})}>
       <Header/>
-      <Outlet isEmpty={isEmpty}/>
+      <Outlet context={{isEmpty, favoriteOffers}}/>
     </div>
   );
 }

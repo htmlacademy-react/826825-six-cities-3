@@ -1,23 +1,25 @@
 import {Helmet} from 'react-helmet-async';
 import classnames from 'classnames';
-import {useEffect} from 'react';
+// import {useEffect} from 'react';
 import CardsList from '../../components/cards-list/cards-list';
 import CitiesTabs from '../../components/cities-tabs/cities-tabs';
 import Sort from '../../components/sort/sort';
 import { filterByCityOffers, sortOffers } from '../../utils';
 import Map from '../../components/map/map';
 import {useAppSelector, useAppDispatch} from '../../hooks';
-import { getOffers } from '../../store/offer-data/offer-selectors';
+// import { getOffers } from '../../store/offer-data/offer-selectors';
 import { getCurrentCity, getSortType } from '../../store/main-process/main-selectors';
-import {fetchOffersAction} from '../../store/api-actions';
+// import {fetchOffersAction} from '../../store/api-actions';
 import {getAuthCheckedStatus} from '../../store/user-process/user-selectors';
 import {getOffersDataLoadingStatus} from '../../store/offer-data/offer-selectors';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import {BemBlocks} from '../../const';
 import MainEmpty from './main-empty';
+import useOffers from '../../hooks/use-offers';
 
 function MainScreen(): JSX.Element {
-  const offers = useAppSelector(getOffers);
+  // const offers = useAppSelector(getOffers);
+  const offers = useOffers();
   const currentCity = useAppSelector(getCurrentCity);
   const currenSortType = useAppSelector(getSortType);
   const offersByCity = filterByCityOffers(offers, currentCity.name);
@@ -27,11 +29,11 @@ function MainScreen(): JSX.Element {
   const isAuthChecked = useAppSelector(getAuthCheckedStatus);
   const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(fetchOffersAction())
-  },[isAuthChecked]);
+  // useEffect(() => {
+  //   dispatch(fetchOffersAction())
+  // },[]);
 
   if (!isAuthChecked || isOffersDataLoading) {
     return (

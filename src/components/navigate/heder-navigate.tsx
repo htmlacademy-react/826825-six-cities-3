@@ -17,19 +17,19 @@ function HeaderNavigate(): JSX.Element {
     // dispatch(removeFavorite());
   };
 
-  const isAuth = useAppSelector(getAuthCheckedStatus);
-  const userData = useAppSelector(getUserData);
+  const isAuth = authorizationStatus === AuthorizationStatus.Auth;
+  // const userData = useAppSelector(getUserData);
 
   useEffect(() => {
-    if (isAuth || userData === null) {
+    if (isAuth) {
       dispatch(fetchUserDataAction());
     }
-  },[]);
+  },[isAuth]);
 
   return (
     <nav className="header__nav">
       <ul className="header__nav-list">
-        {authorizationStatus === AuthorizationStatus.Auth ?
+        {isAuth ?
           <>
             <HeaderUser/>
             <li className="header__nav-item">

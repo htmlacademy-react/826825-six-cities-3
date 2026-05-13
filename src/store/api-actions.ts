@@ -8,6 +8,8 @@ import {APIRoute, AppRoute} from '../const';
 import {AuthData} from '../types/auth-data';
 import {UserData} from '../types/user-data';
 import { Comments, Review } from '../types/comment.js';
+import {removeFavorite} from './offer-data/offer-data';
+import {dropFavoriteOffers} from './favorite-data/favorite-data';
 
 export const fetchOffersAction = createAsyncThunk<Offers, undefined, {
   dispatch: AppDispatch;
@@ -139,8 +141,10 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   extra: AxiosInstance;
 }>(
   'user/logout',
-  async (_arg, {extra: api}) => {
+  async (_arg, {dispatch, extra: api}) => {
     await api.delete(APIRoute.Logout);
     dropToken();
+    dispatch(dropFavoriteOffers());
+    dispatch(removeFavorite());
   },
 );

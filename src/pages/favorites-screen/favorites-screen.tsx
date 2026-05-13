@@ -1,15 +1,19 @@
 import {Helmet} from 'react-helmet-async';
+import { useOutletContext } from "react-router-dom";
 import classnames from 'classnames';
 import {Link} from 'react-router-dom';
 import CardsList from '../../components/cards-list/cards-list';
 import {BemBlocks, AppRoute} from '../../const';
-import {useAppSelector} from '../../hooks';
-import { getFavoriteOffers } from '../../store/favorite-data/favorite-selectors';
+// import {useAppSelector} from '../../hooks';
+// import { getFavoriteOffers } from '../../store/favorite-data/favorite-selectors';
 import { Offer } from '../../types/offer';
 import FavoritesEmpty from "./favorites-empty";
 
-function FavoritesScreen({isEmpty}) : JSX.Element {
-  const favoriteOffers = useAppSelector(getFavoriteOffers);
+function FavoritesScreen() : JSX.Element {
+  // const favoriteOffers = useAppSelector(getFavoriteOffers);
+  const context = useOutletContext();
+
+  const {isEmpty, favoriteOffers} = context;
 
   const favoritesByCity = favoriteOffers.reduce((acc: string, offer: Offer) => {
     const city:string = offer.city.name;
@@ -22,8 +26,6 @@ function FavoritesScreen({isEmpty}) : JSX.Element {
   
     return acc;
   }, {})
-
-  // console.log(favoriteOffers.length === 0);
 
   return (
     <>

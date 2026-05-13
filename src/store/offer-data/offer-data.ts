@@ -63,10 +63,18 @@ export const offerData = createSlice({
         state.isOffersDataLoading = true;
       })
 
+      .addCase(removeFavorite, (state) => {
+        state.offersList.map((offer:Offer) => ({
+          ...offer,
+          isFavorite: offer.isFavorite ? false : offer.isFavorite,
+        }))
+      })
+
       .addCase(fetchNearByOfferAction.fulfilled, (state, action) => {
         state.nearByOffer = action.payload;
         state.isOffersDataLoading = false;
       });
+      
   }
 });
 

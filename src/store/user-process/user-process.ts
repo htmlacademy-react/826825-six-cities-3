@@ -3,6 +3,7 @@ import {NameSpace, AuthorizationStatus} from '../../const';
 import {UserProcess} from '../../types/state';
 import {checkAuthAction, loginAction, logoutAction, fetchUserDataAction} from '../api-actions';
 import { UserData } from '../../types/user-data';
+import {removeFavorite} from '../offer-data/offer-data';
 
 const initialState: UserProcess = {
   authorizationStatus: AuthorizationStatus.Unknown,
@@ -36,6 +37,7 @@ export const userProcess = createSlice({
       .addCase(logoutAction.fulfilled, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
         state.userData = null;
+        // removeFavorite();
       });
   }
 });
