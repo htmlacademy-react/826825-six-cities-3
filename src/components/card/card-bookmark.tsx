@@ -27,6 +27,7 @@ function CardBookmark({id, isFavorite, bemBlock = 'place-card'}: CardBookmarkPro
   const handleBookmark = () => {
     if (authorizationStatus !== AuthorizationStatus.Auth) {
       setRedirectToLogin(true);
+      return
     }
     setFavoriteStatus(!isFavoriteStatus);
     dispatch(favoriteChangeAction({

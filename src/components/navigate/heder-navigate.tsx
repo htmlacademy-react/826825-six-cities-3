@@ -12,15 +12,13 @@ import {useAppDispatch, useAppSelector} from '../../hooks';
 function HeaderNavigate(): JSX.Element {
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isAuth = authorizationStatus === AuthorizationStatus.Auth;
   const handleClick = () => {
     dispatch(logoutAction());
-    // dispatch(removeFavorite());
   };
 
-  const isAuth = authorizationStatus === AuthorizationStatus.Auth;
-  // const userData = useAppSelector(getUserData);
-
   useEffect(() => {
+    
     if (isAuth) {
       dispatch(fetchUserDataAction());
     }
@@ -34,7 +32,7 @@ function HeaderNavigate(): JSX.Element {
             <HeaderUser/>
             <li className="header__nav-item">
               <Link
-                to={AppRoute.Login}
+                to={AppRoute.Main}
                 className="header__nav-link"
                 onClick={handleClick}
               >

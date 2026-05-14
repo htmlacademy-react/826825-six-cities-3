@@ -34,9 +34,15 @@ export const userProcess = createSlice({
         state.userData = action.payload;
       })
 
+      .addCase(logoutAction.pending, (state) => {
+        state.authorizationStatus = AuthorizationStatus.Unknown;
+        state.userData = null;
+        // removeFavorite();
+      })
+
       .addCase(logoutAction.fulfilled, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
-        state.userData = null;
+        // state.userData = null;
         // removeFavorite();
       });
   }
