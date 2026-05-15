@@ -2,7 +2,6 @@ import axios, {AxiosInstance, AxiosResponse, AxiosError, InternalAxiosRequestCon
 import {StatusCodes} from 'http-status-codes';
 import {toast} from 'react-toastify';
 import {getToken} from './token';
-// import {processErrorHandle} from './process-error-handle';
 
 type DetailMessageType = {
   type: string;

@@ -1,9 +1,9 @@
-import {useState, Fragment, FormEvent} from 'react';
+import {useState, Fragment, FormEvent, memo} from 'react';
 import { Setting } from '../../const';
 import { reviewAction } from '../../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getAuthorizationStatus } from '../../store/user-process/user-selectors';
 import { AuthorizationStatus } from '../../const';
-// import { store } from '../../store/index';
 
 const ratingTitles:string[] = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
 
@@ -17,7 +17,7 @@ function OfferFormReview({offerId}: OfferFormReviewProps) : JSX.Element | string
   const [rating, setRating] = useState('1');
 
   const dispatch = useAppDispatch();
-  const authorizationStatus = useAppSelector((store) => store.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -48,6 +48,7 @@ function OfferFormReview({offerId}: OfferFormReviewProps) : JSX.Element | string
               className="form__rating-input visually-hidden"
               name="rating"
               value={Setting.maxRating - index}
+              checked={(Setting.maxRating - index) === Number(rating)}
               id={`${Setting.maxRating - index}-stars`}
               type="radio"
             />
@@ -78,4 +79,6 @@ function OfferFormReview({offerId}: OfferFormReviewProps) : JSX.Element | string
 
 }
 
-export default OfferFormReview;
+const MemorizedOfferFormReview = memo(OfferFormReview);
+
+export default MemorizedOfferFormReview;

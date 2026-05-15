@@ -1,8 +1,7 @@
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {Helmet} from 'react-helmet-async';
-import classnames from 'classnames';
-import {useParams, Navigate} from 'react-router-dom';
-import {PAGES, AuthorizationStatus, AppRoute} from '../../const';
+import {useParams} from 'react-router-dom';
+import {Setting, BemBlocks} from '../../const';
 import CardsList from '../../components/cards-list/cards-list';
 import Rating from '../../components/rating/rating';
 import Map from '../../components/map/map';
@@ -10,66 +9,46 @@ import OfferReviewsList from '../../components/offer/offer-reviews-list';
 import OfferFormReview from '../../components/offer/offer-form-review';
 import LoadingScreen from '../loading-screen/loading-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
-import {replaceOffer} from '../../store/action';
-import {fetchOfferAction, fetchReviewsAction, fetchNearByOfferAction, favoriteChangeAction} from '../../store/api-actions';
+import {fetchOfferAction, fetchReviewsAction, fetchNearByOfferAction} from '../../store/api-actions';
 import {useAppDispatch, useAppSelector} from '../../hooks';
+import { getCurrentOffer, getOffersDataLoadingStatus, getNearByOffer, getErrorStatus } from '../../store/offer-data/offer-selectors';
+import { getReviews } from '../../store/reviews-data/review-selectors';
+import CardBookmark from '../../components/card/card-bookmark';
 
-
-const offersListClassName: string = 'near-places__list places__list';
-
-function OfferScreen(): JSX.Element {
-  const { id } = useParams();
+function OfferScreen(): JSX.Element | null {
+  const { id } = useParams<{id: string}>();
   const dispatch = useAppDispatch();
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
-  const selectedOffer = useAppSelector((state) => state.currentOffer);
-  const {images, isPremium, isFavorite, title, maxAdults, bedrooms, type, rating, price, goods, host, description, city} = selectedOffer;
+  const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
+  const selectedOffer = useAppSelector(getCurrentOffer);
+  const isOfferLoadError = useAppSelector(getErrorStatus);
 
-  const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
-  const [redirectToLogin, setRedirectToLogin] = useState(false);
-  const loggedStatus = useAppSelector((state) => state.authorizationStatus);
-  const comments = useAppSelector((state) => state.reviews);
-  const nearOffers = useAppSelector((state) => state.nearByOffer);
-
-  const bookMarks = isFavoriteStatus ? 'In bookmarks' : 'To bookmarks';
+  const comments = useAppSelector(getReviews);
+  const nearOffers = useAppSelector(getNearByOffer).slice(0, Setting.maxNearOfferCount);
 
   useEffect(() => {
-    if (id !== selectedOffer?.id) {
+    if (id) {
       dispatch(fetchOfferAction(id));
       dispatch(fetchReviewsAction(id));
       dispatch(fetchNearByOfferAction(id));
     }
-  },[id, dispatch, selectedOffer?.id]);
+  },[dispatch, id]);
 
-  if (id !== selectedOffer?.id) {
+  if (isOfferLoadError) {
     return <NotFoundScreen />;
   }
 
   if (isOffersDataLoading) {
-    return (
-      <LoadingScreen />
-    );
+    return <LoadingScreen />;
   }
 
-  const handleBookmark = () => {
-    if (loggedStatus !== AuthorizationStatus.Auth) {
-      setRedirectToLogin(true);
-
-      return;
-    }
-    setFavoriteStatus(!isFavoriteStatus);
-    dispatch(favoriteChangeAction({
-      id: id,
-      favoriteStatus: !isFavoriteStatus ? '1' : '0',
-    }));
-    dispatch(replaceOffer(id));
-  };
-
-  if (redirectToLogin) {
-    return <Navigate to={AppRoute.Login} />;
+  if (!selectedOffer) {
+    return null;
   }
+
+  const {images, isPremium, isFavorite, title, maxAdults, bedrooms, type, rating, price, goods, host, description, city} = selectedOffer;
 
   return (
-    <div className="page">
+    <>
       <Helmet>
         <title>6 cities: offer</title>
       </Helmet>
@@ -100,24 +79,16 @@ function OfferScreen(): JSX.Element {
                 <h1 className="offer__name">
                   {title}
                 </h1>
-                <button
-                  onClick={handleBookmark}
-                  className = {classnames('offer__bookmark-button', 'button', {'offer__bookmark-button--active': isFavoriteStatus})}
-                  type="button"
-                >
-                  <svg className="offer__bookmark-icon" width="31" height="33">
-                    <use xlinkHref="#icon-bookmark"></use>
-                  </svg>
-                  <span className="visually-hidden">{bookMarks}</span>
-                </button>
-              </div>
-              <div className="offer__rating rating">
-                <Rating
-                  className='offer__stars'
-                  rating={rating}
+                <CardBookmark
+                  id={selectedOffer.id}
+                  isFavorite={isFavorite}
+                  bemBlock='offer'
                 />
-                <span className="offer__rating-value rating__value">{rating}</span>
               </div>
+              <Rating
+                bemBlock={BemBlocks.Offer}
+                rating={rating}
+              />
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
                   {type}
@@ -180,21 +151,22 @@ function OfferScreen(): JSX.Element {
           <Map
             offers={nearOffers}
             currentCity={city}
-            mapClassName='offer__map map'
+            bemBlock={BemBlocks.Offer}
           />
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <CardsList
-              listClassName={offersListClassName}
-              offers={nearOffers}
-              page={PAGES.offer}
-            />
+            <div className='near-places__list places__list'>
+              <CardsList
+                offers={nearOffers}
+                bemBlock = {BemBlocks.NearPlaces}
+              />
+            </div>
           </section>
         </div>
       </main>
-    </div>
+    </>
   );
 }
 

@@ -1,21 +1,28 @@
 import { Setting } from '../../const';
+import {memo} from 'react';
 
 type RatingProps = {
   rating: number;
-  className: string;
+  bemBlock: string | undefined;
 }
 
 function Rating (props:RatingProps) : JSX.Element {
-  const {className = '', rating} = props;
+  const {rating, bemBlock} = props;
 
   return (
-    <div
-      className={`${className} rating__stars`}
-    >
-      <span style={{width: `${rating * Setting.ratingWidthModifier}%`}}></span>
-      <span className='visually-hidden'>Rating</span>
+    <div className={`${bemBlock}__rating rating`}>
+      <div
+        className={`${bemBlock}__stars rating__stars`}
+      >
+        <span style={{width: `${rating * Setting.ratingWidthModifier}%`}}></span>
+        <span className='visually-hidden'>Rating</span>
+      </div>
+      {bemBlock === 'offer' &&
+        <span className="offer__rating-value rating__value">{rating}</span>}
     </div>
   );
 }
 
-export default Rating;
+const MemorizedRating = memo(Rating);
+
+export default MemorizedRating;

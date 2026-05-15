@@ -19,7 +19,8 @@ export enum AppRoute {
   Login = '/login',
   Favorites = '/favorites',
   Offer = '/offer/:id',
-  Main = '/'
+  Main = '/',
+  NotFound = '*'
 }
 
 export enum APIRoute {
@@ -28,6 +29,14 @@ export enum APIRoute {
   Logout = '/logout',
   Comments = '/comments',
   Favorite = '/favorite'
+}
+
+export enum NameSpace {
+  Data = 'DATA',
+  Favorites = 'FAVORITES',
+  User = 'USER',
+  Review = 'REVIEW',
+  Main = 'MAIN',
 }
 
 export enum AuthorizationStatus {
@@ -41,12 +50,19 @@ export enum DateFormat {
   Data = 'yyyy-MM-dd',
 }
 
+export enum FavoriteStatus {
+  Addad = '1',
+  Removed = '0'
+}
 
-export const PAGES = {
-  main: 'cities',
-  favorites: 'favorites',
-  offer: 'near-places'
-};
+export enum BemBlocks {
+  Offer = 'offer',
+  PlaceCard = 'place-card',
+  Cities = 'cities',
+  Favorites = 'favorites',
+  NearPlaces = 'near-places',
+  Reviews = 'reviews'
+}
 
 export enum SortTypes {
   POPULAR = 'Popular',

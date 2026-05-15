@@ -1,101 +1,86 @@
 import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, State} from '../types/state.js';
-import { Offers, Offer, FavoriteData } from '../types/offer';
-import {
-  loadOffers,
-  requireAuthorization,
-  setOffersDataLoadingStatus,
-  redirectToRoute,
-  getOffer,
-  getReviews,
-  getNearByOffer,
-  loadFavoriteOffers,
-  loadUserData,
-  addReview} from './action';
+import { Offers, Offer } from '../types/offer';
+import {redirectToRoute} from './action';
 import {saveToken, dropToken} from '../services/token';
-import {APIRoute,
-  AuthorizationStatus,
-  AppRoute} from '../const';
+import {APIRoute, AppRoute} from '../const';
 import {AuthData} from '../types/auth-data';
-import {UserData} from '../types/user-data';
-import { Comments, Review } from '../types/comment.js';
+import {UserData, HeaderUserData} from '../types/user-data';
+import { Comments, Review, Comment } from '../types/comment';
+import {removeFavorite} from './offer-data/offer-data';
+import {dropFavoriteOffers} from './favorite-data/favorite-data';
+import { FavoriteCange, FavoritePost } from '../types/state.js';
 
-export const fetchOffersAction = createAsyncThunk<void, undefined, {
+export const fetchOffersAction = createAsyncThunk<Offers, undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetchOffers',
-  async (_arg, {dispatch, extra: api}) => {
-    dispatch(setOffersDataLoadingStatus(true));
+  async (_arg, {extra: api}) => {
     const {data} = await api.get<Offers>(APIRoute.Offers);
-    dispatch(setOffersDataLoadingStatus(false));
-    dispatch(loadOffers(data));
+    return data;
   },
 );
 
-export const fetchFavoriteOffersAction = createAsyncThunk<void, undefined, {
+export const fetchFavoriteOffersAction = createAsyncThunk<Offers, undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetchFavoriteOffers',
-  async (_arg, {dispatch, extra: api}) => {
-    dispatch(setOffersDataLoadingStatus(true));
+  async (_arg, {extra: api}) => {
     const {data} = await api.get<Offers>(APIRoute.Favorite);
-    dispatch(setOffersDataLoadingStatus(false));
-    dispatch(loadFavoriteOffers(data));
+    return data;
   },
 );
 
-export const fetchOfferAction = createAsyncThunk<void, string | undefined, {
+export const fetchOfferAction = createAsyncThunk<Offer, string | undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetchOffer',
-  async (id, {dispatch, extra: api}) => {
-
-    dispatch(setOffersDataLoadingStatus(true));
+  async (id, {extra: api}) => {
     const {data} = await api.get<Offer>(`${APIRoute.Offers}/${id}`);
-    dispatch(setOffersDataLoadingStatus(false));
-    dispatch(getOffer(data));
+    return data;
   },
 );
 
-export const fetchReviewsAction = createAsyncThunk<void, string | undefined, {
+export const fetchReviewsAction = createAsyncThunk<Comments, string | undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetchReviews',
-  async (id, {dispatch, extra: api}) => {
+  async (id, {extra: api}) => {
     const {data} = await api.get<Comments>(`${APIRoute.Comments}/${id}`);
-    dispatch(getReviews(data));
+    return data;
   },
 );
 
-export const fetchNearByOfferAction = createAsyncThunk<void, string | undefined, {
+export const fetchNearByOfferAction = createAsyncThunk<Offers, string | undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetchNearByOffer',
-  async (id, {dispatch, extra: api}) => {
+  async (id, {extra: api}) => {
     const {data} = await api.get<Offers>(`${APIRoute.Offers}/${id}/nearby`);
-    dispatch(getNearByOffer(data));
+    return data;
   },
 );
 
-export const favoriteChangeAction = createAsyncThunk<void, FavoriteData, {
+export const favoriteChangeAction = createAsyncThunk<FavoriteCange, FavoritePost, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/favoriteChange',
   async ({id, favoriteStatus}, {extra: api}) => {
-    await api.post(`${APIRoute.Favorite}/${id}/${favoriteStatus}`);
+    const {data} = await api.post<Offer>(`${APIRoute.Favorite}/${id}/${favoriteStatus}`);
+    return {data, favoriteStatus};
   },
 );
 
@@ -105,31 +90,27 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
   extra: AxiosInstance;
 }>(
   'user/checkAuth',
-  async (_arg, {dispatch, extra: api}) => {
-    try {
-      await api.get(APIRoute.Login);
-      dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    } catch {
-      dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-    }
+  async (_arg, {extra: api}) => {
+    await api.get(APIRoute.Login);
   },
 );
 
-export const reviewAction = createAsyncThunk<void, Review, {
+export const reviewAction = createAsyncThunk<Comment, Review, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'offer/reviewAction',
-  async ({id, comment, rating}, {dispatch, extra: api}) => {
+  async ({id, comment, rating}, {extra: api, rejectWithValue}) => {
     if (!id) {
-      return;
+      return rejectWithValue('ID не передан');
     }
-    const {data} = await api.post<Comment>(`${APIRoute.Comments}/${id}`, {comment, rating});
-    dispatch(addReview(data));
-    // saveToken(token);
-    // dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    // dispatch(redirectToRoute(AppRoute.Main));
+    try {
+      const {data} = await api.post<Comment>(`${APIRoute.Comments}/${id}`, {comment, rating});
+      return data;
+    } catch (error: unknown) {
+      return rejectWithValue(error || 'Не удалось загрузить данные');
+    }
   },
 );
 
@@ -140,22 +121,21 @@ export const loginAction = createAsyncThunk<void, AuthData, {
 }>(
   'user/login',
   async ({login: email, password}, {dispatch, extra: api}) => {
-    const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
+    const {data: {token}} = await api.post<HeaderUserData>(APIRoute.Login, {email, password});
     saveToken(token);
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
     dispatch(redirectToRoute(AppRoute.Main));
   },
 );
 
-export const fetchUserDataAction = createAsyncThunk<void, undefined, {
+export const fetchUserDataAction = createAsyncThunk<UserData, undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'user/fetchUserDataAction',
-  async (_arg, {dispatch, extra: api}) => {
-    const data = (await api.get(APIRoute.Login));
-    dispatch(loadUserData(data.data as UserData));
+  async (_arg, {extra: api}) => {
+    const {data} = (await api.get<UserData>(APIRoute.Login));
+    return data;
   },
 );
 
@@ -168,6 +148,7 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   async (_arg, {dispatch, extra: api}) => {
     await api.delete(APIRoute.Logout);
     dropToken();
-    dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    dispatch(dropFavoriteOffers());
+    dispatch(removeFavorite());
   },
 );

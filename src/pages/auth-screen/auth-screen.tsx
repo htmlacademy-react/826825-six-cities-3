@@ -1,19 +1,22 @@
 import {Helmet} from 'react-helmet-async';
 import {useRef, FormEvent} from 'react';
 import Logo from '../../components/logo/logo';
-import {Navigate} from 'react-router-dom';
-import {useAppDispatch} from '../../hooks';
+import {Navigate, Link} from 'react-router-dom';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 import {loginAction} from '../../store/api-actions';
+import { CITIES } from '../../const';
+import { changeCity } from '../../store/main-process/main-process';
 import {AppRoute, AuthorizationStatus} from '../../const';
+import {getAuthorizationStatus} from '../../store/user-process/user-selectors';
 
-type AuthScreenProps = {
-  authorizationStatus: AuthorizationStatus;
-}
+function AuthScreen(): JSX.Element {
 
-function AuthScreen({authorizationStatus}:AuthScreenProps): JSX.Element {
+  const randomCity = CITIES[Math.floor(Math.random() * CITIES.length)];
+
+
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const dispatch = useAppDispatch();
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
@@ -78,7 +81,6 @@ function AuthScreen({authorizationStatus}:AuthScreenProps): JSX.Element {
                   />
                 </div>
                 <button
-                  // onClick={() => navigate(AppRoute.Main)}
                   className="login__submit form__submit button"
                   type="submit"
                 >Sign in
@@ -87,9 +89,14 @@ function AuthScreen({authorizationStatus}:AuthScreenProps): JSX.Element {
             </section>
             <section className="locations locations--login locations--current">
               <div className="locations__item">
-                <a className="locations__item-link" href="#">
-                  <span>Amsterdam</span>
-                </a>
+                <Link className="locations__item-link"
+                  onClick={() => {
+                    dispatch(changeCity(randomCity));
+                  }}
+                  to={AppRoute.Main}
+                >
+                  <span>{randomCity.name}</span>
+                </Link>
               </div>
             </section>
           </div>

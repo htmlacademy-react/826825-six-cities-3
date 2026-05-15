@@ -1,11 +1,12 @@
 import classnames from 'classnames';
 import { CITIES } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { changeCity } from '../../store/action';
+import { changeCity } from '../../store/main-process/main-process';
+import {getCurrentCity} from '../../store/main-process/main-selectors';
 
 
 function CitiesTabs ():JSX.Element {
-  const currentCity = useAppSelector((state) => state.currentCity);
+  const currentCity = useAppSelector(getCurrentCity);
   const dispatch = useAppDispatch();
 
   return (

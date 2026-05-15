@@ -37,7 +37,12 @@ export type Offer = {
 
 export type FavoriteData = {
   id: string;
-  favoriteStatus: string;
+  favoriteStatus: number;
+}
+
+
+export type FavoritesByCity = {
+  [key: string]: Offer[];
 }
 
 export type Offers = Offer[];

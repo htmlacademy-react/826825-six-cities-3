@@ -1,29 +1,45 @@
 import {Helmet} from 'react-helmet-async';
+import { useOutletContext } from 'react-router-dom';
+import classnames from 'classnames';
+import {Link} from 'react-router-dom';
 import CardsList from '../../components/cards-list/cards-list';
-import {Offers} from '../../types/offer';
-import {PAGES} from '../../const';
-import {useAppSelector} from '../../hooks';
+import {BemBlocks, AppRoute} from '../../const';
+import { Offer, FavoritesByCity, Offers } from '../../types/offer';
+import FavoritesEmpty from './favorites-empty';
 
-const offersListClassName: string = 'favorites__places';
+type Context = {
+  isEmpty: boolean;
+  favoriteOffers: Offers;
+}
 
 function FavoritesScreen() : JSX.Element {
-  const favoritesOffers = useAppSelector((state) => state.favoriteOffers);
+  const context = useOutletContext();
 
-  const favoritesCitys:string[] = Array.from(new Set(favoritesOffers.map(({city}) => city.name)));
+  const {isEmpty, favoriteOffers} = context as Context;
+
+  const favoritesByCity = favoriteOffers.reduce((acc:FavoritesByCity , offer: Offer) => {
+    const city:string = offer.city.name;
+    if (!acc[city]) {
+      acc[city] = [];
+    }
+
+    acc[city].push(offer);
+    return acc;
+  }, {});
+
   return (
-    <div className="page">
+    <>
       <Helmet>
         <title>6 cities: favorites</title>
       </Helmet>
-      <main className="page__main page__main--favorites">
+      <main className={classnames('page__main page__main--favorites', {'page__main--favorites-empty': isEmpty})}>
         <div className="page__favorites-container container">
-          <section className="favorites">
-            <h1 className="favorites__title">Saved listing</h1>
-            <ul className="favorites__list">
-              {favoritesCitys.map((cityName, index) => {
-                const favoritesOffersByCity:Offers = favoritesOffers.
-                  filter(({city}) => city.name === cityName);
-                return (
+          { isEmpty ?
+            <FavoritesEmpty/> :
+            <section className='favorites'>
+              <h1 className="favorites__title">Saved listing</h1>
+              <ul className="favorites__list">
+                {Object.entries(favoritesByCity).map(([cityName, offers]:[string, Offers], index) => (
                   <li
                     key={`${cityName + index}`}
                     className="favorites__locations-items"
@@ -35,24 +51,24 @@ function FavoritesScreen() : JSX.Element {
                         </a>
                       </div>
                     </div>
-                    <CardsList
-                      listClassName={offersListClassName}
-                      offers={favoritesOffersByCity}
-                      page={PAGES.favorites}
-                    />
+                    <div className='favorites__places'>
+                      <CardsList
+                        offers={offers}
+                        bemBlock={BemBlocks.Favorites}
+                      />
+                    </div>
                   </li>
-                );
-              })}
-            </ul>
-          </section>
+                ))}
+              </ul>
+            </section>}
         </div>
       </main>
       <footer className="footer container">
-        <a className="footer__logo-link" href="main.html">
+        <Link className="footer__logo-link" to={AppRoute.Main}>
           <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33"/>
-        </a>
+        </Link>
       </footer>
-    </div>
+    </>
   );
 }
 

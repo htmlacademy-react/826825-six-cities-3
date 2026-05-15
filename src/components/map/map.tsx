@@ -1,4 +1,4 @@
-import {useRef, useEffect} from 'react';
+import {useRef, useEffect, memo} from 'react';
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/use-map';
@@ -6,16 +6,16 @@ import { Offers, OfferCity, OffferLocation } from '../../types/offer';
 import MarkerActive from'/img/pin-active.svg';
 import MarkerDefault from '/img/pin.svg';
 import {useAppSelector} from '../../hooks/index';
+import {getMapCurrentOffer} from '../../store/main-process/main-selectors';
 
 type MapProps = {
   offers: Offers;
   currentCity: OfferCity;
-  // currentOffer: string;
-  mapClassName: string;
+  bemBlock: string;
 }
 
-function Map({offers, currentCity, mapClassName}:MapProps) : JSX.Element {
-  const currentOffer = useAppSelector((state) => state.mapCurrentOffer);
+function Map({offers, currentCity, bemBlock}:MapProps) : JSX.Element {
+  const currentOffer = useAppSelector(getMapCurrentOffer);
   const currentCityLocation:OffferLocation = currentCity.location;
   const mapRef = useRef(null);
   const map = useMap({mapRef, location: currentCityLocation});
@@ -52,11 +52,13 @@ function Map({offers, currentCity, mapClassName}:MapProps) : JSX.Element {
 
   return (
     <section
-      className={mapClassName}
+      className={`${bemBlock}__map map`}
       ref={mapRef}
     >
     </section>
   );
 }
 
-export default Map;
+const MemorizedMap = memo(Map);
+
+export default MemorizedMap;

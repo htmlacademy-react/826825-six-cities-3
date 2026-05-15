@@ -1,54 +1,77 @@
 import {Helmet} from 'react-helmet-async';
+import classnames from 'classnames';
+import {memo} from 'react';
 import CardsList from '../../components/cards-list/cards-list';
 import CitiesTabs from '../../components/cities-tabs/cities-tabs';
 import Sort from '../../components/sort/sort';
-import {PAGES} from '../../const';
 import { filterByCityOffers, sortOffers } from '../../utils';
 import Map from '../../components/map/map';
 import {useAppSelector} from '../../hooks';
-
-const offersListClassName: string = 'cities__places-list places__list tabs__content';
+import { getCurrentCity, getSortType} from '../../store/main-process/main-selectors';
+import {getAuthCheckedStatus} from '../../store/user-process/user-selectors';
+import {getOffersDataLoadingStatus} from '../../store/offer-data/offer-selectors';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
+import {BemBlocks} from '../../const';
+import MainEmpty from './main-empty';
+import useOffers from '../../hooks/use-offers';
 
 function MainScreen(): JSX.Element {
-  const offers = useAppSelector((state) => state.offersList);
-  const currentCity = useAppSelector((state) => state.currentCity);
-  const currenSortType = useAppSelector((state) => state.sortType);
+  const offers = useOffers();
+  const currentCity = useAppSelector(getCurrentCity);
+  const currenSortType = useAppSelector(getSortType);
   const offersByCity = filterByCityOffers(offers, currentCity.name);
   const curretnOffers = sortOffers(offersByCity, currenSortType);
   const placeCount:number = offersByCity.length;
 
+  const isAuthChecked = useAppSelector(getAuthCheckedStatus);
+  const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
+
+
+  if (!isAuthChecked || isOffersDataLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
   return (
-    <div className="page page--gray page--main">
+    <>
       <Helmet>
         <title>6 cities</title>
       </Helmet>
-      <main className="page__main page__main--index">
+      <main className={classnames('page__main page__main--index', {'page__main--index-empty': curretnOffers.length === 0})}>
         <h1 className="visually-hidden">Cities</h1>
         <CitiesTabs/>
         <div className="cities">
-          <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{placeCount} places to stay in {currentCity.name}</b>
-              <Sort/>
-              <CardsList
-                listClassName={offersListClassName}
-                offers={curretnOffers}
-                page={PAGES.main}
-              />
-            </section>
-            <div className="cities__right-section">
-              <Map
-                offers={curretnOffers}
-                currentCity={currentCity}
-                mapClassName='cities__map map'
-              />
-            </div>
-          </div>
+          {curretnOffers.length === 0 ?
+            <MainEmpty
+              cityName = {currentCity.name}
+            /> :
+            <div className="cities__places-container container">
+              <section className="cities__places places">
+                <h2 className="visually-hidden">Places</h2>
+                <b className="places__found">{placeCount} places to stay in {currentCity.name}</b>
+                <Sort/>
+                <div className='cities__places-list places__list tabs__content'>
+                  <CardsList
+                    offers={curretnOffers}
+                    bemBlock={BemBlocks.Cities}
+                  />
+                </div>
+              </section>
+              <div className="cities__right-section">
+                <Map
+                  offers={curretnOffers}
+                  currentCity={currentCity}
+                  bemBlock={BemBlocks.Cities}
+                />
+              </div>
+            </div>}
         </div>
       </main>
-    </div>
+    </>
   );
 }
 
-export default MainScreen;
+const MemorizedMainScreen = memo(MainScreen);
+
+export default MemorizedMainScreen;
