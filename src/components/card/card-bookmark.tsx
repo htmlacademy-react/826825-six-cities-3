@@ -43,7 +43,7 @@ function CardBookmark({id, isFavorite, bemBlock = 'place-card'}: CardBookmarkPro
   return (
     <button
       onClick={handleBookmark}
-      className={classnames(`${bemBlock}__bookmark-button`, 'button', isFavoriteStatus? pageClassActive : '')}
+      className={classnames(`${bemBlock}__bookmark-button`, 'button', isFavoriteStatus ? pageClassActive : '')}
       type="button"
     >
       <svg

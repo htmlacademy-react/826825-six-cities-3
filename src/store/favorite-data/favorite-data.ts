@@ -1,7 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {NameSpace} from '../../const';
-import {FavoriteData} from '../../types/state';
-import {Offer} from '../../types/offer';
+import {FavoriteData, FavoriteCange} from '../../types/state';
 import {
   fetchFavoriteOffersAction,
   favoriteChangeAction} from '../api-actions';
@@ -30,7 +29,7 @@ export const favoriteData = createSlice({
         state.isFavoritesDataLoading = false;
       })
 
-      .addCase(favoriteChangeAction.fulfilled, (state, action) => {
+      .addCase(favoriteChangeAction.fulfilled, (state, action:PayloadAction<FavoriteCange>) => {
         switch (action.payload.favoriteStatus) {
           case '1':
             state.favoriteOffers.push(action.payload.data);

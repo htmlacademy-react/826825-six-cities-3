@@ -79,4 +79,6 @@ function OfferFormReview({offerId}: OfferFormReviewProps) : JSX.Element | string
 
 }
 
-export default memo(OfferFormReview);
+const MemorizedOfferFormReview = memo(OfferFormReview);
+
+export default MemorizedOfferFormReview;

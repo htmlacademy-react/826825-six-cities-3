@@ -40,4 +40,9 @@ export type FavoriteData = {
   favoriteStatus: number;
 }
 
+
+export type FavoritesByCity = {
+  [key: string]: Offer[];
+}
+
 export type Offers = Offer[];

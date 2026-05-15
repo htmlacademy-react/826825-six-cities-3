@@ -4,22 +4,28 @@ import classnames from 'classnames';
 import {Link} from 'react-router-dom';
 import CardsList from '../../components/cards-list/cards-list';
 import {BemBlocks, AppRoute} from '../../const';
-import { Offer } from '../../types/offer';
+import { Offer, FavoritesByCity, Offers } from '../../types/offer';
 import FavoritesEmpty from './favorites-empty';
+
+type Context = {
+  isEmpty: boolean;
+  favoriteOffers: Offers;
+}
 
 function FavoritesScreen() : JSX.Element {
   const context = useOutletContext();
 
-  const {isEmpty, favoriteOffers} = context;
+  const {isEmpty, favoriteOffers} = context as Context;
 
-  const favoritesByCity = favoriteOffers.reduce((acc: string, offer: Offer) => {
+  const favoritesByCity = favoriteOffers.reduce((acc:FavoritesByCity , offer: Offer) => {
     const city:string = offer.city.name;
-      if (!acc[city]) {
-        acc[city] = [];
-      }
-      acc[city].push(offer);
-      return acc;
-}, {})
+    if (!acc[city]) {
+      acc[city] = [];
+    }
+
+    acc[city].push(offer);
+    return acc;
+  }, {});
 
   return (
     <>
@@ -33,7 +39,7 @@ function FavoritesScreen() : JSX.Element {
             <section className='favorites'>
               <h1 className="favorites__title">Saved listing</h1>
               <ul className="favorites__list">
-                {Object.entries(favoritesByCity).map(([cityName, offers], index) => (
+                {Object.entries(favoritesByCity).map(([cityName, offers]:[string, Offers], index) => (
                   <li
                     key={`${cityName + index}`}
                     className="favorites__locations-items"
@@ -48,14 +54,13 @@ function FavoritesScreen() : JSX.Element {
                     <div className='favorites__places'>
                       <CardsList
                         offers={offers}
-                        bemBlock={BemBlocks.favorites}
+                        bemBlock={BemBlocks.Favorites}
                       />
                     </div>
                   </li>
                 ))}
               </ul>
-            </section>
-          }
+            </section>}
         </div>
       </main>
       <footer className="footer container">

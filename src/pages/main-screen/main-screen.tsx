@@ -54,7 +54,7 @@ function MainScreen(): JSX.Element {
                 <div className='cities__places-list places__list tabs__content'>
                   <CardsList
                     offers={curretnOffers}
-                    bemBlock={BemBlocks.cities}
+                    bemBlock={BemBlocks.Cities}
                   />
                 </div>
               </section>
@@ -62,7 +62,7 @@ function MainScreen(): JSX.Element {
                 <Map
                   offers={curretnOffers}
                   currentCity={currentCity}
-                  bemBlock={BemBlocks.cities}
+                  bemBlock={BemBlocks.Cities}
                 />
               </div>
             </div>}
@@ -72,4 +72,6 @@ function MainScreen(): JSX.Element {
   );
 }
 
-export default memo(MainScreen);
+const MemorizedMainScreen = memo(MainScreen);
+
+export default MemorizedMainScreen;

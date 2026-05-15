@@ -22,4 +22,7 @@ function Rating (props:RatingProps) : JSX.Element {
     </div>
   );
 }
-export default memo(Rating);
+
+const MemorizedRating = memo(Rating);
+
+export default MemorizedRating;

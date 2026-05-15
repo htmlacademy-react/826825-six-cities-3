@@ -47,7 +47,7 @@ function Card({offer, bemBlock}: CardProps) : JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <Rating
-            bemBlock={BemBlocks.placeCard}
+            bemBlock={BemBlocks.PlaceCard}
             rating={rating}
           />
         </div>

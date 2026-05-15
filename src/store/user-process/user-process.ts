@@ -1,9 +1,8 @@
-import {createSlice, PayloadAction, current} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {NameSpace, AuthorizationStatus} from '../../const';
 import {UserProcess} from '../../types/state';
 import {checkAuthAction, loginAction, logoutAction, fetchUserDataAction} from '../api-actions';
 import { UserData } from '../../types/user-data';
-import {removeFavorite} from '../offer-data/offer-data';
 
 const initialState: UserProcess = {
   authorizationStatus: AuthorizationStatus.Unknown,
@@ -30,20 +29,16 @@ export const userProcess = createSlice({
       })
 
       .addCase(fetchUserDataAction.fulfilled, (state, action: PayloadAction<UserData>) => {
-        // state.authorizationStatus = AuthorizationStatus.Auth;
         state.userData = action.payload;
       })
 
       .addCase(logoutAction.pending, (state) => {
         state.authorizationStatus = AuthorizationStatus.Unknown;
         state.userData = null;
-        // removeFavorite();
       })
 
       .addCase(logoutAction.fulfilled, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
-        // state.userData = null;
-        // removeFavorite();
       });
   }
 });

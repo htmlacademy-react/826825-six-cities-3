@@ -10,10 +10,12 @@ export type UserProcess = {
   userData: UserData;
 };
 
+export type CurrentOffer = Offer | null;
+
 export type OfferData = {
   offersList: Offers;
   nearByOffer: Offers;
-  currentOffer: Offer | null;
+  currentOffer: CurrentOffer;
   isOffersDataLoading: boolean;
   hasError: boolean;
 }
@@ -32,6 +34,16 @@ export type MainProcess = {
   sortType: SortTypes;
   mapCurrentOffer: string;
 };
+
+export type FavoritePost = {
+  id: string;
+  favoriteStatus: string;
+}
+
+export type FavoriteCange = {
+  data: Offer;
+  favoriteStatus: string;
+}
 
 export type State = ReturnType<typeof store.getState>;
 

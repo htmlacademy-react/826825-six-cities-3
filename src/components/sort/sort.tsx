@@ -38,4 +38,6 @@ function Sort(): JSX.Element {
   );
 }
 
-export default memo(Sort);
+const MemorizedSort = memo(Sort);
+
+export default MemorizedSort;

@@ -8,7 +8,7 @@ type CardImgProps = {
 }
 
 function CardImg({offer, bemBlock}: CardImgProps) : JSX.Element {
-  const {previewImage, id} = offer
+  const {previewImage, id} = offer;
   return (
     <div className={`${bemBlock}__image-wrapper place-card__image-wrapper`}>
       <Link to={{pathname: `/offer/${id}`}} state={offer}>

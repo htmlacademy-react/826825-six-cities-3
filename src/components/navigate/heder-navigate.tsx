@@ -52,4 +52,6 @@ function HeaderNavigate(): JSX.Element {
   );
 }
 
-export default memo(HeaderNavigate);
+const MemorizedHeaderNavigate = memo(HeaderNavigate);
+
+export default MemorizedHeaderNavigate;

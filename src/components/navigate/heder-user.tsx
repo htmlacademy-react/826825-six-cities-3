@@ -23,4 +23,6 @@ function HeaderUser(): JSX.Element {
   );
 }
 
-export default memo(HeaderUser);
+const MemorizedHeaderUser = memo(HeaderUser);
+
+export default MemorizedHeaderUser;

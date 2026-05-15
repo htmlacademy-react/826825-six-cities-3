@@ -2,13 +2,16 @@ import { format } from 'date-fns';
 import { Comment } from '../../types/comment';
 import { DateFormat } from '../../const';
 import Rating from '../rating/rating';
+import { BemBlocks } from '../../const';
 
 type OfferReviewProps = {
   currentComment: Comment;
 }
 
 function OfferReview({currentComment}: OfferReviewProps) : JSX.Element {
+
   const {date, user, comment, rating} = currentComment;
+
   const humanDate = format(new Date(date), DateFormat.Human);
   const dataDate = format(new Date(date), DateFormat.Data);
   return (
@@ -28,7 +31,7 @@ function OfferReview({currentComment}: OfferReviewProps) : JSX.Element {
       <div className="reviews__info">
         <div className="reviews__rating rating">
           <Rating
-            className='reviews__stars'
+            bemBlock={BemBlocks.Reviews}
             rating={rating}
           />
         </div>

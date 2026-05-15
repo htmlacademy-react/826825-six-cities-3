@@ -6,4 +6,6 @@ function LoadingScreen(): JSX.Element {
   );
 }
 
-export default memo(LoadingScreen);
+const MemorizedLoadingScreen = memo(LoadingScreen);
+
+export default MemorizedLoadingScreen;

@@ -59,4 +59,6 @@ function Map({offers, currentCity, bemBlock}:MapProps) : JSX.Element {
   );
 }
 
-export default memo(Map);
+const MemorizedMap = memo(Map);
+
+export default MemorizedMap;

@@ -16,7 +16,7 @@ import { getReviews } from '../../store/reviews-data/review-selectors';
 import CardBookmark from '../../components/card/card-bookmark';
 
 function OfferScreen(): JSX.Element | null {
-  const { id } = useParams();
+  const { id } = useParams<{id: string}>();
   const dispatch = useAppDispatch();
   const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
   const selectedOffer = useAppSelector(getCurrentOffer);
@@ -31,7 +31,7 @@ function OfferScreen(): JSX.Element | null {
       dispatch(fetchReviewsAction(id));
       dispatch(fetchNearByOfferAction(id));
     }
-  },[id]);
+  },[dispatch, id]);
 
   if (isOfferLoadError) {
     return <NotFoundScreen />;
@@ -80,13 +80,13 @@ function OfferScreen(): JSX.Element | null {
                   {title}
                 </h1>
                 <CardBookmark
-                  id={id}
+                  id={selectedOffer.id}
                   isFavorite={isFavorite}
                   bemBlock='offer'
                 />
               </div>
               <Rating
-                bemBlock={BemBlocks.offer}
+                bemBlock={BemBlocks.Offer}
                 rating={rating}
               />
               <ul className="offer__features">
@@ -151,7 +151,7 @@ function OfferScreen(): JSX.Element | null {
           <Map
             offers={nearOffers}
             currentCity={city}
-            bemBlock={BemBlocks.offer}
+            bemBlock={BemBlocks.Offer}
           />
         </section>
         <div className="container">
@@ -160,7 +160,7 @@ function OfferScreen(): JSX.Element | null {
             <div className='near-places__list places__list'>
               <CardsList
                 offers={nearOffers}
-                bemBlock = {BemBlocks.nearPlaces}
+                bemBlock = {BemBlocks.NearPlaces}
               />
             </div>
           </section>

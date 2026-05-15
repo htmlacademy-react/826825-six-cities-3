@@ -16,4 +16,6 @@ function OfferReviewsList({comments}: OfferReviewsListProps) : JSX.Element {
 
 }
 
-export default memo(OfferReviewsList);
+const MemorizedOfferReviewsList = memo(OfferReviewsList);
+
+export default MemorizedOfferReviewsList;

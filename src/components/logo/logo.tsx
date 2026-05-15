@@ -10,4 +10,6 @@ function Logo(): JSX.Element {
   );
 }
 
-export default memo(Logo);
+const MemorizedLogo = memo(Logo);
+
+export default MemorizedLogo;

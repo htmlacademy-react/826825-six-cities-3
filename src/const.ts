@@ -53,14 +53,15 @@ export enum DateFormat {
 export enum FavoriteStatus {
   Addad = '1',
   Removed = '0'
-} 
+}
 
 export enum BemBlocks {
-  offer = 'offer',
-  placeCard = 'place-card',
-  cities = 'cities',
-  favorites = 'favorites',
-  nearPlaces = 'near-places'
+  Offer = 'offer',
+  PlaceCard = 'place-card',
+  Cities = 'cities',
+  Favorites = 'favorites',
+  NearPlaces = 'near-places',
+  Reviews = 'reviews'
 }
 
 export enum SortTypes {
