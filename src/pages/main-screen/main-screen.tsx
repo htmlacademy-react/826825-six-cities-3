@@ -6,11 +6,9 @@ import CitiesTabs from '../../components/cities-tabs/cities-tabs';
 import Sort from '../../components/sort/sort';
 import { filterByCityOffers, sortOffers } from '../../utils';
 import Map from '../../components/map/map';
-import {useAppSelector, useAppDispatch} from '../../hooks';
-import { getOffers } from '../../store/offer-data/offer-selectors';
-import { getCurrentCity, getSortType, getOffersByCity, getSortedOffers } from '../../store/main-process/main-selectors';
-// import {fetchOffersAction} from '../../store/api-actions';
-import {getAuthCheckedStatus, getAuthorizationStatus} from '../../store/user-process/user-selectors';
+import {useAppSelector} from '../../hooks';
+import { getCurrentCity, getSortType} from '../../store/main-process/main-selectors';
+import {getAuthCheckedStatus} from '../../store/user-process/user-selectors';
 import {getOffersDataLoadingStatus} from '../../store/offer-data/offer-selectors';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import {BemBlocks} from '../../const';
@@ -18,24 +16,16 @@ import MainEmpty from './main-empty';
 import useOffers from '../../hooks/use-offers';
 
 function MainScreen(): JSX.Element {
-  // const offers = useAppSelector(getOffers);
   const offers = useOffers();
   const currentCity = useAppSelector(getCurrentCity);
   const currenSortType = useAppSelector(getSortType);
   const offersByCity = filterByCityOffers(offers, currentCity.name);
-  // const offersByCity = useAppSelector(getOffersByCity);
   const curretnOffers = sortOffers(offersByCity, currenSortType);
-  // const curretnOffers = useAppSelector(getSortedOffers);
   const placeCount:number = offersByCity.length;
 
   const isAuthChecked = useAppSelector(getAuthCheckedStatus);
   const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
 
-  // const dispatch = useAppDispatch();
-
-  // useEffect(() => {
-  //   dispatch(fetchOffersAction())
-  // },[]);
 
   if (!isAuthChecked || isOffersDataLoading) {
     return (
@@ -75,8 +65,7 @@ function MainScreen(): JSX.Element {
                   bemBlock={BemBlocks.cities}
                 />
               </div>
-            </div>
-          }
+            </div>}
         </div>
       </main>
     </>

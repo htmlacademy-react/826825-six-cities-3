@@ -15,7 +15,7 @@ import { getCurrentOffer, getOffersDataLoadingStatus, getNearByOffer, getErrorSt
 import { getReviews } from '../../store/reviews-data/review-selectors';
 import CardBookmark from '../../components/card/card-bookmark';
 
-function OfferScreen(): JSX.Element {
+function OfferScreen(): JSX.Element | null {
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
@@ -36,7 +36,7 @@ function OfferScreen(): JSX.Element {
   if (isOfferLoadError) {
     return <NotFoundScreen />;
   }
-  
+
   if (isOffersDataLoading) {
     return <LoadingScreen />;
   }

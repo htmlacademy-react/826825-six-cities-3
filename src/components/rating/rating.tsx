@@ -3,12 +3,12 @@ import {memo} from 'react';
 
 type RatingProps = {
   rating: number;
-  bemBlock: string;
+  bemBlock: string | undefined;
 }
 
 function Rating (props:RatingProps) : JSX.Element {
   const {rating, bemBlock} = props;
-  
+
   return (
     <div className={`${bemBlock}__rating rating`}>
       <div
@@ -18,8 +18,7 @@ function Rating (props:RatingProps) : JSX.Element {
         <span className='visually-hidden'>Rating</span>
       </div>
       {bemBlock === 'offer' &&
-        <span className="offer__rating-value rating__value">{rating}</span>
-      }
+        <span className="offer__rating-value rating__value">{rating}</span>}
     </div>
   );
 }

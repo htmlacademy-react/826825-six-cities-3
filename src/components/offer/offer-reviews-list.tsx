@@ -1,5 +1,5 @@
 import { Comments } from '../../types/comment';
-import {memo} from 'react'; 
+import {memo} from 'react';
 import OfferReview from './offer-review';
 
 type OfferReviewsListProps = {

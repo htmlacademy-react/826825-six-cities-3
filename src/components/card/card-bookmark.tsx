@@ -1,4 +1,4 @@
-import {useState, memo} from 'react';
+import {useState} from 'react';
 import classnames from 'classnames';
 import {Navigate} from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/index';
@@ -27,7 +27,7 @@ function CardBookmark({id, isFavorite, bemBlock = 'place-card'}: CardBookmarkPro
   const handleBookmark = () => {
     if (authorizationStatus !== AuthorizationStatus.Auth) {
       setRedirectToLogin(true);
-      return
+      return;
     }
     setFavoriteStatus(!isFavoriteStatus);
     dispatch(favoriteChangeAction({
@@ -59,4 +59,4 @@ function CardBookmark({id, isFavorite, bemBlock = 'place-card'}: CardBookmarkPro
 
 }
 
-export default memo(CardBookmark);
+export default CardBookmark;

@@ -6,11 +6,11 @@ type CardTitleProps = {
 }
 
 function CardTitle({offer}: CardTitleProps) : JSX.Element {
-    const {id, title} = offer;
+  const {id, title} = offer;
 
   return (
     <h2 className="place-card__name">
-        <Link to={{pathname: `/offer/${id}`}}>{title}</Link>
+      <Link to={{pathname: `/offer/${id}`}}>{title}</Link>
     </h2>
   );
 }

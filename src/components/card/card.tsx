@@ -7,20 +7,18 @@ import {setMapCurrentOffer} from '../../store/main-process/main-process';
 import {BemBlocks} from '../../const';
 import CardBookmark from './card-bookmark';
 import CardImg from './card-img';
-import CardTitle from './card-title'
+import CardTitle from './card-title';
 
 type CardProps = {
   offer: Offer;
-  bemBlock: string;
+  bemBlock: string | undefined;
 }
 
 function Card({offer, bemBlock}: CardProps) : JSX.Element {
   const {price, isFavorite, isPremium, type, id, rating} = offer;
   const dispatch = useAppDispatch();
 
-  const onCardHover = useCallback((id: string) => {
-    return () => dispatch(setMapCurrentOffer(id))
-  },[])
+  const onCardHover = useCallback((offerId: string) => () => dispatch(setMapCurrentOffer(offerId)),[dispatch]);
 
   return (
     <article

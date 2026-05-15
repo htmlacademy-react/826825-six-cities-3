@@ -1,5 +1,5 @@
 type MainEmptyProps = {
-  cityName: string
+  cityName: string;
 }
 
 function MainEmpty({cityName}:MainEmptyProps): JSX.Element {

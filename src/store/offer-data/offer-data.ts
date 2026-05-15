@@ -1,4 +1,4 @@
-import {createSlice, current} from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 import {NameSpace} from '../../const';
 import {OfferData} from '../../types/state';
 import { Offer } from '../../types/offer';
@@ -23,7 +23,7 @@ export const offerData = createSlice({
       state.offersList = state.offersList.map((offer:Offer) => ({
         ...offer,
         isFavorite: offer.isFavorite ? false : offer.isFavorite,
-      }))
+      }));
     },
   },
   extraReducers(builder) {
@@ -40,10 +40,6 @@ export const offerData = createSlice({
         state.isOffersDataLoading = false;
         state.hasError = true;
       })
-
-      // .addCase(fetchFavoriteOffersAction.pending, (state) => {
-      //   state.isOffersDataLoading = true;
-      // })
 
       .addCase(fetchOfferAction.pending, (state) => {
         state.isOffersDataLoading = true;
@@ -63,18 +59,11 @@ export const offerData = createSlice({
         state.isOffersDataLoading = true;
       })
 
-      .addCase(removeFavorite, (state) => {
-        state.offersList.map((offer:Offer) => ({
-          ...offer,
-          isFavorite: offer.isFavorite ? false : offer.isFavorite,
-        }))
-      })
-
       .addCase(fetchNearByOfferAction.fulfilled, (state, action) => {
         state.nearByOffer = action.payload;
         state.isOffersDataLoading = false;
       });
-      
+
   }
 });
 

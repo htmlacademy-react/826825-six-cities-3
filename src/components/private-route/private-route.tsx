@@ -1,6 +1,6 @@
 import {Navigate} from 'react-router-dom';
 import {AppRoute} from '../../const';
-import {getAuthCheckedStatus, getUserData } from '../../store/user-process/user-selectors';
+import {getAuthCheckedStatus } from '../../store/user-process/user-selectors';
 import {useAppSelector} from '../../hooks';
 
 type PrivateRouteProps = {
@@ -18,7 +18,7 @@ function PrivateRoute(props: PrivateRouteProps): JSX.Element {
       ? children
       : <Navigate to={AppRoute.Login} />
   );
- 
+
 }
 
 export default PrivateRoute;

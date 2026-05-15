@@ -9,8 +9,8 @@ function useOffers() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchOffersAction())
-  },[]);
+    dispatch(fetchOffersAction());
+  },[dispatch]);
 
   return offers;
 }

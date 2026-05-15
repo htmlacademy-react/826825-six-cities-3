@@ -1,5 +1,5 @@
 import {Helmet} from 'react-helmet-async';
-import {useRef, FormEvent, useState} from 'react';
+import {useRef, FormEvent} from 'react';
 import Logo from '../../components/logo/logo';
 import {Navigate, Link} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../hooks';
@@ -10,13 +10,9 @@ import {AppRoute, AuthorizationStatus} from '../../const';
 import {getAuthorizationStatus} from '../../store/user-process/user-selectors';
 
 function AuthScreen(): JSX.Element {
-  // const [randomCity, setRandomCity] = useState({});
 
-  // const getRandomCity = () => {
-    // const randomIndex = Math.floor(Math.random() * CITIES.length);
-    
-    const randomCity = CITIES[Math.floor(Math.random() * CITIES.length)];
-  // };
+  const randomCity = CITIES[Math.floor(Math.random() * CITIES.length)];
+
 
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
@@ -93,7 +89,7 @@ function AuthScreen(): JSX.Element {
             </section>
             <section className="locations locations--login locations--current">
               <div className="locations__item">
-                <Link className="locations__item-link" 
+                <Link className="locations__item-link"
                   onClick={() => {
                     dispatch(changeCity(randomCity));
                   }}
